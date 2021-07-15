@@ -1,4 +1,5 @@
 import 'package:collegenius/Presentation/pages/homepage/Homepage.dart';
+import 'package:collegenius/Presentation/pages/settingpage/SettingPage.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -6,6 +7,8 @@ class AppRouter {
     switch (routsettings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => HomePage());
+      case '/setting':
+        return MaterialPageRoute(builder: (_) => SettingPage());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
