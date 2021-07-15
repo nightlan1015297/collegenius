@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'NavigationDrawer.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,6 +9,11 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      drawer: NavigationDrawer(),
+      appBar: AppBar(
+        title: Text("首頁"),
+      ),
+    );
   }
 }
