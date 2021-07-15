@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'Presentation/pages/homepage/HomePage.dart';
+import 'presentation/pages/homepage/HomePage.dart';
+import 'Presentation/routes/Routes.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  /// Create Router instanse to initialize Router
+  final AppRouter _appRouter = AppRouter();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,6 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      onGenerateRoute: _appRouter.generateRoute,
       home: HomePage(),
     );
   }
