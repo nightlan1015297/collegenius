@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'presentation/pages/homepage/HomePage.dart';
+import 'presentation/pages/settingpage/SettingPage.dart';
 import 'Presentation/routes/Routes.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: _appRouter.generateRoute,
-      home: HomePage(),
+      home: SettingPage(),
     );
   }
 }
