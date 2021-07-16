@@ -1,7 +1,12 @@
+import 'package:collegenius/constants/enums.dart';
+import 'package:collegenius/ui/theme/AppTheme.dart';
 import 'package:flutter/material.dart';
-import 'presentation/pages/homepage/HomePage.dart';
-import 'presentation/pages/settingpage/SettingPage.dart';
-import 'Presentation/routes/Routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'logic/apptheme_cubit/apptheme_cubit.dart';
+import 'ui/pages/homepage/HomePage.dart';
+import 'ui/pages/settingpage/SettingPage.dart';
+import 'ui/routes/Routes.dart';
+import 'constants/enums.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,13 +18,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AppthemeCubit>(
+          create: (BuildContext context) => AppthemeCubit(),
+        ),
+      ],
+      child: BlocBuilder<AppthemeCubit, AppthemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: state.cuurrentOption == ThemeOption.light
+                ? AppTheme.light
+                : AppTheme.night,
+            onGenerateRoute: _appRouter.generateRoute,
+            home: SettingPage(),
+          );
+        },
       ),
-      onGenerateRoute: _appRouter.generateRoute,
-      home: SettingPage(),
     );
   }
 }
