@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+
 import 'package:collegenius/constants/enums.dart';
 
 part 'apptheme_state.dart';
