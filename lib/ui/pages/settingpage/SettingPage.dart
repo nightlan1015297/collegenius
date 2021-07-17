@@ -1,3 +1,5 @@
+import 'package:collegenius/ui/pages/settingpage/setting_section_builder.dart';
+import 'package:collegenius/ui/pages/settingpage/setting_tile_builder.dart';
 import 'package:flutter/material.dart';
 
 class SettingPage extends StatefulWidget {
@@ -13,62 +15,22 @@ class SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(10),
-              child: Text(
-                "Accounts",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(
-                      Icons.lock_outline,
-                      color: Colors.blue,
-                    ),
-                    title: Text("Change Password"),
-                    trailing: Icon(Icons.keyboard_arrow_right),
-                    onTap: () {
-                      // TODO: Open change password page
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.lock_outline,
-                      color: Colors.blue,
-                    ),
-                    title: Text("Change Password"),
-                    trailing: Icon(Icons.keyboard_arrow_right),
-                    onTap: () {
-                      // TODO: Open change password page
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.lock_outline,
-                    ),
-                    title: Text("Change Password"),
-                    trailing: Icon(Icons.keyboard_arrow_right),
-                    onTap: () {
-                      // TODO: Open change password page
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+      body: settingSectionBilder(
+        sectionname: "Account",
+        tiles: <Widget>[
+          settingTileBilder(
+              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+          settingTileBilder(
+              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+          settingTileBilder(
+              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+          settingTileBilder(
+              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+          settingTileBilder(
+              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+          settingTileBilder(
+              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+        ],
       ),
     );
   }
