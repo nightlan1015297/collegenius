@@ -15,22 +15,66 @@ class SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: settingSectionBilder(
-        sectionname: "Account",
-        tiles: <Widget>[
-          settingTileBilder(
-              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-          settingTileBilder(
-              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-          settingTileBilder(
-              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-          settingTileBilder(
-              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-          settingTileBilder(
-              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-          settingTileBilder(
-              icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            settingSectionBilder(
+              context: context,
+              sectionname: "Account",
+              tiles: <Widget>[
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.language, title: "language", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.dark_mode, title: "theme", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.email, title: "Email", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.mode, title: "mode", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+              ],
+            ),
+            settingSectionBilder(
+              context: context,
+              sectionname: "Account",
+              tiles: <Widget>[
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+              ],
+            ),
+            settingSectionBilder(
+              context: context,
+              sectionname: "Account",
+              tiles: <Widget>[
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+                settingTileBilder(
+                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
+              ],
+            ),
+            const SizedBox(height: 10.0),
+          ],
+        ),
       ),
     );
   }
