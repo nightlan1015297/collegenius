@@ -1,6 +1,11 @@
+import 'package:collegenius/logic/apptheme_cubit/apptheme_cubit.dart';
 import 'package:collegenius/ui/pages/settingpage/setting_section_builder.dart';
-import 'package:collegenius/ui/pages/settingpage/setting_tile_builder.dart';
+import 'package:collegenius/ui/pages/settingpage/basic_setting_tile_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'io_setting_tile_widget.dart';
+import 'optional_setting_tile_widget.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -11,6 +16,7 @@ class SettingPageState extends State<SettingPage> {
   final title = "設定";
   @override
   Widget build(BuildContext context) {
+    print('SettingPagebuild');
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -18,58 +24,59 @@ class SettingPageState extends State<SettingPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            settingSectionBilder(
-              context: context,
-              sectionname: "Account",
+            SettingSectionWidget(sectionname: "Preference", tiles: <Widget>[
+              BlocBuilder<AppthemeCubit, AppthemeState>(
+                builder: (context, state) {
+                  return OptionalSettingTileWidget(
+                    debugprint: "1",
+                    icon: Icons.mode,
+                    currentoption:
+                        state.darkTheme == true ? "Dark Theme" : "Light Theme",
+                    title: "Theme",
+                    ontap: () {
+                      state.darkTheme == true
+                          ? context.read<AppthemeCubit>().changeToLightTheme()
+                          : context.read<AppthemeCubit>().changeToDarkTheme();
+                    },
+                  );
+                },
+              )
+            ]),
+            SettingSectionWidget(
+              sectionname: "Example",
               tiles: <Widget>[
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
+                OptionalSettingTileWidget(
+                    debugprint: "2",
+                    icon: Icons.accessible_sharp,
+                    title: "Test",
+                    currentoption: "Test",
+                    ontap: () {}),
+                OptionalSettingTileWidget(
+                    debugprint: "3",
+                    icon: Icons.language,
+                    title: "language",
+                    currentoption: "language",
+                    ontap: () {}),
+                OptionalSettingTileWidget(
+                    debugprint: "4",
+                    icon: Icons.dark_mode,
+                    title: "theme",
+                    currentoption: "theme",
+                    ontap: () {}),
+                IoSettingTileWidget(
+                    icon: Icons.mode,
+                    title: "mode",
+                    value: true,
+                    ontap: (bool) {}),
+                IoSettingTileWidget(
+                    icon: Icons.accessible_sharp,
+                    title: "Test",
+                    value: true,
+                    ontap: (bool) {}),
+                BasicSettingTileWidget(
                     icon: Icons.language, title: "language", ontap: () {}),
-                settingTileBilder(
+                BasicSettingTileWidget(
                     icon: Icons.dark_mode, title: "theme", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.email, title: "Email", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.mode, title: "mode", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-              ],
-            ),
-            settingSectionBilder(
-              context: context,
-              sectionname: "Account",
-              tiles: <Widget>[
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-              ],
-            ),
-            settingSectionBilder(
-              context: context,
-              sectionname: "Account",
-              tiles: <Widget>[
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
-                settingTileBilder(
-                    icon: Icons.accessible_sharp, title: "Test", ontap: () {}),
               ],
             ),
             const SizedBox(height: 10.0),

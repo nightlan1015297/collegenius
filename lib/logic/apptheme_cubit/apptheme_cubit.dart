@@ -1,13 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:collegenius/constants/enums.dart';
-
 part 'apptheme_state.dart';
 
 class AppthemeCubit extends Cubit<AppthemeState> {
-  AppthemeCubit() : super(AppthemeState(cuurrentOption: ThemeOption.light));
+  AppthemeCubit() : super(AppthemeState(darkTheme: false));
 
-  void changeTheme(ThemeOption theme) =>
-      emit(AppthemeState(cuurrentOption: theme));
+  void changeToDarkTheme() => emit(AppthemeState(darkTheme: true));
+  void changeToLightTheme() => emit(AppthemeState(darkTheme: false));
 }

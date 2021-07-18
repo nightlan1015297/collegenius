@@ -1,12 +1,14 @@
 part of 'apptheme_cubit.dart';
 
-class AppthemeState extends Equatable {
-  final ThemeOption cuurrentOption;
+abstract class _Appthemeclass {
+  bool get darkTheme;
+}
 
-  AppthemeState({
-    required this.cuurrentOption,
-  });
+class AppthemeState extends Equatable with _Appthemeclass {
+  final bool darkTheme;
+
+  AppthemeState({required this.darkTheme});
 
   @override
-  List<Object?> get props => [this.cuurrentOption];
+  List<Object?> get props => [this.darkTheme];
 }

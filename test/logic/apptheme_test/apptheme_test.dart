@@ -18,22 +18,21 @@ void main() {
     test(
         "Inital state check => initialize state of apptheme should be AppthemeState(currenttheme:light)",
         () {
-      expect(appthemeCubit.state,
-          AppthemeState(cuurrentOption: ThemeOption.light));
+      expect(appthemeCubit.state, AppthemeState(darkTheme: false));
     });
 
     blocTest<AppthemeCubit, AppthemeState>(
       'Functionality check => emits AppthemeState(currenttheme:light) when changeTheme(ThemeOption.light) triggered.',
       build: () => AppthemeCubit(),
-      act: (bloc) => bloc.changeTheme(ThemeOption.light),
-      expect: <AppthemeState>[AppthemeState(cuurrentOption: ThemeOption.light)],
+      act: (bloc) => bloc.changeToDarkTheme(),
+      expect: <AppthemeState>[AppthemeState(darkTheme: true)],
     );
 
     blocTest<AppthemeCubit, AppthemeState>(
       'Functionality check => emits AppthemeState(currenttheme:dark) when changeTheme(ThemeOption.dark) triggered.',
       build: () => AppthemeCubit(),
-      act: (bloc) => bloc.changeTheme(ThemeOption.dark),
-      expect: <AppthemeState>[AppthemeState(cuurrentOption: ThemeOption.dark)],
+      act: (bloc) => bloc.changeToLightTheme(),
+      expect: <AppthemeState>[AppthemeState(darkTheme: false)],
     );
   });
 }
