@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class SettingSectionWidget extends StatelessWidget {
   final String sectionname;
   final List<Widget> tiles;
+
   SettingSectionWidget({
     required this.sectionname,
     required this.tiles,
@@ -38,8 +39,10 @@ class SettingSectionWidget extends StatelessWidget {
           const SizedBox(height: 10.0),
           Container(
             margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-            child:
-                Text(sectionname, style: Theme.of(context).textTheme.headline6),
+            child: Text(
+              sectionname,
+              style: TextStyle(fontSize: 16),
+            ),
           ),
           Card(
             child: Column(
