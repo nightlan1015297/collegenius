@@ -16,7 +16,7 @@ class AppTheme {
         bodyText1: TextStyle(color: Colors.black),
         bodyText2: TextStyle(color: Colors.black),
         subtitle1: TextStyle(color: Colors.black),
-        subtitle2: TextStyle(color: Colors.grey.shade600),
+        subtitle2: TextStyle(color: Colors.black),
       ),
       cardTheme: CardTheme(
         color: Colors.white,
@@ -25,7 +25,7 @@ class AppTheme {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       ),
       iconTheme: IconThemeData(
-        color: Colors.grey.shade700,
+        color: Colors.grey.shade800,
       ),
     );
   }
@@ -34,7 +34,7 @@ class AppTheme {
     return ThemeData(
       primaryColor: Colors.blueGrey,
       backgroundColor: Colors.black,
-      scaffoldBackgroundColor: Colors.black54,
+      scaffoldBackgroundColor: Colors.grey.shade900,
       textTheme: TextTheme(
         headline1: TextStyle(color: Colors.white),
         headline2: TextStyle(color: Colors.white),
@@ -45,10 +45,10 @@ class AppTheme {
         bodyText1: TextStyle(color: Colors.white),
         bodyText2: TextStyle(color: Colors.white),
         subtitle1: TextStyle(color: Colors.white),
-        subtitle2: TextStyle(color: Colors.grey.shade200),
+        subtitle2: TextStyle(color: Colors.white),
       ),
       cardTheme: CardTheme(
-        color: Colors.grey.shade900,
+        color: Color.fromRGBO(48, 48, 48, 48),
         elevation: 5.0,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
