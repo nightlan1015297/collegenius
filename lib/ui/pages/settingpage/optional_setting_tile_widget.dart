@@ -8,23 +8,29 @@ Optional setting tile builder build the basic tile in setting seection
 class OptionalSettingTileWidget extends StatelessWidget {
   final IconData icon;
   final String title;
-  final String currentoption;
-  final String debugprint;
+  final String currentOption;
+
   final void Function() ontap;
-  OptionalSettingTileWidget(
-      {required this.icon,
-      required this.currentoption,
-      required this.title,
-      required this.ontap,
-      required this.debugprint});
+  OptionalSettingTileWidget({
+    required this.icon,
+    required this.currentOption,
+    required this.title,
+    required this.ontap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    print(debugprint);
     return ListTile(
       leading: Icon(icon),
-      title: Text(title),
-      trailing: Text(currentoption),
+      title: Text(title,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+      trailing: Text(
+        currentOption,
+        style: TextStyle(
+            color: Colors.grey.shade500,
+            fontWeight: FontWeight.w600,
+            fontSize: 14),
+      ),
       onTap: ontap,
     );
   }

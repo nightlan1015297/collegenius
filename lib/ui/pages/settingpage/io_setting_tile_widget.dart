@@ -9,18 +9,21 @@ class IoSettingTileWidget extends StatelessWidget {
   final String title;
   final bool value;
   final void Function(bool) ontap;
-  IoSettingTileWidget(
-      {required this.icon,
-      required this.title,
-      required this.value,
-      required this.ontap});
+
+  IoSettingTileWidget({
+    required this.icon,
+    required this.title,
+    required this.value,
+    required this.ontap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
       value: value,
       secondary: Icon(icon),
-      title: Text(title),
+      title: Text(title,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
       onChanged: ontap,
     );
   }
