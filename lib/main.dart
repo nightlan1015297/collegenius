@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: Builder(builder: (context) {
-        print('scoffold rebuld');
         final themeState = context.watch<AppthemeCubit>().state;
         return MaterialApp(
           title: 'Flutter Demo',
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AppTheme.dark,
           themeMode: themeState.darkTheme ? ThemeMode.dark : ThemeMode.light,
           onGenerateRoute: _appRouter.generateRoute,
-          home: SettingPage(),
+          home: HomePage(),
         );
       }),
     );
