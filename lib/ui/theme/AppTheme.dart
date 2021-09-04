@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData get light {
     return ThemeData(
-      primaryColor: Colors.blue,
-      backgroundColor: Colors.white,
+      primaryColor: Colors.grey.shade200,
+      backgroundColor: Colors.grey.shade200,
       scaffoldBackgroundColor: Colors.grey.shade200,
       textTheme: TextTheme(
         headline1: TextStyle(color: Colors.black),
@@ -32,8 +32,8 @@ class AppTheme {
 
   static ThemeData get dark {
     return ThemeData(
-      primaryColor: Colors.blueGrey,
-      backgroundColor: Colors.black,
+      primaryColor: Colors.grey.shade800,
+      backgroundColor: Colors.grey.shade800,
       scaffoldBackgroundColor: Colors.grey.shade900,
       textTheme: TextTheme(
         headline1: TextStyle(color: Colors.white),
