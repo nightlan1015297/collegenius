@@ -1,4 +1,4 @@
-import 'package:collegenius/logic/apptheme_cubit/apptheme_cubit.dart';
+import 'package:collegenius/logic/cubit/apptheme_cubit.dart';
 import 'package:collegenius/ui/pages/settingpage/setting_section_builder.dart';
 import 'package:collegenius/ui/pages/settingpage/basic_setting_tile_widget.dart';
 import 'package:collegenius/ui/pages/settingpage/setting_tile_theme_widget.dart';
