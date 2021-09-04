@@ -2,23 +2,18 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class NodeGraph extends StatelessWidget {
+  final List<Widget> nodes;
+
+  NodeGraph({
+    required this.nodes,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
-        children: [
-          TimeLineNodeWidget(),
-          TimeLineLineWidget(),
-          TimeLineNodeWidget(),
-          TimeLineLineWidget(),
-          TimeLineNodeWidget(),
-          TimeLineLineWidget(),
-          TimeLineDottedNodeWidget(),
-          TimeLineDottedLineWidget(),
-          TimeLineNodeWidget(),
-          TimeLineLineWidget(),
-        ],
+        children: nodes,
       ),
     );
   }
@@ -41,7 +36,7 @@ class TimeLineLinePainter extends CustomPainter {
   }
 }
 
-class TimeLineLineWidget extends StatelessWidget {
+class TimeLineLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,7 +68,7 @@ class TimeLineDottedLinePainter extends CustomPainter {
   }
 }
 
-class TimeLineDottedLineWidget extends StatelessWidget {
+class TimeLineDottedLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,7 +88,7 @@ class TimeLineNodePainter extends CustomPainter {
     final _center = Offset(size.width / 2, size.height / 2);
     final _paint = Paint()
       ..color = Colors.blue
-      ..strokeWidth = 5
+      ..strokeWidth = 4
       ..style = PaintingStyle.stroke;
     canvas.drawCircle(_center, _circleRadius, _paint);
   }
@@ -104,12 +99,12 @@ class TimeLineNodePainter extends CustomPainter {
   }
 }
 
-class TimeLineNodeWidget extends StatelessWidget {
+class TimeLineNode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 16,
-      height: 16,
+      width: 20,
+      height: 20,
       child: CustomPaint(
         foregroundPainter: TimeLineNodePainter(),
       ),
@@ -125,7 +120,7 @@ class TimeLineDottedNodePainter extends CustomPainter {
     final _circleradius = 2 * pi;
     final _paint = Paint()
       ..color = Colors.blue
-      ..strokeWidth = 5
+      ..strokeWidth = 4
       ..style = PaintingStyle.stroke;
     for (double i = 0; i < 1; i += 0.2) {
       canvas.drawArc(
@@ -144,13 +139,13 @@ class TimeLineDottedNodePainter extends CustomPainter {
   }
 }
 
-class TimeLineDottedNodeWidget extends StatefulWidget {
+class TimeLineDottedNode extends StatefulWidget {
   @override
   _TimeLineDottedNodeWidgetState createState() =>
       _TimeLineDottedNodeWidgetState();
 }
 
-class _TimeLineDottedNodeWidgetState extends State<TimeLineDottedNodeWidget>
+class _TimeLineDottedNodeWidgetState extends State<TimeLineDottedNode>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
@@ -176,8 +171,8 @@ class _TimeLineDottedNodeWidgetState extends State<TimeLineDottedNodeWidget>
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 16,
-      height: 16,
+      width: 20,
+      height: 20,
       child: AnimatedBuilder(
         animation: _animationController.view,
         builder: (context, child) {
