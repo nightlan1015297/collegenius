@@ -9,7 +9,6 @@ import 'ui/pages/homepage/HomePageBody.dart';
 import 'ui/pages/settingpage/SettingPageScaffold.dart';
 import 'ui/routes/Routes.dart';
 
-//test
 void main() {
   runApp(MyApp());
 }
