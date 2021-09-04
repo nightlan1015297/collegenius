@@ -1,5 +1,4 @@
-import 'package:collegenius/constants/enums.dart';
-import 'package:collegenius/logic/apptheme_cubit/apptheme_cubit.dart';
+import 'package:collegenius/logic/cubit/apptheme_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 
@@ -25,14 +24,14 @@ void main() {
       'Functionality check => emits AppthemeState(currenttheme:light) when changeTheme(ThemeOption.light) triggered.',
       build: () => AppthemeCubit(),
       act: (bloc) => bloc.changeToDarkTheme(),
-      expect: <AppthemeState>[AppthemeState(darkTheme: true)],
+      expect: () => <AppthemeState>[AppthemeState(darkTheme: true)],
     );
 
     blocTest<AppthemeCubit, AppthemeState>(
       'Functionality check => emits AppthemeState(currenttheme:dark) when changeTheme(ThemeOption.dark) triggered.',
       build: () => AppthemeCubit(),
       act: (bloc) => bloc.changeToLightTheme(),
-      expect: <AppthemeState>[AppthemeState(darkTheme: false)],
+      expect: () => <AppthemeState>[AppthemeState(darkTheme: false)],
     );
   });
 }
