@@ -1,4 +1,4 @@
-import 'package:collegenius/logic/apptheme_cubit/apptheme_cubit.dart';
+import 'package:collegenius/logic/cubit/apptheme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
