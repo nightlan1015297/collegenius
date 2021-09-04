@@ -1,10 +1,6 @@
 part of 'apptheme_cubit.dart';
 
-abstract class _Appthemeclass {
-  bool get darkTheme;
-}
-
-class AppthemeState extends Equatable with _Appthemeclass {
+class AppthemeState extends Equatable {
   final bool darkTheme;
 
   AppthemeState({required this.darkTheme});
