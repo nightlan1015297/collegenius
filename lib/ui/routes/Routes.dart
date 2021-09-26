@@ -1,6 +1,5 @@
-import 'package:collegenius/ui/pages/homepage/HomePageBody.dart';
-import 'package:collegenius/ui/pages/main_scaffold/MainScaffold.dart';
-import 'package:collegenius/ui/pages/settingpage/SettingPageScaffold.dart';
+import 'package:collegenius/ui/pages/HomePageBody.dart';
+import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -13,8 +12,7 @@ class AppRouter {
             body: HomePageBody(),
           ),
         );
-      case '/setting':
-        return MaterialPageRoute(builder: (_) => SettingPage());
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
