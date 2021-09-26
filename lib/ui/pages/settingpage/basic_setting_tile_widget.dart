@@ -18,8 +18,13 @@ class BasicSettingTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+
     return ListTile(
-      leading: Icon(icon),
+      leading: Icon(
+        icon,
+        color: _theme.iconTheme.color,
+      ),
       title: Text(title,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
       trailing: Icon(Icons.keyboard_arrow_right),

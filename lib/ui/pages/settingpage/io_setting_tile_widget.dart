@@ -19,9 +19,14 @@ class IoSettingTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+
     return SwitchListTile(
       value: value,
-      secondary: Icon(icon),
+      secondary: Icon(
+        icon,
+        color: _theme.iconTheme.color,
+      ),
       title: Text(title,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
       onChanged: ontap,

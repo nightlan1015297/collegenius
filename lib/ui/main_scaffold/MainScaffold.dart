@@ -23,20 +23,6 @@ class MainScaffold extends StatelessWidget {
           title: Text(title),
           iconTheme: _theme.iconTheme,
         ),
-        drawer: NavigationDrawer(
-          tiles: [
-            DrawerTile(
-              icon: Icons.people,
-              title: "People",
-              onTap: () {},
-            ),
-            DrawerTile(
-              icon: Icons.settings,
-              title: "Setting",
-              onTap: () => Navigator.of(context).pushNamed("/setting"),
-            ),
-          ],
-        ),
         body: body,
         bottomNavigationBar: Builder(
           builder: (context) {
@@ -49,6 +35,10 @@ class MainScaffold extends StatelessWidget {
               unselectedIconTheme: _theme.iconTheme,
               selectedIconTheme: IconThemeData(color: Colors.blue),
               selectedFontSize: 12,
+              /*Setting unselectedFontSize to zero to fix Framework Unhandled error
+                See issue :https://github.com/flutter/flutter/issues/86545
+              */
+              unselectedFontSize: 0.0,
               showSelectedLabels: false,
               showUnselectedLabels: false,
               onTap: (index) {
@@ -56,17 +46,21 @@ class MainScaffold extends StatelessWidget {
               },
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined),
+                  icon: Icon(Icons.home),
                   activeIcon: Icon(Icons.home),
                   label: "Home",
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "asd",
+                  icon: Icon(
+                    Icons.feed,
+                  ),
+                  label: "news",
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: "asd",
+                  icon: Icon(
+                    Icons.auto_stories,
+                  ),
+                  label: "Courses",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.business),
