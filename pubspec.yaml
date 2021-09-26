@@ -29,6 +29,7 @@ dependencies:
   test: ">=1.0.0 <2.0.0"
   bloc_test: "8.0.0"
   intl : "0.17.0"
+  device_preview: ^0.1.4-beta
 
 dev_dependencies:
   flutter_test:
