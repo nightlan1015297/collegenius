@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:collegenius/logic/cubit/bottomnav_cubit.dart';
 
-import 'drawer_tile_widget.dart';
-import 'navigation_drawer_widget.dart';
+//import 'drawer_tile_widget.dart';
+//import 'navigation_drawer_widget.dart';
 
 class MainScaffold extends StatelessWidget {
   final String title;
@@ -20,9 +20,16 @@ class MainScaffold extends StatelessWidget {
     final _theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text(title),
-          iconTheme: _theme.iconTheme,
-        ),
+            title: Text(title),
+            iconTheme: _theme.iconTheme,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.person,
+                ),
+                onPressed: () => Navigator.pushNamed(context, '/login'),
+              )
+            ]),
         body: body,
         bottomNavigationBar: Builder(
           builder: (context) {
