@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:collegenius/ui/widgets/course_card.dart';
 import 'package:collegenius/ui/widgets/node_graph_widget.dart';
-import 'package:provider/src/provider.dart';
-import 'package:test/test.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CourseSchedual extends StatelessWidget {
   CourseSchedual({
@@ -286,7 +285,28 @@ class CourseSchedual extends StatelessWidget {
                   );
                 });
               }
-              return Text('Loading');
+              return LayoutBuilder(builder: (context, constrains) {
+                return Row(
+                  children: [
+                    _regularNode,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: SizedBox(
+                          width: constrains.maxWidth - 70,
+                          child: Card(
+                            margin: EdgeInsets.zero,
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              width: constrains.maxWidth - 90,
+                              height: 160,
+                              child: Center(child: Text('Loading')),
+                            ),
+                            elevation: 5.0,
+                          )),
+                    ),
+                  ],
+                );
+              });
             },
           ),
         ),
