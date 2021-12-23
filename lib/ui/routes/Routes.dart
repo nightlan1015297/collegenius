@@ -1,5 +1,6 @@
 import 'package:collegenius/ui/pages/HomePageBody.dart';
 import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
+import 'package:collegenius/ui/pages/LoginPageBody.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -12,7 +13,17 @@ class AppRouter {
             body: HomePageBody(),
           ),
         );
-
+      case '/login':
+        return MaterialPageRoute(
+          builder: (_) => Scaffold(
+            appBar: AppBar(
+              leading: BackButton(
+                onPressed: () => Navigator.pop(_, false),
+              ),
+            ),
+            body: LoginPageBody(),
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
