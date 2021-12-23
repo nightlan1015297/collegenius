@@ -71,11 +71,18 @@ class CoursesectionCubit extends Cubit<CourseSectionState> {
             .isAfter(DateTime(event.year, event.month, event.day, 21)) &&
         event.isBefore(DateTime(event.year, event.month, event.day, 21, 50))) {
       emitCourseSection(13);
-    } else if (event > DateTime(event.year, event.month, event.day, 21, 50)) {
+    } else if (event
+        .isAfter(DateTime(event.year, event.month, event.day, 21, 50))) {
       emitCourseSection(14);
     }
   }
 
   void emitCourseSection(int section) =>
       emit(CourseSectionLoaded(section: section));
+
+  @override
+  Future<void> close() {
+    timeStreamSubscribtion.cancel();
+    return super.close();
+  }
 }
