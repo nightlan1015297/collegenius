@@ -1,4 +1,6 @@
-import 'package:collegenius/logic/stream/time_stream.dart';
+import 'dart:async';
+
+import 'package:collegenius/api/EeclassApi.dart';
 import 'package:collegenius/ui/pages/CoursePageBody.dart';
 import 'package:collegenius/ui/pages/CourseSchedual.dart';
 import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
@@ -9,17 +11,26 @@ import 'logic/cubit/apptheme_cubit.dart';
 import 'logic/cubit/bottomnav_cubit.dart';
 import 'logic/cubit/coursesection_cubit.dart';
 import 'ui/pages/HomePageBody.dart';
-import 'ui/pages/settingpage/SettingPageBody.dart';
+import 'ui/pages/SettingPageBody.dart';
 import 'ui/routes/Routes.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  final AppRouter _appRouter = AppRouter();
-  final Stream _timeStream = TimeStream().start();
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
+  final AppRouter _appRouter = AppRouter();
+  final StreamController<DateTime> timeStreamController =
+      StreamController<DateTime>.broadcast();
+  _MyAppState() {
+    timeStreamController.addStream(
+        Stream.periodic(Duration(seconds: 1), (x) => DateTime.now()));
+  }
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
@@ -48,7 +59,7 @@ class MyApp extends StatelessWidget {
             case 2:
               _body = BlocProvider(
                 create: (context) =>
-                    CoursesectionCubit(timeStream: _timeStream),
+                    CoursesectionCubit(timeStream: timeStreamController.stream),
                 child: CourseSchedual(
                   courseList: {
                     '1': {'name': '普通物理', 'teacher': '王小明', 'location': null},
@@ -103,5 +114,11 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    timeStreamController.close();
+    super.dispose();
   }
 }
