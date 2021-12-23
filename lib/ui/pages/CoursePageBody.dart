@@ -8,8 +8,8 @@ class CoursePageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constrains) {
-      final _vpwidth = constrains.maxWidth;
-      final _vpheight = constrains.maxHeight;
+      // final _vpwidth = constrains.maxWidth;
+      // final _vpheight = constrains.maxHeight;
       return CustomScrollView(
         slivers: [
           SliverList(
