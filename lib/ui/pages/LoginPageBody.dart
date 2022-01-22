@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import 'package:collegenius/api/EeclassApi.dart';
+>>>>>>> ca261001adc56c907042c0c8c175f4985720ed95
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
