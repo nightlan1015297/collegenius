@@ -1,36 +1,37 @@
 import 'dart:async';
 
-import 'package:collegenius/api/EeclassApi.dart';
 import 'package:collegenius/ui/pages/CoursePageBody.dart';
-import 'package:collegenius/ui/pages/CourseSchedual.dart';
+import 'package:collegenius/ui/pages/CourseSchedualBody.dart';
 import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
 import 'package:collegenius/ui/theme/AppTheme.dart';
+import 'package:collegenius/utilties/ticker.dart';
+import 'package:course_schedual_repository/course_schedual_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'logic/cubit/apptheme_cubit.dart';
 import 'logic/cubit/bottomnav_cubit.dart';
-import 'logic/cubit/coursesection_cubit.dart';
+import 'logic/cubit/course_schedual_cubit.dart';
+import 'logic/cubit/course_section_cubit.dart';
 import 'ui/pages/HomePageBody.dart';
 import 'ui/pages/SettingPageBody.dart';
 import 'ui/routes/Routes.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+  HydratedBlocOverrides.runZoned(
+    () => runApp(MyApp()),
+    storage: storage,
+  );
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   final AppRouter _appRouter = AppRouter();
-  final StreamController<DateTime> timeStreamController =
-      StreamController<DateTime>.broadcast();
-  _MyAppState() {
-    timeStreamController.addStream(
-        Stream.periodic(Duration(seconds: 1), (x) => DateTime.now()));
-  }
+
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
@@ -42,6 +43,14 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<BottomnavCubit>(
           create: (BuildContext context) => BottomnavCubit(),
+        ),
+        BlocProvider<CoursesectionCubit>(
+          create: (BuildContext context) =>
+              CoursesectionCubit(ticker: Ticker()),
+        ),
+        BlocProvider<CourseSchedualCubit>(
+          create: (BuildContext context) =>
+              CourseSchedualCubit(CourseSchedualRepository()),
         ),
       ],
       child: Builder(
@@ -57,33 +66,7 @@ class _MyAppState extends State<MyApp> {
               _body = CoursePageBody();
               break;
             case 2:
-              _body = BlocProvider(
-                create: (context) =>
-                    CoursesectionCubit(timeStream: timeStreamController.stream),
-                child: CourseSchedual(
-                  courseList: {
-                    '1': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    '2': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    '3': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    '4': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    'Z': {'name': null, 'teacher': '王小明', 'location': null},
-                    '5': {
-                      'name': '普通物理',
-                      'teacher': '王小明',
-                      'location': '健雄管(科研四館)'
-                    },
-                    '6': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    '7': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    '8': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    '9': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    'A': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    'B': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    'C': {'name': '普通物理', 'teacher': '王小明', 'location': null},
-                    'D': {'name': '普通物理'},
-                  },
-                ),
-              );
-
+              _body = CourseSchedualBody();
               break;
             case 3:
               _body = HomePageBody();
@@ -114,11 +97,5 @@ class _MyAppState extends State<MyApp> {
         },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    timeStreamController.close();
-    super.dispose();
   }
 }

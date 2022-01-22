@@ -1,17 +1,19 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:collegenius/utilties/ticker.dart';
 import 'package:equatable/equatable.dart';
 
-part 'coursesection_state.dart';
+part 'course_section_state.dart';
 
 class CoursesectionCubit extends Cubit<CourseSectionState> {
-  final Stream timeStream;
-  late StreamSubscription timeStreamSubscribtion;
+  final Ticker ticker;
+  late StreamSubscription<int> _tickerSubscription;
 
-  CoursesectionCubit({required this.timeStream})
-      : super(CourseSectionLoading()) {
-    timeStreamSubscribtion = timeStream.listen(mapEventToState);
+  CoursesectionCubit({required this.ticker}) : super(CourseSectionState()) {
+    _tickerSubscription = ticker.tick(1).listen((event) {
+      mapEventToState(DateTime.now());
+    });
   }
 
   void mapEventToState(event) {
@@ -77,12 +79,16 @@ class CoursesectionCubit extends Cubit<CourseSectionState> {
     }
   }
 
-  void emitCourseSection(int section) =>
-      emit(CourseSectionLoaded(section: section));
+  void emitCourseSection(int section) => emit(state.copywith(
+      status: CourseSectionStatus.success, cerrentSection: section));
 
+  void changeSelectedSemester(String semester) =>
+      emit(state.copywith(choosenSemester: semester));
+
+  void changeSelectedDays(int days) => emit(state.copywith(choosenDays: days));
   @override
   Future<void> close() {
-    timeStreamSubscribtion.cancel();
+    _tickerSubscription.cancel();
     return super.close();
   }
 }

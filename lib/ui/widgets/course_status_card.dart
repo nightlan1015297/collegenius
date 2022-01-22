@@ -103,6 +103,7 @@ class CourseStatusCard extends StatelessWidget {
             ),
             SizedBox(width: 15),
             Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('正在進行',
@@ -158,6 +159,7 @@ class CourseStatusCard extends StatelessWidget {
             ),
             SizedBox(width: 15),
             Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('下一堂',
@@ -202,7 +204,7 @@ class CourseStatusCard extends StatelessWidget {
           height: 160,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Column(children: <Widget>[
+            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(

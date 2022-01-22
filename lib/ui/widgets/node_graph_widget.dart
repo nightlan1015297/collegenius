@@ -50,6 +50,19 @@ class TimeLineLine extends StatelessWidget {
   }
 }
 
+class TimeLineShortLine extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 16,
+      height: 30,
+      child: CustomPaint(
+        foregroundPainter: TimeLineLinePainter(),
+      ),
+    );
+  }
+}
+
 class TimeLineDottedLinePainter extends CustomPainter {
   TimeLineDottedLinePainter({
     required this.shiftPercent,

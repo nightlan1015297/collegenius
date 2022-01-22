@@ -1,11 +1,6 @@
 import 'package:collegenius/logic/cubit/apptheme_cubit.dart';
-import 'package:collegenius/ui/widgets/setting_section_builder.dart';
-import 'package:collegenius/ui/widgets/basic_setting_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:collegenius/ui/widgets/io_setting_tile_widget.dart';
-import 'package:collegenius/ui/widgets/optional_setting_tile_widget.dart';
 
 class SettingPageBody extends StatefulWidget {
   @override
@@ -76,6 +71,169 @@ class SettingPageBodyState extends State<SettingPageBody> {
           ),
         );
       },
+    );
+  }
+}
+
+class SettingSectionWidget extends StatelessWidget {
+  final String sectionname;
+  final List<Widget> tiles;
+
+  SettingSectionWidget({
+    required this.sectionname,
+    required this.tiles,
+  });
+
+  List<Widget> deviderAdder({required List<Widget> tiles}) {
+    if (tiles.length == 1) {
+      return tiles;
+    }
+    List<Widget> result = [];
+    final Widget seperator = Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      width: double.infinity,
+      height: 1.0,
+      color: Colors.grey.shade400,
+    );
+    for (int i = 0; i < tiles.length - 1; i++) {
+      result.add(tiles[i]);
+      result.add(seperator);
+    }
+    result.add(tiles[tiles.length - 1]);
+    return result;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const SizedBox(height: 10.0),
+          Container(
+            margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: Text(
+              sectionname,
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+          Card(
+            child: Column(
+              children: deviderAdder(tiles: tiles),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+/*
+Basic setting tile widget build the basic tile in setting seection
+- setting tile includes Icon , title and decoration in tail of tile
+*/
+
+class BasicSettingTileWidget extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final void Function() ontap;
+
+  BasicSettingTileWidget({
+    required this.icon,
+    required this.title,
+    required this.ontap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: _theme.iconTheme.color,
+      ),
+      title: Text(title,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+      trailing: Icon(Icons.keyboard_arrow_right),
+      onTap: ontap,
+    );
+  }
+}
+
+/*
+IO setting tile widget build the I/O binary option tile in setting seection
+- IO setting tile includes Icon , title and an I/O in tail of tile
+*/
+class IoSettingTileWidget extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final bool value;
+  final void Function(bool) ontap;
+
+  IoSettingTileWidget({
+    required this.icon,
+    required this.title,
+    required this.value,
+    required this.ontap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+
+    return SwitchListTile(
+      value: value,
+      secondary: Icon(
+        icon,
+        color: _theme.iconTheme.color,
+      ),
+      title: Text(title,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+      onChanged: ontap,
+    );
+  }
+}
+
+/*
+Optional setting tile builder build the basic tile in setting seection
+- setting tile includes Icon , title and current optional in tail of tile
+*/
+
+class OptionalSettingTileWidget extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String currentOption;
+
+  final void Function() ontap;
+  OptionalSettingTileWidget({
+    required this.icon,
+    required this.currentOption,
+    required this.title,
+    required this.ontap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: _theme.iconTheme.color,
+      ),
+      title: Text(title,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
+      trailing: Text(
+        currentOption,
+        style: TextStyle(
+            color: Colors.grey.shade500,
+            fontWeight: FontWeight.w600,
+            fontSize: 14),
+      ),
+      onTap: ontap,
     );
   }
 }

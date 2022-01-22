@@ -47,3 +47,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# There will be some sensitive info inside these file during developing
+# These file will be ignored until the Login interface was completed well
+lib/api/EeclassApi.dart
+lib/api/CourseSelectApi.dart
