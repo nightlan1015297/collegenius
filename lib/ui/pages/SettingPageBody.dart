@@ -21,14 +21,14 @@ class SettingPageBodyState extends State<SettingPageBody> {
               SettingSectionWidget(sectionname: "Preference", tiles: <Widget>[
                 OptionalSettingTileWidget(
                   icon: Icons.mode,
-                  currentOption: _themeState.darkTheme == true
+                  currentOption: _themeState.themeOption.isDark == true
                       ? "Dark Theme"
                       : "Light Theme",
                   title: "Theme",
                   ontap: () {
-                    _themeState.darkTheme == true
-                        ? context.read<AppthemeCubit>().changeToLightTheme()
-                        : context.read<AppthemeCubit>().changeToDarkTheme();
+                    _themeState.themeOption.isDark == true
+                        ? context.read<AppthemeCubit>().changeToLight()
+                        : context.read<AppthemeCubit>().changeToDark();
                   },
                 ),
               ]),

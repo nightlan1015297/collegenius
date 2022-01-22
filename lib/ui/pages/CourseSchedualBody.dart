@@ -1,3 +1,4 @@
+import 'package:collegenius/constants/maps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -86,6 +87,10 @@ class CourseSchedualBody extends StatelessWidget {
           final schedual = _courseSchedualState.schedual.toJson();
           final selectedDays =
               _indexToWeekday[_courseSectionState.choosenDays] ?? 'monday';
+          /* Iter all courses in schedual to get the last class 
+             last class will determine how many item will rendered on th screen
+             to avoid unnecessary blank
+          */
           var lastClass = 0;
           for (int i = 0; i < 16; i++) {
             if (schedual[selectedDays][_indexToSection[i]] != null) {
@@ -96,6 +101,10 @@ class CourseSchedualBody extends StatelessWidget {
                   _courseSectionState.currentDays &&
               _courseSectionState.choosenSemester ==
                   _courseSectionState.currentSemester) {
+            /* If the choosen condition fitted the current date 
+                       Render animated course schedual to let user know
+                       what is next courses etc ...
+                    */
             return Column(
               children: [
                 Container(
@@ -115,6 +124,10 @@ class CourseSchedualBody extends StatelessWidget {
               ],
             );
           }
+          /* 
+             If not the current condition then just render 
+             the normal one for browsing perpose.
+          */
           return Column(
             children: [
               Container(
@@ -157,13 +170,21 @@ class WeekDayPicker extends StatelessWidget {
 class SemesterPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    /* Read the Cubits first avoid read multiple time when choosing semester*/
+    var _coursesectionCubit = context.read<CoursesectionCubit>();
+    var _courseSchedualCubit = context.read<CourseSchedualCubit>();
     return Container(
         margin: EdgeInsets.all(5),
         padding: EdgeInsets.all(5),
         child: Picker(
-          onSelectedItemChanged: (index) => context
-              .read<CoursesectionCubit>()
-              .changeSelectedSemester(semesterList[index]),
+          onSelectedItemChanged: (index) {
+            _coursesectionCubit.changeSelectedSemester(semesterList[index]);
+            /* Reset the status of CourseSchedualCubit to initial
+               Which will let CourseSchedualCubit reload data when 
+               repainting CourseSchedualBody.
+            */
+            _courseSchedualCubit.changeStatus(CourseSchedualStatus.initial);
+          },
           currentItem: semesterList.indexOf(
               context.watch<CoursesectionCubit>().state.choosenSemester),
           title: 'Semester',
@@ -183,6 +204,7 @@ class NormalCourseSchedual extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var _renderedFirst = false;
     return Expanded(
       child: ListView.builder(
           itemCount: renderLength + 2,
@@ -201,12 +223,27 @@ class NormalCourseSchedual extends StatelessWidget {
 
             return LayoutBuilder(builder: (context, constrains) {
               if (_courseInfo == null) {
+                if (!_renderedFirst) {
+                  return SizedBox();
+                }
                 return SpaceCourseCard();
+              }
+              _renderedFirst = true;
+              final classroom;
+              if (_courseInfo['classroom'] != null) {
+                var _splited = _courseInfo['classroom'].split('-');
+                if (codeToClass[_splited[0]] != null) {
+                  classroom = codeToClass[_splited[0]]! + ' ' + _splited[1];
+                } else {
+                  classroom = _courseInfo['classroom'];
+                }
+              } else {
+                classroom = 'Unknown';
               }
               return NormalCourseCard(
                 coursename: _courseInfo['name'],
                 endTime: endtime,
-                location: _courseInfo['classroom'],
+                location: classroom,
                 startTime: starttime,
                 teacher: _courseInfo['professer'],
               );
@@ -216,6 +253,7 @@ class NormalCourseSchedual extends StatelessWidget {
   }
 }
 
+/* Animated Schedual will render animate which let user know the schedual in current day */
 class AnimatedCourseSchedual extends StatelessWidget {
   final Map<String, dynamic> coursePerDay;
   final int currentSection;
@@ -243,6 +281,7 @@ class AnimatedCourseSchedual extends StatelessWidget {
               endtime = _time + "50";
             }
             final _courseInfo = coursePerDay[_section];
+
             return LayoutBuilder(builder: (context, constrains) {
               if (_courseInfo == null) {
                 if (index < currentSection) {
@@ -252,12 +291,23 @@ class AnimatedCourseSchedual extends StatelessWidget {
                 }
               }
               if (index < currentSection) {
+                final classroom;
+                if (_courseInfo['classroom'] != null) {
+                  var _splited = _courseInfo['classroom'].split('-');
+                  if (codeToClass[_splited[0]] != null) {
+                    classroom = codeToClass[_splited[0]]! + ' ' + _splited[1];
+                  } else {
+                    classroom = _courseInfo['classroom'];
+                  }
+                } else {
+                  classroom = 'Unknown';
+                }
                 return Opacity(
                   opacity: 0.3,
                   child: NormalCourseCard(
                     coursename: _courseInfo['name'],
                     endTime: endtime,
-                    location: _courseInfo['classroom'],
+                    location: classroom,
                     startTime: starttime,
                     teacher: _courseInfo['professer'],
                   ),
@@ -515,12 +565,14 @@ class NormalCourseCard extends StatelessWidget {
                 ],
                 informations: [
                   InformationProvider(
+                    flex: 6,
                     label: '上課教室',
                     information: location,
                     informationTexttheme: _theme.textTheme.headline6,
                   ),
                   VerticalSeperater(),
                   InformationProvider(
+                    flex: 4,
                     label: '授課教師',
                     information: teacher,
                     informationTexttheme: _theme.textTheme.headline6,

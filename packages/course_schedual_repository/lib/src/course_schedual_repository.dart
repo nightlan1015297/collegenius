@@ -11,7 +11,8 @@ class CourseSchedualRepository {
   final CourseSelectApiClient _courseSelectApiClient;
 
   Future<Map<String, dynamic>> getCourseSchedual(String semester) async {
-    final _courseSchedual = await _courseSelectApiClient.getCourseschedual();
+    final _courseSchedual =
+        await _courseSelectApiClient.getCourseschedual(semester);
     return _courseSchedual.toJson();
   }
 }

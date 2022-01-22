@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collegenius/ui/pages/BulletinPageBody.dart';
 import 'package:collegenius/ui/pages/CoursePageBody.dart';
 import 'package:collegenius/ui/pages/CourseSchedualBody.dart';
 import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
@@ -63,13 +64,13 @@ class MyApp extends StatelessWidget {
               _body = HomePageBody();
               break;
             case 1:
-              _body = CoursePageBody();
+              _body = BulletinPageBody();
               break;
             case 2:
               _body = CourseSchedualBody();
               break;
             case 3:
-              _body = HomePageBody();
+              _body = CoursePageBody();
               break;
             case 4:
               _body = HomePageBody();
@@ -83,11 +84,23 @@ class MyApp extends StatelessWidget {
                     'Route Error : No route defined for bottomNav index ${_bottomNavState.index}'),
               );
           }
+          final themeMode;
+          switch (_themeState.themeOption) {
+            case AppthemeOption.dark:
+              themeMode = ThemeMode.light;
+              break;
+            case AppthemeOption.light:
+              themeMode = ThemeMode.dark;
+              break;
+            case AppthemeOption.system:
+              themeMode = ThemeMode.system;
+              break;
+          }
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Collegenius',
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
-            themeMode: _themeState.darkTheme ? ThemeMode.dark : ThemeMode.light,
+            themeMode: themeMode,
             onGenerateRoute: _appRouter.generateRoute,
             home: IconTheme(
               data: _theme.iconTheme,

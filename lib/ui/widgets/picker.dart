@@ -51,6 +51,7 @@ class Picker extends StatelessWidget {
                   ),
                   context: context,
                   builder: (context) => PopOutPicker(
+                      currentItem: currentItem,
                       itemlist: itemlist,
                       onSelectedItemChanged: onSelectedItemChanged))
             },
@@ -61,14 +62,34 @@ class Picker extends StatelessWidget {
   }
 }
 
-class PopOutPicker extends StatelessWidget {
+class PopOutPicker extends StatefulWidget {
+  final int currentItem;
   final List<String> itemlist;
   final Function onSelectedItemChanged;
-  const PopOutPicker({
+
+  PopOutPicker({
     Key? key,
+    required this.currentItem,
     required this.itemlist,
     required this.onSelectedItemChanged,
   }) : super(key: key);
+
+  @override
+  State<PopOutPicker> createState() => _PopOutPickerState(currentItem);
+}
+
+class _PopOutPickerState extends State<PopOutPicker> {
+  final int currentItem;
+  late FixedExtentScrollController scrollController;
+
+  _PopOutPickerState(this.currentItem);
+
+  @override
+  void initState() {
+    scrollController = FixedExtentScrollController(initialItem: currentItem);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
@@ -77,8 +98,9 @@ class PopOutPicker extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: CupertinoPicker(
-            looping: true,
-            children: itemlist
+            scrollController: scrollController,
+            looping: false,
+            children: widget.itemlist
                 .map((item) => Center(
                         child: Text(
                       item,
@@ -86,7 +108,8 @@ class PopOutPicker extends StatelessWidget {
                     )))
                 .toList(),
             itemExtent: 50,
-            onSelectedItemChanged: (index) => onSelectedItemChanged(index)),
+            onSelectedItemChanged: (index) =>
+                widget.onSelectedItemChanged(index)),
       ),
     );
   }

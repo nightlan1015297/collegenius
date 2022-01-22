@@ -26,6 +26,9 @@ class CourseSchedualCubit extends HydratedCubit<CourseSchedualState> {
     }
   }
 
+  void changeStatus(CourseSchedualStatus status) =>
+      emit(state.copywith(status: status));
+
   @override
   CourseSchedualState fromJson(Map<String, dynamic> json) =>
       CourseSchedualState.fromJson(json);

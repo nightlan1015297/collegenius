@@ -27,4 +27,3 @@
 .dart_tool/
 .packages
 build/
-/packages/course_select_api/lib/course_select_api.dart

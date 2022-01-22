@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
 
 class InformationProvider extends StatelessWidget {
-  const InformationProvider({
+  InformationProvider({
     Key? key,
+    int? flex,
     required this.label,
     required this.information,
     this.labelTexttheme,
     this.informationTexttheme,
-  }) : super(key: key);
-
+  })  : flex = flex ?? 1,
+        super(key: key);
+  final int flex;
   final String label;
   final String information;
-  final TextStyle? labelTexttheme;
-  final TextStyle? informationTexttheme;
+  TextStyle? labelTexttheme;
+  TextStyle? informationTexttheme;
 
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: labelTexttheme ?? _theme.textTheme.caption),
-        Text(information,
-            style: informationTexttheme ?? _theme.textTheme.headline5)
-      ],
+    labelTexttheme = labelTexttheme ?? _theme.textTheme.caption;
+    informationTexttheme = informationTexttheme ?? _theme.textTheme.headline5;
+    return Flexible(
+      flex: flex,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, overflow: TextOverflow.ellipsis, style: labelTexttheme),
+          Text(information,
+              overflow: TextOverflow.ellipsis, style: informationTexttheme)
+        ],
+      ),
     );
   }
 }

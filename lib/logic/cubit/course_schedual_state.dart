@@ -20,7 +20,7 @@ class CourseSchedualState extends Equatable {
   }) : schedual = schedual ?? CourseSchedual.empty;
 
   factory CourseSchedualState.fromJson(Map<String, dynamic> json) =>
-      _$CoursepageStateFromJson(json);
+      _$CourseSchedualStateFromJson(json);
 
   CourseSchedualState copywith(
       {CourseSchedualStatus? status, CourseSchedual? schedual}) {
@@ -28,7 +28,7 @@ class CourseSchedualState extends Equatable {
         status: status ?? this.status, schedual: schedual ?? this.schedual);
   }
 
-  Map<String, dynamic> toJson() => _$CoursepageStateToJson(this);
+  Map<String, dynamic> toJson() => _$CourseSchedualStateToJson(this);
   @override
   List<Object> get props => [status, schedual];
 }

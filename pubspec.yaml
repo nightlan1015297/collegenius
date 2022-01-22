@@ -23,6 +23,8 @@ environment:
 dependencies:
   course_schedual_repository:
     path: packages/course_schedual_repository
+  school_information_api:
+    path: packages/school_information_api
   cupertino_icons: ^1.0.2
   dio: ^4.0.4
   dio_cookie_manager: ^2.0.0

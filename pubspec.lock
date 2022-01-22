@@ -543,6 +543,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  school_information_api:
+    dependency: "direct main"
+    description:
+      path: "packages/school_information_api"
+      relative: true
+    source: path
+    version: "0.0.1"
   shelf:
     dependency: transitive
     description:
