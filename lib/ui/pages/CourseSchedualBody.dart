@@ -1,12 +1,13 @@
-import 'package:collegenius/constants/maps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:collegenius/constants/maps.dart';
 import 'package:collegenius/logic/cubit/course_schedual_cubit.dart';
 import 'package:collegenius/logic/cubit/course_section_cubit.dart';
 import 'package:collegenius/ui/widgets/information_provider.dart';
 import 'package:collegenius/ui/widgets/node_graph_widget.dart';
 import 'package:collegenius/ui/widgets/picker.dart';
+import 'package:collegenius/ui/widgets/tag_widget.dart';
 
 Map<String, String> _sectionToTime = {
   'one': '8:',
@@ -91,9 +92,15 @@ class CourseSchedualBody extends StatelessWidget {
              last class will determine how many item will rendered on th screen
              to avoid unnecessary blank
           */
+          var firstClass = 0;
           var lastClass = 0;
+          var first = false;
           for (int i = 0; i < 16; i++) {
             if (schedual[selectedDays][_indexToSection[i]] != null) {
+              if (!first) {
+                firstClass = i;
+                first = !first;
+              }
               lastClass = i;
             }
           }
@@ -117,6 +124,7 @@ class CourseSchedualBody extends StatelessWidget {
                   ),
                 ),
                 AnimatedCourseSchedual(
+                  renderFrom: firstClass,
                   renderLength: lastClass,
                   coursePerDay: schedual[selectedDays],
                   currentSection: _courseSectionState.cerrentSection,
@@ -140,7 +148,9 @@ class CourseSchedualBody extends StatelessWidget {
                 ),
               ),
               NormalCourseSchedual(
-                  renderLength: lastClass, coursePerDay: schedual[selectedDays])
+                  renderFrom: firstClass,
+                  renderLength: lastClass,
+                  coursePerDay: schedual[selectedDays])
             ],
           );
         case CourseSchedualStatus.failure:
@@ -196,15 +206,15 @@ class SemesterPicker extends StatelessWidget {
 class NormalCourseSchedual extends StatelessWidget {
   final Map<String, dynamic> coursePerDay;
   final int renderLength;
-
+  final int renderFrom;
   const NormalCourseSchedual({
     Key? key,
     required this.coursePerDay,
     required this.renderLength,
+    required this.renderFrom,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var _renderedFirst = false;
     return Expanded(
       child: ListView.builder(
           itemCount: renderLength + 2,
@@ -223,12 +233,11 @@ class NormalCourseSchedual extends StatelessWidget {
 
             return LayoutBuilder(builder: (context, constrains) {
               if (_courseInfo == null) {
-                if (!_renderedFirst) {
+                if (renderFrom > index) {
                   return SizedBox();
                 }
                 return SpaceCourseCard();
               }
-              _renderedFirst = true;
               final classroom;
               if (_courseInfo['classroom'] != null) {
                 var _splited = _courseInfo['classroom'].split('-');
@@ -257,11 +266,13 @@ class NormalCourseSchedual extends StatelessWidget {
 class AnimatedCourseSchedual extends StatelessWidget {
   final Map<String, dynamic> coursePerDay;
   final int currentSection;
+  final int renderFrom;
   final int renderLength;
   const AnimatedCourseSchedual({
     Key? key,
     required this.coursePerDay,
     required this.currentSection,
+    required this.renderFrom,
     required this.renderLength,
   }) : super(key: key);
   @override
@@ -284,6 +295,9 @@ class AnimatedCourseSchedual extends StatelessWidget {
 
             return LayoutBuilder(builder: (context, constrains) {
               if (_courseInfo == null) {
+                if (renderFrom > index) {
+                  return SizedBox();
+                }
                 if (index < currentSection) {
                   return Opacity(opacity: 0.3, child: SpaceCourseCard());
                 } else {
@@ -438,43 +452,6 @@ class CourseCard extends StatelessWidget {
   }
 }
 
-class Tag extends StatelessWidget {
-  final tagHeight = 30.0;
-  final String tagText;
-  final Color color;
-
-  Tag({
-    required this.tagText,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: tagHeight,
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        border: Border.all(color: color),
-        color: color.withOpacity(0.2),
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-      ),
-      child: Baseline(
-        baseline: tagHeight / 2,
-        baselineType: TextBaseline.alphabetic,
-        child: Text(
-          tagText,
-          style: TextStyle(
-            height: 1,
-            fontSize: 16,
-            color: color,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class ProgressingCourseCard extends StatelessWidget {
   final String coursename;
   final String location;
@@ -508,8 +485,8 @@ class ProgressingCourseCard extends StatelessWidget {
                     tagText: '正在進行',
                   ),
                   Tag(
-                    color: Colors.blue,
-                    tagText: startTime + '~' + endTime,
+                    color: Colors.blueAccent,
+                    tagText: startTime + ' - ' + endTime,
                   ),
                 ],
                 informations: [
@@ -559,23 +536,27 @@ class NormalCourseCard extends StatelessWidget {
                 courseTitle: coursename,
                 tags: [
                   Tag(
-                    color: Colors.blue,
-                    tagText: startTime + '~' + endTime,
+                    color: Colors.blueAccent,
+                    tagText: startTime + ' - ' + endTime,
                   ),
                 ],
                 informations: [
-                  InformationProvider(
+                  Flexible(
                     flex: 6,
-                    label: '上課教室',
-                    information: location,
-                    informationTexttheme: _theme.textTheme.headline6,
+                    child: InformationProvider(
+                      label: '上課教室',
+                      information: location,
+                      informationTexttheme: _theme.textTheme.headline6,
+                    ),
                   ),
                   VerticalSeperater(),
-                  InformationProvider(
+                  Flexible(
                     flex: 4,
-                    label: '授課教師',
-                    information: teacher,
-                    informationTexttheme: _theme.textTheme.headline6,
+                    child: InformationProvider(
+                      label: '授課教師',
+                      information: teacher,
+                      informationTexttheme: _theme.textTheme.headline6,
+                    ),
                   )
                 ],
               ),
