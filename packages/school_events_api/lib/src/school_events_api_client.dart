@@ -1,17 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as htmlparser;
-import 'models/models.dart';
 
 class RequestToServerFailed implements Exception {}
 
 class IndexOutOfRange implements Exception {}
 
-class SchoolInformationApiClient {
+class SchoolEventApiClient {
   final String url = 'https://www.ncu.edu.tw/tw/events/index.php';
   var dio = Dio();
 
-  Future<List<Event>> getEvents(int page) async {
+  Future<List<Map<String, dynamic>>> getEvents(int page) async {
     final requestUrl = url + '?page=' + page.toString();
     var response = await dio.get(requestUrl);
     if (response.statusCode != 200) {
@@ -19,7 +18,7 @@ class SchoolInformationApiClient {
     }
     dom.Document document = htmlparser.parse(response.data.toString());
     var events = document.getElementsByClassName('eventlist');
-    var result = <Event>[];
+    var result = <Map<String, dynamic>>[];
     for (var element in events) {
       var _node = element.children[0];
 
@@ -28,11 +27,12 @@ class SchoolInformationApiClient {
       var dateNode = _node.getElementsByClassName('event-date')[0];
       var information = Map<String, dynamic>();
       information['title'] = _node.attributes['title'];
-      information['href'] = _node.attributes['href'];
+      information['href'] =
+          _node.attributes['href']!.replaceAll(RegExp(r"(&page=)[0-9]"), '');
       information['category'] = categoryNode.text;
       information['group'] = groupNode.text;
       information['time'] = dateNode.children[0].text;
-      result.add(Event.fromJson(information));
+      result.add(information);
     }
 
     return result;
