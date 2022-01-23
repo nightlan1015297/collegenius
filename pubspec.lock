@@ -170,7 +170,7 @@ packages:
     source: path
     version: "0.0.1"
   course_select_api:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "packages/course_select_api"
       relative: true
@@ -226,7 +226,7 @@ packages:
     source: hosted
     version: "2.0.0"
   equatable:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: equatable
       url: "https://pub.dartlang.org"
@@ -291,13 +291,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
-  google_fonts:
-    dependency: "direct main"
-    description:
-      name: google_fonts
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
   graphs:
     dependency: transitive
     description:
@@ -319,13 +312,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.15.0"
-  http:
-    dependency: "direct main"
-    description:
-      name: http
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.13.4"
   http_multi_server:
     dependency: transitive
     description:
@@ -543,10 +529,17 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  school_information_api:
+  school_events_api:
+    dependency: transitive
+    description:
+      path: "packages/school_events_api"
+      relative: true
+    source: path
+    version: "0.0.1"
+  school_events_repository:
     dependency: "direct main"
     description:
-      path: "packages/school_information_api"
+      path: "packages/school_events_repository"
       relative: true
     source: path
     version: "0.0.1"

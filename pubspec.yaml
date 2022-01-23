@@ -23,21 +23,22 @@ environment:
 dependencies:
   course_schedual_repository:
     path: packages/course_schedual_repository
-  school_information_api:
-    path: packages/school_information_api
+  course_select_api:
+    path: packages/course_select_api
   cupertino_icons: ^1.0.2
   dio: ^4.0.4
   dio_cookie_manager: ^2.0.0
+  equatable: ^2.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.0
-  google_fonts: ^2.1.1
   html: ^0.15.0
-  http: ^0.13.4
   hydrated_bloc: ^8.0.0
   intl: 0.17.0
   json_annotation: ^4.4.0
   path_provider: ^2.0.8
+  school_events_repository:
+    path: packages/school_events_repository
   test: ">=1.0.0 <2.0.0"
 dev_dependencies:
   build_runner: ^2.1.7
@@ -45,10 +46,19 @@ dev_dependencies:
     sdk: flutter
   json_serializable: ^6.1.4
 
-# For information on the generic Dart part of this file, see the
+# For events on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
 flutter:
   assets:
     - image/
+  fonts:
+    - family: NotoSans
+      fonts:
+        - asset: fonts/NotoSansTC-Regular.otf
+        - asset: fonts/NotoSansTC-Bold.otf
+        - asset: fonts/NotoSansTC-Light.otf
+        - asset: fonts/NotoSansTC-Black.otf
+        - asset: fonts/NotoSansTC-Medium.otf
+        - asset: fonts/NotoSansTC-Thin.otf
   uses-material-design: true
