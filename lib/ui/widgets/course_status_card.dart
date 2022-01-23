@@ -201,7 +201,7 @@ class CourseStatusCard extends StatelessWidget {
         color: _backgroundColor,
         margin: EdgeInsets.all(10.0),
         child: SizedBox(
-          height: 160,
+          height: 165,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
