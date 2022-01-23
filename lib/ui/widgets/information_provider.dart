@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 class InformationProvider extends StatelessWidget {
   InformationProvider({
     Key? key,
-    int? flex,
     required this.label,
     required this.information,
     this.labelTexttheme,
     this.informationTexttheme,
-  })  : flex = flex ?? 1,
-        super(key: key);
-  final int flex;
+    this.mainAxisAlignment,
+  }) : super(key: key);
   final String label;
   final String information;
+  MainAxisAlignment? mainAxisAlignment;
   TextStyle? labelTexttheme;
   TextStyle? informationTexttheme;
 
@@ -21,17 +20,14 @@ class InformationProvider extends StatelessWidget {
     final _theme = Theme.of(context);
     labelTexttheme = labelTexttheme ?? _theme.textTheme.caption;
     informationTexttheme = informationTexttheme ?? _theme.textTheme.headline5;
-    return Flexible(
-      flex: flex,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, overflow: TextOverflow.ellipsis, style: labelTexttheme),
-          Text(information,
-              overflow: TextOverflow.ellipsis, style: informationTexttheme)
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, overflow: TextOverflow.ellipsis, style: labelTexttheme),
+        Text(information,
+            overflow: TextOverflow.ellipsis, style: informationTexttheme)
+      ],
     );
   }
 }
