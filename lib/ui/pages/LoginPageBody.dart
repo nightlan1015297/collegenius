@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-=======
-import 'package:collegenius/api/EeclassApi.dart';
->>>>>>> ca261001adc56c907042c0c8c175f4985720ed95
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginPageBody extends StatelessWidget {
   LoginPageBody({Key? key}) : super(key: key);
@@ -26,30 +21,23 @@ class LoginPageBody extends StatelessWidget {
             padding: EdgeInsets.all(15),
             child: Column(children: <Widget>[
               Spacer(),
-              Text('COLLEGENIUS',
-                  style: GoogleFonts.lato(
-                    textStyle: TextStyle(
-                        fontSize: 40,
-                        letterSpacing: .5,
-                        color: _theme.textTheme.bodyText1?.color),
-                  )),
-              Text('The best application for college students in NCU',
-                  style: GoogleFonts.lato(
-                    textStyle: TextStyle(
-                        fontSize: 15,
-                        letterSpacing: .5,
-                        color: _theme.textTheme.bodyText1?.color),
-                  )),
+              Text('COLLEGENIUS', style: Theme.of(context).textTheme.headline3),
+              Text('The application for college students in NCU',
+                  style: Theme.of(context).textTheme.caption),
               SizedBox(
                   width: _boxWidth,
                   child: TextField(
                       decoration: InputDecoration(
-                          icon: Icon(Icons.person),
+                          icon: Icon(
+                            Icons.person,
+                            color: _theme.textTheme.bodyText1!.color!,
+                          ),
                           labelText: 'account',
+                          labelStyle: _theme.textTheme.caption,
                           focusedBorder: UnderlineInputBorder(
                               borderSide: (BorderSide(
-                                  color: _theme.textTheme.bodyText1?.color ??
-                                      Colors.black)))))),
+                                  color:
+                                      _theme.textTheme.bodyText1!.color!)))))),
               SizedBox(
                   width: _boxWidth,
                   child: TextField(
@@ -68,10 +56,7 @@ class LoginPageBody extends StatelessWidget {
                   width: _boxWidth,
                   child: ElevatedButton(
                       child: Text('Login',
-                          style: GoogleFonts.lato(
-                            textStyle:
-                                TextStyle(fontSize: 25, letterSpacing: .5),
-                          )),
+                          style: Theme.of(context).textTheme.headline5),
                       style: ButtonStyle(),
                       onPressed: () => {})),
               Spacer(),
