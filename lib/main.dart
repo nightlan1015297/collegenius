@@ -1,37 +1,54 @@
 import 'dart:async';
 
-import 'package:collegenius/ui/pages/BulletinPageBody.dart';
-import 'package:collegenius/ui/pages/CoursePageBody.dart';
-import 'package:collegenius/ui/pages/CourseSchedualBody.dart';
-import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
-import 'package:collegenius/ui/theme/AppTheme.dart';
-import 'package:collegenius/utilties/ticker.dart';
 import 'package:course_schedual_repository/course_schedual_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:school_events_repository/school_events_repository.dart';
+
+import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
+import 'package:collegenius/ui/pages/BulletinPageBody.dart';
+import 'package:collegenius/ui/pages/CoursePageBody.dart';
+import 'package:collegenius/ui/pages/CourseSchedualBody.dart';
+import 'package:collegenius/ui/theme/AppTheme.dart';
+import 'package:collegenius/utilties/ticker.dart';
+
 import 'logic/cubit/apptheme_cubit.dart';
 import 'logic/cubit/bottomnav_cubit.dart';
 import 'logic/cubit/course_schedual_cubit.dart';
 import 'logic/cubit/course_section_cubit.dart';
+import 'logic/cubit/school_events_cubit.dart';
 import 'ui/pages/HomePageBody.dart';
 import 'ui/pages/SettingPageBody.dart';
 import 'ui/routes/Routes.dart';
-import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
+  SchoolEventsRepository schoolEventsRepository = SchoolEventsRepository();
+  CourseSchedualRepository courseSchedualRepository =
+      CourseSchedualRepository();
+
   HydratedBlocOverrides.runZoned(
-    () => runApp(MyApp()),
+    () => runApp(MyApp(
+        schoolEventsRepository: schoolEventsRepository,
+        courseSchedualRepository: courseSchedualRepository)),
     storage: storage,
   );
 }
 
 class MyApp extends StatelessWidget {
   final AppRouter _appRouter = AppRouter();
+  final CourseSchedualRepository courseSchedualRepository;
+  final SchoolEventsRepository schoolEventsRepository;
+  MyApp({
+    Key? key,
+    required this.courseSchedualRepository,
+    required this.schoolEventsRepository,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +56,10 @@ class MyApp extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
+        BlocProvider<SchoolEventsCubit>(
+          create: (BuildContext context) =>
+              SchoolEventsCubit(schoolEventsRepository),
+        ),
         BlocProvider<AppthemeCubit>(
           create: (BuildContext context) => AppthemeCubit(),
         ),
@@ -51,7 +72,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<CourseSchedualCubit>(
           create: (BuildContext context) =>
-              CourseSchedualCubit(CourseSchedualRepository()),
+              CourseSchedualCubit(courseSchedualRepository),
         ),
       ],
       child: Builder(
