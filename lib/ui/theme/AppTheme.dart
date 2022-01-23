@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData get light {
     return ThemeData(
+      fontFamily: 'NotoSans',
       primaryColor: Colors.grey.shade200,
       backgroundColor: Colors.grey.shade200,
       scaffoldBackgroundColor: Colors.grey.shade200,
@@ -34,6 +35,7 @@ class AppTheme {
 
   static ThemeData get dark {
     return ThemeData(
+      fontFamily: 'NotoSans',
       primaryColor: Colors.grey.shade800,
       backgroundColor: Colors.grey.shade800,
       scaffoldBackgroundColor: Colors.grey.shade900,
