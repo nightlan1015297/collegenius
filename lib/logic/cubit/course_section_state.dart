@@ -18,7 +18,7 @@ class CourseSectionState extends Equatable {
   })  : cerrentSection = cerrentSection ?? 0,
         currentSemester = currentSemester ?? '1101',
         currentDays = DateTime.now().weekday,
-        choosenDays = choosenDays ?? DateTime.now().weekday,
+        choosenDays = choosenDays ?? DateTime.now().weekday - 1,
         choosenSemester = choosenSemester ?? '1101';
 
   final CourseSectionStatus status;
