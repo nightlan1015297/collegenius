@@ -1,0 +1,14 @@
+name: school_events_repository
+description: A new Flutter package project.
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: ">=2.15.1 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  school_events_api:
+    path: ../school_events_api
+dev_dependencies:
+  
