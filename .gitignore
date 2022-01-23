@@ -51,5 +51,5 @@ app.*.map.json
 # There will be some sensitive info inside these file during developing
 # These file will be ignored until the Login interface was completed well
 
-packages/eeclass_api/lib/EeclassApi.dart
 packages/course_select_api/lib/src/course_select_api_client.dart
+packages/eeclass_api/lib/src/eeclass_api_client.dart
