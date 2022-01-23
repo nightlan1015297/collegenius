@@ -1,6 +1,7 @@
 import 'package:collegenius/ui/widgets/course_status_card.dart';
 import 'package:collegenius/ui/widgets/gallery_widget.dart';
 import 'package:collegenius/ui/widgets/weather_card.dart';
+import 'package:course_select_api/course_select_api.dart';
 import 'package:flutter/material.dart';
 
 class HomePageBody extends StatelessWidget {
@@ -8,6 +9,8 @@ class HomePageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var i = CourseSelectApiClient(name: 'asd', password: 'asd')
+        .getCurrentSemester();
     return LayoutBuilder(builder: (context, constrains) {
       final _vpwidth = constrains.maxWidth;
       final _vpheight = constrains.maxHeight;
