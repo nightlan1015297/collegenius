@@ -21,29 +21,34 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  course_schedual_repository:
-    path: packages/course_schedual_repository
+  connectivity_plus: ^2.3.5
   course_select_api:
     path: packages/course_select_api
   cupertino_icons: ^1.0.2
   dio: ^4.0.4
   dio_cookie_manager: ^2.0.0
+  eeclass_api:
+    path: packages/eeclass_api
   equatable: ^2.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.0
+  formz: ^0.4.1
+  hive: ^2.0.5
+  hive_flutter: ^1.1.0
   html: ^0.15.0
   hydrated_bloc: ^8.0.0
   intl: 0.17.0
   json_annotation: ^4.4.0
   path_provider: ^2.0.8
-  school_events_repository:
-    path: packages/school_events_repository
+  school_events_api:
+    path: packages/school_events_api
   test: ">=1.0.0 <2.0.0"
 dev_dependencies:
   build_runner: ^2.1.7
   flutter_test:
     sdk: flutter
+  hive_generator: ^1.1.2
   json_serializable: ^6.1.4
 
 # For events on the generic Dart part of this file, see the

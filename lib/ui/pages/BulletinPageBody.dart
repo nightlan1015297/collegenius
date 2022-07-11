@@ -1,13 +1,12 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_events_repository/school_events_repository.dart';
 
 import 'package:collegenius/logic/cubit/school_events_cubit.dart';
 import 'package:collegenius/ui/widgets/information_provider.dart';
 import 'package:collegenius/ui/widgets/tag_widget.dart';
 
-Map<String, Color> categoryToColor = {
+Map<String, Color> eventCategoryToColor = {
   '行政': Colors.blueAccent,
   '活動': Colors.orangeAccent,
   '徵才': Colors.greenAccent,
@@ -151,7 +150,7 @@ class EventCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Tag(
-                        color: categoryToColor[category] ?? Colors.grey,
+                        color: eventCategoryToColor[category] ?? Colors.grey,
                         tagText: category,
                       ),
                       ConstrainedBox(

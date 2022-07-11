@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:school_events_api/school_events_api.dart';
 
 class SchoolEventslFailure implements Exception {}

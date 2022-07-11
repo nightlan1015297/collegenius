@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:collegenius/constants/maps.dart';
-import 'package:collegenius/logic/cubit/course_schedual_cubit.dart';
-import 'package:collegenius/logic/cubit/course_section_cubit.dart';
+import 'package:collegenius/logic/cubit/course_schedual_page_cubit.dart';
 import 'package:collegenius/ui/widgets/information_provider.dart';
 import 'package:collegenius/ui/widgets/node_graph_widget.dart';
 import 'package:collegenius/ui/widgets/picker.dart';
@@ -63,40 +62,64 @@ final weekDayList = [
   'Saturday',
   'Sunday',
 ];
-final semesterList = [
-  '1101',
-  '1102',
-];
 
 class CourseSchedualBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      final _courseSchedualState = context.watch<CourseSchedualCubit>().state;
-      final _courseSectionState = context.watch<CoursesectionCubit>().state;
-      if (_courseSchedualState.status.isInitial) {
-        context
-            .read<CourseSchedualCubit>()
-            .fetchCourseSchedual(_courseSectionState.choosenSemester);
-      }
-      switch (_courseSchedualState.status) {
-        case CourseSchedualStatus.initial:
+      final _courseSchedualPageState =
+          context.watch<CourseSchedualPageCubit>().state;
+      switch (_courseSchedualPageState.status) {
+        case CourseSchedualPageStatus.initial:
+          return Center(child: Text("initial"));
+        case CourseSchedualPageStatus.loading:
           return Center(child: Text("Loading"));
-        case CourseSchedualStatus.loading:
-          return Center(child: Text("Loading"));
-        case CourseSchedualStatus.success:
-          final schedual = _courseSchedualState.schedual.toJson();
+        case CourseSchedualPageStatus.success:
+          var schedual = _courseSchedualPageState.schedual;
+          if (schedual == null) {
+            return Container(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(width: 10),
+                      WeekDayPicker(),
+                      SemesterPicker(),
+                    ],
+                  ),
+                  Center(child: Text("No Data record"))
+                ],
+              ),
+            );
+          }
+          final jsonSchedual = schedual.toJson();
           final selectedDays =
-              _indexToWeekday[_courseSectionState.choosenDays] ?? 'monday';
+              _indexToWeekday[_courseSchedualPageState.selectedDays];
           /* Iter all courses in schedual to get the last class 
              last class will determine how many item will rendered on th screen
              to avoid unnecessary blank
           */
+          if (jsonSchedual[selectedDays] == null) {
+            return Container(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(width: 10),
+                      WeekDayPicker(),
+                      SemesterPicker(),
+                    ],
+                  ),
+                  Center(child: Text("No Class Today"))
+                ],
+              ),
+            );
+          }
           var firstClass = 0;
           var lastClass = 0;
           var first = false;
           for (int i = 0; i < 16; i++) {
-            if (schedual[selectedDays][_indexToSection[i]] != null) {
+            if (jsonSchedual[selectedDays][_indexToSection[i]] != null) {
               if (!first) {
                 firstClass = i;
                 first = !first;
@@ -104,57 +127,34 @@ class CourseSchedualBody extends StatelessWidget {
               lastClass = i;
             }
           }
-          if (_courseSectionState.choosenDays ==
-                  _courseSectionState.currentDays &&
-              _courseSectionState.choosenSemester ==
-                  _courseSectionState.currentSemester) {
+          if (_courseSchedualPageState.selectedDays ==
+                  _courseSchedualPageState.currentDays &&
+              _courseSchedualPageState.selectedSemester ==
+                  _courseSchedualPageState.currentSemester) {
             /* If the choosen condition fitted the current date 
-                       Render animated course schedual to let user know
-                       what is next courses etc ...
-                    */
-            return Column(
-              children: [
-                Container(
-                  child: Row(
-                    children: [
-                      SizedBox(width: 10),
-                      WeekDayPicker(),
-                      SemesterPicker(),
-                    ],
-                  ),
-                ),
-                AnimatedCourseSchedual(
-                  renderFrom: firstClass,
-                  renderLength: lastClass,
-                  coursePerDay: schedual[selectedDays],
-                  currentSection: _courseSectionState.cerrentSection,
-                )
-              ],
+              Render animated course schedual to let user know
+              what is next courses etc ...
+            */
+            return AnimatedCourseSchedual(
+              renderFrom: firstClass,
+              renderLength: lastClass,
+              coursePerDay: jsonSchedual[selectedDays],
+              currentSection: _courseSchedualPageState.cerrentSection,
             );
           }
           /* 
              If not the current condition then just render 
              the normal one for browsing perpose.
           */
-          return Column(
-            children: [
-              Container(
-                child: Row(
-                  children: [
-                    SizedBox(width: 10),
-                    WeekDayPicker(),
-                    SemesterPicker(),
-                  ],
-                ),
-              ),
-              NormalCourseSchedual(
-                  renderFrom: firstClass,
-                  renderLength: lastClass,
-                  coursePerDay: schedual[selectedDays])
-            ],
-          );
-        case CourseSchedualStatus.failure:
+          return NormalCourseSchedual(
+              renderFrom: firstClass,
+              renderLength: lastClass,
+              coursePerDay: jsonSchedual[selectedDays]);
+        case CourseSchedualPageStatus.failure:
           return Center(child: Text("Failed"));
+
+        case CourseSchedualPageStatus.unauthenticated:
+          return Center(child: Text("unauthenticated"));
       }
     });
   }
@@ -163,15 +163,17 @@ class CourseSchedualBody extends StatelessWidget {
 class WeekDayPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var _courseSchedualPageCubit =
+        context.watch<CourseSchedualPageCubit>().state;
     return Container(
         margin: EdgeInsets.all(5),
         padding: EdgeInsets.all(5),
         child: Picker(
           onSelectedItemChanged: (index) {
-            context.read<CoursesectionCubit>().changeSelectedDays(index);
+            context.read<CourseSchedualPageCubit>().changeDays(days: index);
           },
           title: 'Days',
-          currentItem: context.watch<CoursesectionCubit>().state.choosenDays,
+          currentItem: _courseSchedualPageCubit.selectedDays,
           itemlist: weekDayList,
         ));
   }
@@ -181,24 +183,28 @@ class SemesterPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /* Read the Cubits first avoid read multiple time when choosing semester*/
-    var _coursesectionCubit = context.read<CoursesectionCubit>();
-    var _courseSchedualCubit = context.read<CourseSchedualCubit>();
+    var _courseSchedualPageCubit =
+        context.watch<CourseSchedualPageCubit>().state;
     return Container(
         margin: EdgeInsets.all(5),
         padding: EdgeInsets.all(5),
         child: Picker(
           onSelectedItemChanged: (index) {
-            _coursesectionCubit.changeSelectedSemester(semesterList[index]);
-            /* Reset the status of CourseSchedualCubit to initial
-               Which will let CourseSchedualCubit reload data when 
-               repainting CourseSchedualBody.
-            */
-            _courseSchedualCubit.changeStatus(CourseSchedualStatus.initial);
+            context.read<CourseSchedualPageCubit>().changeSemester(
+                semester: _courseSchedualPageCubit.semesterList
+                    .map((e) => e.name)
+                    .toList()[index]);
           },
-          currentItem: semesterList.indexOf(
-              context.watch<CoursesectionCubit>().state.choosenSemester),
+          currentItem: _courseSchedualPageCubit.semesterList
+              .map((e) => e.value)
+              .toList()
+              .indexOf(context
+                  .watch<CourseSchedualPageCubit>()
+                  .state
+                  .selectedSemester),
           title: 'Semester',
-          itemlist: semesterList,
+          itemlist:
+              _courseSchedualPageCubit.semesterList.map((e) => e.name).toList(),
         ));
   }
 }
@@ -215,49 +221,73 @@ class NormalCourseSchedual extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-          itemCount: renderLength + 2,
-          itemBuilder: (context, index) {
-            final _section = _indexToSection[index];
-            final _time = _sectionToTime[_section];
-            final starttime, endtime;
-            if (_time == null) {
-              starttime = '--:--';
-              endtime = '--:--';
-            } else {
-              starttime = _time + "00";
-              endtime = _time + "50";
-            }
-            final _courseInfo = coursePerDay[_section];
-
-            return LayoutBuilder(builder: (context, constrains) {
-              if (_courseInfo == null) {
-                if (renderFrom > index) {
-                  return SizedBox();
-                }
-                return SpaceCourseCard();
-              }
-              final classroom;
-              if (_courseInfo['classroom'] != null) {
-                var _splited = _courseInfo['classroom'].split('-');
-                if (codeToClass[_splited[0]] != null) {
-                  classroom = codeToClass[_splited[0]]! + ' ' + _splited[1];
+    if (renderLength == 0) {
+      return Container(
+        child: Row(
+          children: [
+            SizedBox(width: 10),
+            WeekDayPicker(),
+            SemesterPicker(),
+          ],
+        ),
+      );
+    }
+    return Column(
+      children: [
+        Container(
+          child: Row(
+            children: [
+              SizedBox(width: 10),
+              WeekDayPicker(),
+              SemesterPicker(),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+              itemCount: renderLength + 2,
+              itemBuilder: (context, index) {
+                final _section = _indexToSection[index];
+                final _time = _sectionToTime[_section];
+                final starttime, endtime;
+                if (_time == null) {
+                  starttime = '--:--';
+                  endtime = '--:--';
                 } else {
-                  classroom = _courseInfo['classroom'];
+                  starttime = _time + "00";
+                  endtime = _time + "50";
                 }
-              } else {
-                classroom = 'Unknown';
-              }
-              return NormalCourseCard(
-                coursename: _courseInfo['name'],
-                endTime: endtime,
-                location: classroom,
-                startTime: starttime,
-                teacher: _courseInfo['professer'],
-              );
-            });
-          }),
+                final _courseInfo = coursePerDay[_section];
+
+                return LayoutBuilder(builder: (context, constrains) {
+                  if (_courseInfo == null) {
+                    if (renderFrom > index) {
+                      return SizedBox();
+                    }
+                    return SpaceCourseCard();
+                  }
+                  final classroom;
+                  if (_courseInfo['classroom'] != null) {
+                    var _splited = _courseInfo['classroom'].split('-');
+                    if (codeToClass[_splited[0]] != null) {
+                      classroom = codeToClass[_splited[0]]! + ' ' + _splited[1];
+                    } else {
+                      classroom = _courseInfo['classroom'];
+                    }
+                  } else {
+                    classroom = 'Unknown';
+                  }
+                  return NormalCourseCard(
+                    coursename: _courseInfo['name'],
+                    endTime: endtime,
+                    location: classroom,
+                    startTime: starttime,
+                    teacher: _courseInfo['professer'],
+                  );
+                });
+              }),
+        )
+      ],
     );
   }
 }
@@ -277,73 +307,87 @@ class AnimatedCourseSchedual extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-          itemCount: renderLength + 2,
-          itemBuilder: (context, index) {
-            final _section = _indexToSection[index];
-            final _time = _sectionToTime[_section];
-            final starttime, endtime;
-            if (_time == null) {
-              starttime = '--:--';
-              endtime = '--:--';
-            } else {
-              starttime = _time + "00";
-              endtime = _time + "50";
-            }
-            final _courseInfo = coursePerDay[_section];
+    return Column(
+      children: [
+        Container(
+          child: Row(
+            children: [
+              SizedBox(width: 10),
+              WeekDayPicker(),
+              SemesterPicker(),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+              itemCount: renderLength + 2,
+              itemBuilder: (context, index) {
+                final _section = _indexToSection[index];
+                final _time = _sectionToTime[_section];
+                final starttime, endtime;
+                if (_time == null) {
+                  starttime = '--:--';
+                  endtime = '--:--';
+                } else {
+                  starttime = _time + "00";
+                  endtime = _time + "50";
+                }
+                final _courseInfo = coursePerDay[_section];
 
-            return LayoutBuilder(builder: (context, constrains) {
-              if (_courseInfo == null) {
-                if (renderFrom > index) {
-                  return SizedBox();
-                }
-                if (index < currentSection) {
-                  return Opacity(opacity: 0.3, child: SpaceCourseCard());
-                } else {
-                  return SpaceCourseCard();
-                }
-              }
-              if (index < currentSection) {
-                final classroom;
-                if (_courseInfo['classroom'] != null) {
-                  var _splited = _courseInfo['classroom'].split('-');
-                  if (codeToClass[_splited[0]] != null) {
-                    classroom = codeToClass[_splited[0]]! + ' ' + _splited[1];
-                  } else {
-                    classroom = _courseInfo['classroom'];
+                return LayoutBuilder(builder: (context, constrains) {
+                  if (_courseInfo == null) {
+                    if (renderFrom > index) {
+                      return SizedBox();
+                    }
+                    if (index < currentSection) {
+                      return Opacity(opacity: 0.3, child: SpaceCourseCard());
+                    } else {
+                      return SpaceCourseCard();
+                    }
                   }
-                } else {
-                  classroom = 'Unknown';
-                }
-                return Opacity(
-                  opacity: 0.3,
-                  child: NormalCourseCard(
+                  if (index < currentSection) {
+                    final classroom;
+                    if (_courseInfo['classroom'] != null) {
+                      var _splited = _courseInfo['classroom'].split('-');
+                      if (codeToClass[_splited[0]] != null) {
+                        classroom =
+                            codeToClass[_splited[0]]! + ' ' + _splited[1];
+                      } else {
+                        classroom = _courseInfo['classroom'];
+                      }
+                    } else {
+                      classroom = 'Unknown';
+                    }
+                    return Opacity(
+                      opacity: 0.3,
+                      child: NormalCourseCard(
+                        coursename: _courseInfo['name'],
+                        endTime: endtime,
+                        location: classroom,
+                        startTime: starttime,
+                        teacher: _courseInfo['professer'],
+                      ),
+                    );
+                  } else if (index == currentSection) {
+                    return ProgressingCourseCard(
+                      coursename: _courseInfo['name'],
+                      endTime: endtime,
+                      location: _courseInfo['classroom'],
+                      startTime: starttime,
+                      teacher: _courseInfo['professer'],
+                    );
+                  }
+                  return NormalCourseCard(
                     coursename: _courseInfo['name'],
                     endTime: endtime,
-                    location: classroom,
+                    location: _courseInfo['classroom'],
                     startTime: starttime,
                     teacher: _courseInfo['professer'],
-                  ),
-                );
-              } else if (index == currentSection) {
-                return ProgressingCourseCard(
-                  coursename: _courseInfo['name'],
-                  endTime: endtime,
-                  location: _courseInfo['classroom'],
-                  startTime: starttime,
-                  teacher: _courseInfo['professer'],
-                );
-              }
-              return NormalCourseCard(
-                coursename: _courseInfo['name'],
-                endTime: endtime,
-                location: _courseInfo['classroom'],
-                startTime: starttime,
-                teacher: _courseInfo['professer'],
-              );
-            });
-          }),
+                  );
+                });
+              }),
+        )
+      ],
     );
   }
 }

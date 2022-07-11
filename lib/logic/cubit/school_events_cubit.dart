@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:collegenius/models/event_model/event_model.dart';
+import 'package:collegenius/repositories/school_events_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:school_events_repository/school_events_repository.dart';
 
 part 'school_events_state.dart';
 

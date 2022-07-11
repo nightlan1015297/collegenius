@@ -14,10 +14,13 @@ class Picker extends StatelessWidget {
     required this.title,
     required this.onSelectedItemChanged,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final FixedExtentScrollController scrollController =
+        FixedExtentScrollController(initialItem: currentItem);
     final _theme = Theme.of(context);
-
+    int? selectedItem;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,7 +28,7 @@ class Picker extends StatelessWidget {
         SizedBox(height: 5),
         Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.black87),
+              border: Border.all(color: _theme.primaryColor),
               borderRadius: BorderRadius.all(Radius.circular(20))),
           child: InkWell(
             child: Row(
@@ -45,72 +48,35 @@ class Picker extends StatelessWidget {
             ),
             onTap: () => {
               showModalBottomSheet(
-                  backgroundColor: Theme.of(context).backgroundColor,
+                  isScrollControlled: true,
+                  backgroundColor: _theme.backgroundColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   context: context,
-                  builder: (context) => PopOutPicker(
-                      currentItem: currentItem,
-                      itemlist: itemlist,
-                      onSelectedItemChanged: onSelectedItemChanged))
+                  builder: (context) => SizedBox(
+                      height: 320,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: CupertinoPicker(
+                            scrollController: scrollController,
+                            looping: false,
+                            children: itemlist
+                                .map((item) => Center(
+                                        child: Text(
+                                      item,
+                                      style: _theme.textTheme.headline5,
+                                    )))
+                                .toList(),
+                            itemExtent: 50,
+                            onSelectedItemChanged: (index) =>
+                                selectedItem = index),
+                      ))).whenComplete(
+                  () => onSelectedItemChanged(selectedItem ?? currentItem))
             },
           ),
         ),
       ],
-    );
-  }
-}
-
-class PopOutPicker extends StatefulWidget {
-  final int currentItem;
-  final List<String> itemlist;
-  final Function onSelectedItemChanged;
-
-  PopOutPicker({
-    Key? key,
-    required this.currentItem,
-    required this.itemlist,
-    required this.onSelectedItemChanged,
-  }) : super(key: key);
-
-  @override
-  State<PopOutPicker> createState() => _PopOutPickerState(currentItem);
-}
-
-class _PopOutPickerState extends State<PopOutPicker> {
-  final int currentItem;
-  late FixedExtentScrollController scrollController;
-
-  _PopOutPickerState(this.currentItem);
-
-  @override
-  void initState() {
-    scrollController = FixedExtentScrollController(initialItem: currentItem);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final _theme = Theme.of(context);
-    return SizedBox(
-      height: 320,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: CupertinoPicker(
-            scrollController: scrollController,
-            looping: false,
-            children: widget.itemlist
-                .map((item) => Center(
-                        child: Text(
-                      item,
-                      style: _theme.textTheme.headline5,
-                    )))
-                .toList(),
-            itemExtent: 50,
-            onSelectedItemChanged: (index) =>
-                widget.onSelectedItemChanged(index)),
-      ),
     );
   }
 }
