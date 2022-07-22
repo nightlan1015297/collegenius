@@ -5,7 +5,8 @@ import 'package:collegenius/logic/bloc/login_page_bloc.dart';
 import 'package:collegenius/models/course_schedual_model/course_schedual_models.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:collegenius/repositories/authtication_repository.dart';
-import 'package:collegenius/ui/pages/CourseSchedualBody.dart';
+import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualView.dart';
+import 'package:collegenius/ui/pages/eeclass_page/EEclassHomePageView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -13,8 +14,8 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
-import 'package:collegenius/ui/pages/BulletinPageBody.dart';
-import 'package:collegenius/ui/pages/CoursePageBody.dart';
+import 'package:collegenius/ui/pages/bulletin_page/BulletinPage.dart';
+import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualPage.dart';
 import 'package:collegenius/ui/theme/AppTheme.dart';
 import 'package:collegenius/utilties/ticker.dart';
 
@@ -24,9 +25,9 @@ import 'logic/cubit/course_schedual_page_cubit.dart';
 import 'logic/cubit/school_events_cubit.dart';
 import 'repositories/course_schedual_repository.dart';
 import 'repositories/school_events_repository.dart';
-import 'ui/pages/HomePageBody.dart';
-import 'ui/pages/SettingPageBody.dart';
-import 'ui/routes/Routes.dart';
+import 'ui/pages/home_page/HomePageView.dart';
+import 'ui/pages/SettingPage.dart';
+import 'routes/Routes.dart';
 
 Future<void> main() async {
   /* ensureInitialized to prevent unpredictable error*/
@@ -98,22 +99,40 @@ class MyApp extends StatelessWidget {
           final _body;
           switch (_bottomNavState.index) {
             case 0:
-              _body = HomePageBody();
+              _body = MainScaffold(
+                title: 'Home',
+                body: HomePageView(),
+              );
               break;
             case 1:
-              _body = CourseSchedualBody();
+              _body = MainScaffold(
+                title: 'Coueses',
+                body: CourseSchedualView(),
+              );
               break;
             case 2:
-              _body = BulletinPageBody();
+              _body = MainScaffold(
+                title: 'Bulletins',
+                body: BulletinHomePageView(),
+              );
               break;
             case 3:
-              _body = CoursePageBody();
+              _body = MainScaffold(
+                title: 'Bulletins',
+                body: BulletinHomePageView(),
+              );
               break;
             case 4:
-              _body = HomePageBody();
+              _body = MainScaffold(
+                title: 'EEclass',
+                body: EeclassHomePageView(),
+              );
               break;
             case 5:
-              _body = SettingPageBody();
+              _body = MainScaffold(
+                title: 'Setting',
+                body: SettingPageView(),
+              );
               break;
             default:
               _body = Center(
@@ -141,7 +160,7 @@ class MyApp extends StatelessWidget {
             onGenerateRoute: _appRouter.generateRoute,
             home: IconTheme(
               data: _theme.iconTheme,
-              child: MainScaffold(title: 'Collegenius', body: _body),
+              child: _body,
             ),
           );
         },
