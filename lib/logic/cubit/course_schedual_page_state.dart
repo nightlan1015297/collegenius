@@ -42,10 +42,10 @@ class CourseSchedualPageState extends Equatable {
         fetchFromLocal = fetchFromLocal ?? true,
         semesterList = semesterList ?? <Semester>[],
         cerrentSection = cerrentSection ?? 0,
-        currentSemester = currentSemester ?? '1102',
+        currentSemester = currentSemester ?? '1112',
         currentDays = DateTime.now().weekday - 1,
         selectedDays = selectedDays ?? DateTime.now().weekday - 1,
-        selectedSemester = selectedSemester ?? '1102';
+        selectedSemester = selectedSemester ?? '1112';
 
   CourseSchedualPageState copywith({
     bool? fetchFromLocal,

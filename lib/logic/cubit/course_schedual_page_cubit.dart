@@ -57,17 +57,14 @@ class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
 // This will be called when the page needs to be rendered and the state is initial
 
   Future<void> mapAuthenticationEventToState(AuthenticationState event) async {
-    switch (event.status) {
-      case AuthenticationStatus.unknown:
-        emit(state.copywith(status: CourseSchedualPageStatus.unauthenticated));
-        break;
-      case AuthenticationStatus.authenticated:
+    switch (event.courseSelectAuthenticated) {
+      case true:
         await courseSchedualRepository.login(
-            username: authenticateBloc.state.user.id,
-            password: authenticateBloc.state.user.password);
+            username: authenticateBloc.state.courseSelectUserData.id,
+            password: authenticateBloc.state.courseSelectUserData.password);
         fetchData();
         break;
-      case AuthenticationStatus.unauthenticated:
+      case false:
         emit(state.copywith(status: CourseSchedualPageStatus.unauthenticated));
         break;
     }
@@ -129,6 +126,7 @@ class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
         status: CourseSchedualPageStatus.success,
         semesterList: result,
         currentSemester: currentSemester,
+        selectedSemester: currentSemester,
         schedual: selectedCourseSchedual,
       ));
     } catch (e) {
