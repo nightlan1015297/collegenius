@@ -1,24 +1,33 @@
 part of 'authentication_bloc.dart';
 
-enum AuthenticationStatus { unknown, authenticated, unauthenticated }
-
 class AuthenticationState extends Equatable {
   const AuthenticationState._({
-    this.status = AuthenticationStatus.unknown,
-    this.user = User.empty,
+    this.eeclassUserData = User.empty,
+    this.eeclassAuthenticated = false,
+    this.courseSelectUserData = User.empty,
+    this.courseSelectAuthenticated = false,
   });
 
-  final AuthenticationStatus status;
-  final User user;
+  final User eeclassUserData;
+  final bool eeclassAuthenticated;
+  final User courseSelectUserData;
+  final bool courseSelectAuthenticated;
+  const AuthenticationState.unAuthenticated() : this._();
 
-  const AuthenticationState.unknown() : this._();
+  // factory AuthenticationState.fromJson(Map<String, dynamic> json) =>
+  //     _$AuthenticationStateFromJson(json);
 
-  const AuthenticationState.authenticated(User user)
-      : this._(status: AuthenticationStatus.authenticated, user: user);
+  // Map<String, dynamic> toJson() => _$AuthenticationStateToJson(this);
+  const AuthenticationState.eeclassAuthenticated(User user)
+      : this._(eeclassAuthenticated: true, eeclassUserData: user);
 
-  const AuthenticationState.unauthenticated()
-      : this._(status: AuthenticationStatus.unauthenticated);
-
+  const AuthenticationState.courseSelectAuthenticated(User user)
+      : this._(courseSelectAuthenticated: true, courseSelectUserData: user);
   @override
-  List<Object> get props => [status, user];
+  List<Object> get props => [
+        eeclassUserData,
+        eeclassAuthenticated,
+        courseSelectUserData,
+        courseSelectAuthenticated,
+      ];
 }

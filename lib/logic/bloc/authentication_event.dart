@@ -7,8 +7,17 @@ abstract class AuthenticationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AuthenticatedRequested extends AuthenticationEvent {
-  AuthenticatedRequested({required this.user});
+class EeclassAuthenticatedRequested extends AuthenticationEvent {
+  EeclassAuthenticatedRequested({required this.user});
+
+  final User user;
+
+  @override
+  List<Object> get props => [user];
+}
+
+class CourseSelectAuthenticatedRequested extends AuthenticationEvent {
+  CourseSelectAuthenticatedRequested({required this.user});
 
   final User user;
 
