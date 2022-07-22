@@ -20,8 +20,13 @@ class MainScaffold extends StatelessWidget {
     final _theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
-            title: Text(title),
+            title: Text(
+              title,
+              style: _theme.textTheme.titleLarge,
+            ),
+            elevation: 0,
             iconTheme: _theme.iconTheme,
+            backgroundColor: _theme.scaffoldBackgroundColor,
             actions: <Widget>[
               IconButton(
                 icon: Icon(

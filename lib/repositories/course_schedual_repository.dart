@@ -2,37 +2,38 @@ import 'dart:async';
 import 'package:collegenius/models/course_schedual_model/CourseSchedual.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:course_select_api/course_select_api.dart';
+import 'package:eeclass_api/eeclass_api.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-class NotAuthenticatedFailure implements Exception {}
 
 /// ***************************************************************************
 ///         COURSESCHEDUALREPOSITORY HANDELS ALL COURSE SCHEDUAL DATA.        *
 /// THE DATA CAN BE FETCH FROM SERVER (COURSE SELECT API) OR READ FROM LOCAL. *
-///            IT ALSO HANDELS FAKE DATA FOR TESTING PERPOSE, TOO.            *
+///            IT ALSO HANDELS FAKE DATA FOR TESTING PERPOSE TOO.             *
 ///****************************************************************************
 
 class CourseSchedualRepository {
-  CourseSchedualRepository() : isLogIn = false;
+  CourseSchedualRepository();
 
-  bool isLogIn;
   CourseSelectApiClient _courseSelectApiClient = CourseSelectApiClient();
 
   Future<bool> login(
       {required String username, required String password}) async {
+    var isLogIn = await _courseSelectApiClient.checkLogInStatus();
     if (isLogIn) {
-      return isLogIn;
+      return true;
     }
     _courseSelectApiClient.setAccount(id_: username, password_: password);
-    isLogIn = await _courseSelectApiClient.logIn();
+    isLogIn = await _courseSelectApiClient.checkLogInStatus();
     return isLogIn;
   }
 
+  /// ! Function [getCourseSchedual] need to rewrite
+  /// Since in condition(fetchFromLocal == true) will read data in CourseScheduals HiveBox
+  /// without any authtication check, this may cause new Authenticated user
+  /// reads old user's data.
+
   Future<CourseSchedual?> getCourseSchedual(
       {required bool fromLocal, required String semester}) async {
-    if (!isLogIn) {
-      throw NotAuthenticatedFailure();
-    }
     final _courseSchedual;
     var _schedualbox = await Hive.openBox<CourseSchedual>('CourseScheduals');
     if (!fromLocal) {
@@ -63,9 +64,6 @@ class CourseSchedualRepository {
       if (fromLocal) {
         return _semesterbox.values.toList();
       } else {
-        if (!isLogIn) {
-          throw NotAuthenticatedFailure();
-        }
         final semesters = await _courseSelectApiClient.getSemesterList();
         for (var item in semesters) {
           _semesterbox.add(Semester()
