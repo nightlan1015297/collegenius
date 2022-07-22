@@ -51,13 +51,20 @@ class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
     if (state.status.isValidated) {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
       try {
-        await authenticationRepository.authFromMultipleServer(
+        var authResult = await authenticationRepository.authFromMultipleServer(
           id: state.studentId.value,
           password: state.password.value,
         );
-        authenticationBloc.add(AuthenticatedRequested(
-            user: User(
-                id: state.studentId.value, password: state.password.value)));
+        if (authResult[Server.eeclass]!) {
+          authenticationBloc.add(EeclassAuthenticatedRequested(
+              user: User(
+                  id: state.studentId.value, password: state.password.value)));
+        }
+        if (authResult[Server.courseSelect]!) {
+          authenticationBloc.add(EeclassAuthenticatedRequested(
+              user: User(
+                  id: state.studentId.value, password: state.password.value)));
+        }
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
