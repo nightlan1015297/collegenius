@@ -28,3 +28,7 @@ class LoginPasswordChanged extends LoginPageEvent {
 class LoginSubmitted extends LoginPageEvent {
   const LoginSubmitted();
 }
+
+class LogoutRequst extends LoginPageEvent {
+  const LogoutRequst();
+}
