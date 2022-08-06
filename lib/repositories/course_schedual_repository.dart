@@ -14,17 +14,21 @@ import 'package:hive_flutter/hive_flutter.dart';
 class CourseSchedualRepository {
   CourseSchedualRepository();
 
-  CourseSelectApiClient _courseSelectApiClient = CourseSelectApiClient();
+  CourseSelectApiClient courseSelectApiClient = CourseSelectApiClient();
 
   Future<bool> login(
       {required String username, required String password}) async {
-    var isLogIn = await _courseSelectApiClient.checkLogInStatus();
+    var isLogIn = await courseSelectApiClient.checkLogInStatus();
     if (isLogIn) {
       return true;
     }
-    _courseSelectApiClient.setAccount(id_: username, password_: password);
-    isLogIn = await _courseSelectApiClient.checkLogInStatus();
+    courseSelectApiClient.setAccount(id_: username, password_: password);
+    isLogIn = await courseSelectApiClient.checkLogInStatus();
     return isLogIn;
+  }
+
+  void logout() {
+    this.courseSelectApiClient = new CourseSelectApiClient();
   }
 
   /// ! Function [getCourseSchedual] need to rewrite
@@ -37,8 +41,7 @@ class CourseSchedualRepository {
     final _courseSchedual;
     var _schedualbox = await Hive.openBox<CourseSchedual>('CourseScheduals');
     if (!fromLocal) {
-      _courseSchedual =
-          await _courseSelectApiClient.getCourseschedual(semester);
+      _courseSchedual = await courseSelectApiClient.getCourseschedual(semester);
       _schedualbox.put(semester, CourseSchedual.fromJson(_courseSchedual));
       _schedualbox.close();
       return CourseSchedual.fromJson(_courseSchedual);
@@ -52,7 +55,7 @@ class CourseSchedualRepository {
   }
 
   Future<String?> getCurrentSemester() async {
-    final currentSemester = await _courseSelectApiClient.getCurrentSemester();
+    final currentSemester = await courseSelectApiClient.getCurrentSemester();
     return currentSemester;
   }
 
@@ -64,7 +67,7 @@ class CourseSchedualRepository {
       if (fromLocal) {
         return _semesterbox.values.toList();
       } else {
-        final semesters = await _courseSelectApiClient.getSemesterList();
+        final semesters = await courseSelectApiClient.getSemesterList();
         for (var item in semesters) {
           _semesterbox.add(Semester()
             ..name = item
