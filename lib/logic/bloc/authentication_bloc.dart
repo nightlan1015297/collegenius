@@ -1,38 +1,48 @@
 import 'package:bloc/bloc.dart';
 import 'package:collegenius/models/user_model/user_model.dart';
+import 'package:collegenius/repositories/course_schedual_repository.dart';
+import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc() : super(const AuthenticationState.unAuthenticated()) {
+  AuthenticationBloc({
+    required this.eeclassRepository,
+    required this.courseSchedualRepository,
+  }) : super(const AuthenticationState()) {
     on<CourseSelectAuthenticatedRequested>(
         _onCourseSelectAuthenticatedRequested);
     on<EeclassAuthenticatedRequested>(_onEeclassAuthenticatedRequested);
     on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
   }
+  final EeclassRepository eeclassRepository;
+  final CourseSchedualRepository courseSchedualRepository;
 
   void _onCourseSelectAuthenticatedRequested(
     CourseSelectAuthenticatedRequested event,
     Emitter<AuthenticationState> emit,
   ) {
-    return emit(AuthenticationState.courseSelectAuthenticated(event.user));
+    return emit(state.copyWith(
+        courseSelectAuthenticated: true, courseSelectUserData: event.user));
   }
 
   void _onEeclassAuthenticatedRequested(
     EeclassAuthenticatedRequested event,
     Emitter<AuthenticationState> emit,
   ) {
-    return emit(AuthenticationState.eeclassAuthenticated(event.user));
+    return emit(state.copyWith(
+        eeclassAuthenticated: true, eeclassUserData: event.user));
   }
 
   void _onAuthenticationLogoutRequested(
     AuthenticationLogoutRequested event,
     Emitter<AuthenticationState> emit,
   ) {
-    return emit(AuthenticationState.unAuthenticated());
+    eeclassRepository.logout();
+    courseSchedualRepository.logout();
+    return emit(AuthenticationState());
   }
 }
