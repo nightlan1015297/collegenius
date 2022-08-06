@@ -6,3 +6,16 @@ abstract class EeclassHomePageEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class InitializeRequest extends EeclassHomePageEvent {}
+
+class FetchDataRequest extends EeclassHomePageEvent {}
+
+class ChangeSemesterRequest extends EeclassHomePageEvent {
+  final Semester semester;
+
+  ChangeSemesterRequest({required this.semester});
+
+  @override
+  List<Object> get props => [semester];
+}
