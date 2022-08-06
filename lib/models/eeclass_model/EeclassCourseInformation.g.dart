@@ -1,13 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'EeclassCourse.dart';
+part of 'EeclassCourseInformation.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-EeclassCourse _$EeclassCourseFromJson(Map<String, dynamic> json) =>
-    EeclassCourse(
+EeclassCourseInformation _$EeclassCourseInformationFromJson(
+        Map<String, dynamic> json) =>
+    EeclassCourseInformation(
       classCode: json['classCode'] as String?,
       name: json['name'] as String?,
       credit: json['credit'] as String?,
@@ -17,13 +18,14 @@ EeclassCourse _$EeclassCourseFromJson(Map<String, dynamic> json) =>
       members: json['members'] as String?,
       instroctors: json['instroctors'] as List<dynamic>?,
       assistants: json['assistants'] as List<dynamic>?,
-      description: json['description'] as List<dynamic>?,
-      syllabus: json['syllabus'] as List<dynamic>?,
-      textbooks: json['textbooks'] as List<dynamic>?,
-      gradingDescription: json['gradingDescription'] as List<dynamic>?,
+      description: json['description'] as String?,
+      syllabus: json['syllabus'] as String?,
+      textbooks: json['textbooks'] as String?,
+      gradingDescription: json['gradingDescription'] as String?,
     );
 
-Map<String, dynamic> _$EeclassCourseToJson(EeclassCourse instance) =>
+Map<String, dynamic> _$EeclassCourseInformationToJson(
+        EeclassCourseInformation instance) =>
     <String, dynamic>{
       'classCode': instance.classCode,
       'name': instance.name,

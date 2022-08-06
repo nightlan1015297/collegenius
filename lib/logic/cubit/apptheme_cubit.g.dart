@@ -13,7 +13,7 @@ AppthemeState _$AppthemeStateFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$AppthemeStateToJson(AppthemeState instance) =>
     <String, dynamic>{
-      'themeOption': _$AppthemeOptionEnumMap[instance.themeOption],
+      'themeOption': _$AppthemeOptionEnumMap[instance.themeOption]!,
     };
 
 const _$AppthemeOptionEnumMap = {

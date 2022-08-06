@@ -8,4 +8,9 @@ class Semester extends HiveObject {
   late String name;
   @HiveField(1)
   late String value;
+
+  @override
+  String toString() {
+    return "name : $name, value : $value";
+  }
 }

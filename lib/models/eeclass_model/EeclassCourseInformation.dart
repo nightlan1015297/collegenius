@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'EeclassCourse.g.dart';
+part 'EeclassCourseInformation.g.dart';
 
 @JsonSerializable()
-class EeclassCourse extends Equatable {
-  const EeclassCourse({
+class EeclassCourseInformation extends Equatable {
+  const EeclassCourseInformation({
     this.classCode,
     this.name,
     this.credit,
@@ -29,14 +29,15 @@ class EeclassCourse extends Equatable {
   final String? members;
   final List? instroctors;
   final List? assistants;
-  final List? description;
-  final List? syllabus;
-  final List? textbooks;
-  final List? gradingDescription;
+  final String? description;
+  final String? syllabus;
+  final String? textbooks;
+  final String? gradingDescription;
 
-  factory EeclassCourse.fromJson(Map<String, dynamic> data) =>
-      _$EeclassCourseFromJson(data);
-  Map<String, dynamic> toJson() => _$EeclassCourseToJson(this);
+  factory EeclassCourseInformation.fromJson(Map<String, dynamic> data) =>
+      _$EeclassCourseInformationFromJson(data);
+  Map<String, dynamic> toJson() => _$EeclassCourseInformationToJson(this);
+
   @override
   List<Object?> get props => [
         classCode,
