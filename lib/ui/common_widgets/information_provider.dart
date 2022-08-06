@@ -7,26 +7,38 @@ class InformationProvider extends StatelessWidget {
     required this.information,
     this.labelTexttheme,
     this.informationTexttheme,
-    this.mainAxisAlignment,
+    this.mainAxisAlignment = MainAxisAlignment.center,
+    this.informationTextOverFlow = TextOverflow.ellipsis,
+    this.labelTextOverFlow = TextOverflow.ellipsis,
+    this.informationMaxLines,
+    this.labelMaxLines,
   }) : super(key: key);
   final String label;
   final String information;
-  MainAxisAlignment? mainAxisAlignment;
-  TextStyle? labelTexttheme;
-  TextStyle? informationTexttheme;
+  final MainAxisAlignment mainAxisAlignment;
+  final TextStyle? labelTexttheme;
+  final TextStyle? informationTexttheme;
+  final TextOverflow informationTextOverFlow;
+  final TextOverflow labelTextOverFlow;
+  final int? informationMaxLines;
+  final int? labelMaxLines;
 
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-    labelTexttheme = labelTexttheme ?? _theme.textTheme.caption;
-    informationTexttheme = informationTexttheme ?? _theme.textTheme.headline5;
+
     return Column(
-      mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
+      mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, overflow: TextOverflow.ellipsis, style: labelTexttheme),
+        Text(label,
+            maxLines: labelMaxLines,
+            overflow: labelTextOverFlow,
+            style: labelTexttheme ?? _theme.textTheme.caption),
         Text(information,
-            overflow: TextOverflow.ellipsis, style: informationTexttheme)
+            maxLines: informationMaxLines,
+            overflow: informationTextOverFlow,
+            style: informationTexttheme ?? _theme.textTheme.headline5)
       ],
     );
   }
@@ -37,7 +49,7 @@ class VerticalSeperater extends StatelessWidget {
     final _theme = Theme.of(context);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
       width: 1.0,
       height: 40,
       color: _theme.iconTheme.color,

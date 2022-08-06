@@ -1,6 +1,6 @@
 import 'package:collegenius/ui/pages/home_page/HomePageView.dart';
 import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
-import 'package:collegenius/ui/pages/LoginPage.dart';
+import 'package:collegenius/ui/pages/login_page/LoginPageView.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {

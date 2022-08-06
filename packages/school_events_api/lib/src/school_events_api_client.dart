@@ -28,7 +28,7 @@ class SchoolEventApiClient {
       var information = Map<String, dynamic>();
       information['title'] = _node.attributes['title'];
       information['href'] =
-          _node.attributes['href']!.replaceAll(RegExp(r"(&page=)[0-9]"), '');
+          _node.attributes['href']!.replaceAll(RegExp(r"(&page=[0-9]+)"), '');
       information['category'] = categoryNode.text;
       information['group'] = groupNode.text;
       information['time'] = dateNode.children[0].text;

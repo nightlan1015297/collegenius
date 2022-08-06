@@ -1,9 +1,15 @@
+import 'dart:isolate';
+import 'dart:ui';
+
+import 'package:collegenius/routes/hero_dialog_route.dart';
+import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:collegenius/logic/cubit/school_events_cubit.dart';
-import 'package:collegenius/ui/common_widgets/information_provider.dart';
-import 'package:collegenius/ui/common_widgets/tag_widget.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:path_provider/path_provider.dart';
 
 Map<String, Color> eventCategoryToColor = {
   '行政': Color.fromARGB(255, 100, 193, 236),
@@ -23,13 +29,9 @@ class BulletinHomePageView extends StatelessWidget {
         switch (_schoolEventsState.status) {
           case SchoolEventsStatus.initial:
             context.read<SchoolEventsCubit>().fetchInitEvents();
-            return Center(
-              child: Text('Loading'),
-            );
+            return Loading(size: 80);
           case SchoolEventsStatus.loading:
-            return Center(
-              child: Text('Loading'),
-            );
+            return Loading(size: 80);
           case SchoolEventsStatus.success:
             return Column(
               children: [
@@ -38,25 +40,24 @@ class BulletinHomePageView extends StatelessWidget {
                   onRefresh: () =>
                       context.read<SchoolEventsCubit>().fetchInitEvents(),
                   child: ListView.builder(
-                      physics: ClampingScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       itemCount: _schoolEventsState.events.length + 1,
                       itemExtent: 145,
                       itemBuilder: (context, index) {
                         if (index == _schoolEventsState.events.length) {
                           context.read<SchoolEventsCubit>().fetchMoreEvents();
-                          return Center(
-                            child: Text('Loading'),
-                          );
+                          return Center(child: Loading(size: 60));
                         }
                         var item = _schoolEventsState.events[index];
 
                         return Container(
                           margin: EdgeInsets.all(4),
                           child: EventCard(
-                            category: item.category ?? 'Load Failed',
-                            group: item.group ?? 'Load Failed',
-                            time: item.time ?? 'Load Failed',
-                            title: item.title ?? 'Load Failed',
+                            category: item.category,
+                            group: item.group,
+                            time: item.time,
+                            title: item.title,
+                            url: item.href,
                           ),
                         );
                       }),
@@ -81,7 +82,6 @@ class BulletinHomePageView extends StatelessWidget {
                       itemCount: _schoolEventsState.events.length + 1,
                       itemBuilder: (context, index) {
                         if (index == _schoolEventsState.events.length) {
-                          context.read<SchoolEventsCubit>().fetchMoreEvents();
                           return SizedBox(
                               height: 30,
                               child: Center(child: Text('End of bulletin')));
@@ -93,11 +93,11 @@ class BulletinHomePageView extends StatelessWidget {
                             height: 145,
                             margin: EdgeInsets.all(4),
                             child: EventCard(
-                              category: item.category ?? 'Load Failed',
-                              group: item.group ?? 'Load Failed',
-                              time: item.time ?? 'Load Failed',
-                              title: item.title ?? 'Load Failed',
-                            ),
+                                category: item.category,
+                                group: item.group,
+                                time: item.time,
+                                title: item.title,
+                                url: item.href),
                           ),
                         );
                       }),
@@ -111,71 +111,242 @@ class BulletinHomePageView extends StatelessWidget {
 }
 
 class EventCard extends StatelessWidget {
-  final String title;
-  final String category;
-  final String group;
-  final String time;
+  final String? url;
+  final String? title;
+  final String? category;
+  final String? group;
+  final String? time;
   const EventCard({
     Key? key,
-    required this.title,
-    required this.category,
-    required this.group,
-    required this.time,
+    this.title,
+    this.category,
+    this.group,
+    this.time,
+    this.url,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var _theme = Theme.of(context);
-    return Card(
-        child: Container(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: Text(title,
-                    textAlign: TextAlign.left,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: _theme.textTheme.titleLarge),
-              ),
-              Expanded(
-                child: Padding(
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(HeroDialogRoute(
+            fullscreenDialog: true,
+            builder: (BuildContext context) {
+              if (url == null) {
+                return Center(child: PopupLoadFailedCard());
+              }
+              return Center(child: PopupWebViewCard(url: url!));
+            }));
+      },
+      child: Card(
+          child: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
                   padding: const EdgeInsets.all(1.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Tag(
-                        color: eventCategoryToColor[category] ?? Colors.grey,
-                        tagText: category,
-                      ),
-                      ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minHeight: 0,
-                            minWidth: 0,
-                            maxHeight: double.infinity,
-                            maxWidth: 150,
-                          ),
-                          child: Tag(
-                            color: Colors.grey,
-                            tagText: group,
-                          )),
-                      Expanded(child: SizedBox()),
-                      InformationProvider(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        information: time,
-                        label: '發布日期',
-                        informationTexttheme: _theme.textTheme.subtitle2,
-                      )
-                    ],
+                  child: Text(title ?? 'Load Failed',
+                      textAlign: TextAlign.left,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: _theme.textTheme.titleLarge),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Tag(
+                          color: eventCategoryToColor[category] ?? Colors.grey,
+                          tagText: category ?? 'Load Failed',
+                        ),
+                        ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: 0,
+                              minWidth: 0,
+                              maxHeight: double.infinity,
+                              maxWidth: 150,
+                            ),
+                            child: Tag(
+                              color: Colors.grey,
+                              tagText: group ?? 'Load Failed',
+                            )),
+                        Expanded(child: SizedBox()),
+                        InformationProvider(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          information: time ?? 'Load Failed',
+                          label: '發布日期',
+                          informationTexttheme: _theme.textTheme.subtitle2,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ]),
+        ),
+      )),
+    );
+  }
+}
+
+class PopupWebViewCard extends StatefulWidget {
+  const PopupWebViewCard({
+    Key? key,
+    required this.url,
+  }) : super(key: key);
+
+  final String url;
+
+  @override
+  State<PopupWebViewCard> createState() => _PopupWebViewCardState();
+}
+
+class _PopupWebViewCardState extends State<PopupWebViewCard> {
+  late InAppWebViewController _webViewController;
+  ReceivePort _port = ReceivePort();
+
+  @override
+  void initState() {
+    super.initState();
+
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(downloadCallback);
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort send =
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    send.send([id, status, progress]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 540, maxHeight: 720),
+        child: Card(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 8,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: SizedBox(
+                  height: 35,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),
               ),
-            ]),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: InAppWebView(
+                    initialUrlRequest: URLRequest(
+                        url: Uri.parse(
+                            "https://www.ncu.edu.tw/tw/events/" + widget.url)),
+                    initialOptions: InAppWebViewGroupOptions(
+                        crossPlatform: InAppWebViewOptions(
+                          useOnDownloadStart: true,
+                          useShouldOverrideUrlLoading: true,
+                          mediaPlaybackRequiresUserGesture: false,
+                        ),
+                        android: AndroidInAppWebViewOptions(
+                          useHybridComposition: true,
+                        ),
+                        ios: IOSInAppWebViewOptions(
+                          allowsInlineMediaPlayback: true,
+                        )),
+                    onWebViewCreated: (InAppWebViewController controller) {
+                      _webViewController = controller;
+                    },
+                    onLoadStop: (controller, uri) {
+                      _webViewController.evaluateJavascript(source: """
+                                document.getElementsByClassName('header')[0].style.display='none';
+                                document.getElementsByClassName('inside-page-banner')[0].style.display='none';
+                                document.getElementsByClassName('page-bar')[0].style.display='none';
+                                document.getElementById('footer clearfix').style.display='none';
+                                document.getElementsByClassName('btn_back_wapper')[0].style.display='none';
+                                """);
+                    },
+                    onDownloadStartRequest: (controller, url) async {
+                      await FlutterDownloader.enqueue(
+                          url: url.url.toString(),
+                          savedDir: "/storage/emulated/0/Download/",
+                          showNotification:
+                              true, // show download progress in status bar (for Android)
+                          openFileFromNotification:
+                              true, // click on notification to open downloaded file (for Android)
+                          saveInPublicStorage: true);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-    ));
+    );
+  }
+}
+
+// WebView(
+//                     javascriptMode: JavascriptMode.unrestricted,
+//                     initialUrl:
+//                         "https://www.ncu.edu.tw/tw/events/" + widget.url,
+//                     onWebViewCreated: (controller) {
+//                       this.controller = controller;
+//                     },
+//                     onPageFinished: (_) {
+//                       controller.runJavascript(
+//                           "document.getElementsByClassName('header')[0].style.display='none'");
+//                       controller.runJavascript(
+//                           "document.getElementsByClassName('inside-page-banner')[0].style.display='none'");
+//                       controller.runJavascript(
+//                           "document.getElementsByClassName('page-bar')[0].style.display='none'");
+//                       controller.runJavascript(
+//                           "document.getElementById('footer clearfix').style.display='none'");
+//                       controller.runJavascript(
+//                           "document.getElementsByClassName('btn_back_wapper')[0].style.display='none'");
+//                     }),
+class PopupLoadFailedCard extends StatelessWidget {
+  const PopupLoadFailedCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 600, maxHeight: 800),
+        child: Card(child: Text("Load Failed")),
+      ),
+    );
   }
 }
