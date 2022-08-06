@@ -23,7 +23,6 @@ class AuthenticationRepository {
       }
       return result;
     } catch (e) {
-      print(e);
       return result;
     }
   }
