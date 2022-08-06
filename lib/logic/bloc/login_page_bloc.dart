@@ -18,9 +18,10 @@ class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
     on<LoginStudentIdChanged>(_onStudentIdChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
+    on<LogoutRequst>(_onLogoutRequest);
   }
 
-  final AuthenticationRepository authenticationRepository;
+  AuthenticationRepository authenticationRepository;
   final AuthenticationBloc authenticationBloc;
   void _onStudentIdChanged(
     LoginStudentIdChanged event,
@@ -61,7 +62,7 @@ class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
                   id: state.studentId.value, password: state.password.value)));
         }
         if (authResult[Server.courseSelect]!) {
-          authenticationBloc.add(EeclassAuthenticatedRequested(
+          authenticationBloc.add(CourseSelectAuthenticatedRequested(
               user: User(
                   id: state.studentId.value, password: state.password.value)));
         }
@@ -70,5 +71,13 @@ class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
     }
+  }
+
+  void _onLogoutRequest(
+    LogoutRequst event,
+    Emitter<LoginPageState> emit,
+  ) {
+    this.authenticationRepository = AuthenticationRepository();
+    emit(LoginPageState());
   }
 }
