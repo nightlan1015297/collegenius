@@ -13,8 +13,9 @@ import 'package:collegenius/utilties/ticker.dart';
 part 'course_schedual_page_state.dart';
 
 class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
+  CourseSchedualRepository courseSchedualRepository;
+
   final Ticker ticker;
-  final CourseSchedualRepository courseSchedualRepository;
   final AuthenticationBloc authenticateBloc;
   late StreamSubscription<int> _tickerSubscription;
   late StreamSubscription _authenticateBlocSubscription;
@@ -35,7 +36,7 @@ class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
   void toggleCourseSection(int section) =>
       emit(state.copywith(cerrentSection: section));
 
-  /*updateSectionByDateTime will be called by the ticker each sec to update the current section*/
+  ///updateSectionByDateTime will be called by the ticker every sec to update the current section
   void updateSectionByDateTime() {
     var _time = DateTime.now();
     if (_time.isBefore(DateTime(_time.year, _time.month, _time.day, 8))) {
@@ -54,18 +55,33 @@ class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
   }
 
 // Initialize the state of the page
+  void initState() async {
+    final isAuthed = authenticateBloc.state.courseSelectAuthenticated;
+    final user = authenticateBloc.state.courseSelectUserData;
+    if (isAuthed) {
+      await courseSchedualRepository.login(
+          username: user.id, password: user.password);
+      await fetchData();
+    } else {
+      emit(CourseSchedualPageState(
+          status: CourseSchedualPageStatus.unauthenticated));
+    }
+  }
 // This will be called when the page needs to be rendered and the state is initial
 
   Future<void> mapAuthenticationEventToState(AuthenticationState event) async {
     switch (event.courseSelectAuthenticated) {
       case true:
+        final user = authenticateBloc.state.courseSelectUserData;
         await courseSchedualRepository.login(
-            username: authenticateBloc.state.courseSelectUserData.id,
-            password: authenticateBloc.state.courseSelectUserData.password);
-        fetchData();
+          username: user.id,
+          password: user.password,
+        );
+        await fetchData();
         break;
       case false:
-        emit(state.copywith(status: CourseSchedualPageStatus.unauthenticated));
+        emit(CourseSchedualPageState(
+            status: CourseSchedualPageStatus.unauthenticated));
         break;
     }
   }
