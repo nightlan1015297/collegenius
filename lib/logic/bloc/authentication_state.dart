@@ -1,7 +1,7 @@
 part of 'authentication_bloc.dart';
 
 class AuthenticationState extends Equatable {
-  const AuthenticationState._({
+  const AuthenticationState({
     this.eeclassUserData = User.empty,
     this.eeclassAuthenticated = false,
     this.courseSelectUserData = User.empty,
@@ -12,17 +12,26 @@ class AuthenticationState extends Equatable {
   final bool eeclassAuthenticated;
   final User courseSelectUserData;
   final bool courseSelectAuthenticated;
-  const AuthenticationState.unAuthenticated() : this._();
 
-  // factory AuthenticationState.fromJson(Map<String, dynamic> json) =>
-  //     _$AuthenticationStateFromJson(json);
+  //  factory AuthenticationState.fromJson(Map<String, dynamic> json) =>
+  //      _$AuthenticationStateFromJson(json);
 
   // Map<String, dynamic> toJson() => _$AuthenticationStateToJson(this);
-  const AuthenticationState.eeclassAuthenticated(User user)
-      : this._(eeclassAuthenticated: true, eeclassUserData: user);
 
-  const AuthenticationState.courseSelectAuthenticated(User user)
-      : this._(courseSelectAuthenticated: true, courseSelectUserData: user);
+  AuthenticationState copyWith({
+    User? eeclassUserData,
+    bool? eeclassAuthenticated,
+    User? courseSelectUserData,
+    bool? courseSelectAuthenticated,
+  }) {
+    return AuthenticationState(
+        eeclassUserData: eeclassUserData ?? this.eeclassUserData,
+        eeclassAuthenticated: eeclassAuthenticated ?? this.eeclassAuthenticated,
+        courseSelectUserData: courseSelectUserData ?? this.courseSelectUserData,
+        courseSelectAuthenticated:
+            courseSelectAuthenticated ?? this.courseSelectAuthenticated);
+  }
+
   @override
   List<Object> get props => [
         eeclassUserData,
