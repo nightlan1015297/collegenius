@@ -11,7 +11,7 @@ class EeclassAssignmentBrief extends Equatable {
   final String startHandInDate;
   final String deadline;
   final bool isHandedOn;
-  final String score;
+  final double? score;
 
   EeclassAssignmentBrief(
       {required this.title,

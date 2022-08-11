@@ -15,7 +15,7 @@ EeclassAssignmentBrief _$EeclassAssignmentBriefFromJson(
       startHandInDate: json['startHandInDate'] as String,
       deadline: json['deadline'] as String,
       isHandedOn: json['isHandedOn'] as bool,
-      score: json['score'] as String,
+      score: (json['score'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$EeclassAssignmentBriefToJson(
