@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:collegenius/logic/bloc/authentication_bloc.dart';
 import 'package:collegenius/logic/bloc/login_page_bloc.dart';
@@ -8,8 +10,7 @@ import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:collegenius/repositories/authtication_repository.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualView.dart';
-import 'package:collegenius/ui/pages/eeclass_page/EEclassHomePageView.dart';
-import 'package:collegenius/ui/pages/eeclass_page/EeclassCoursePageView.dart';
+import 'package:collegenius/ui/pages/eeclass_page/EeclassCoursesListView.dart';
 import 'package:collegenius/utilties/AppBlocObserver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,6 +42,7 @@ Future<void> main() async {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
   await Permission.storage.request();
+  await Permission.notification.request();
   await FlutterDownloader.initialize(
       debug:
           true, // optional: set to false to disable printing logs to console (default: true)
@@ -63,8 +65,42 @@ Future<void> main() async {
       storage: storage, blocObserver: AppBlocObserver());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final AppRouter _appRouter = AppRouter();
+  ReceivePort _port = ReceivePort();
+
+  @override
+  void initState() {
+    super.initState();
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      // String id = data[0];
+      // DownloadTaskStatus status = data[1];
+      // int progress = data[2];
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(downloadCallback);
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort send =
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    send.send([id, status, progress]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +123,15 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthenticationBloc>(
-            create: (BuildContext context) => AuthenticationBloc(
-                eeclassRepository: context.read<EeclassRepository>(),
-                courseSchedualRepository:
-                    context.read<CourseSchedualRepository>()),
+            lazy: false,
+            create: (BuildContext context) {
+              final authenticationBloc = AuthenticationBloc(
+                  eeclassRepository: context.read<EeclassRepository>(),
+                  courseSchedualRepository:
+                      context.read<CourseSchedualRepository>());
+              authenticationBloc.add(InitializeRequested());
+              return authenticationBloc;
+            },
           ),
           BlocProvider<SchoolEventsCubit>(
             create: (BuildContext context) => SchoolEventsCubit(
@@ -104,32 +145,25 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => BottomnavCubit(),
           ),
           BlocProvider<LoginPageBloc>(
-            create: (BuildContext context) => LoginPageBloc(
-                authenticationRepository:
-                    context.read<AuthenticationRepository>(),
-                authenticationBloc: context.read<AuthenticationBloc>()),
+            lazy: false,
+            create: (BuildContext context) {
+              final loginPageBloc = LoginPageBloc(
+                  authenticationRepository:
+                      context.read<AuthenticationRepository>(),
+                  authenticationBloc: context.read<AuthenticationBloc>());
+              loginPageBloc.add(InitializeRequest());
+              return loginPageBloc;
+            },
           ),
         ],
         child: Builder(
           builder: (context) {
             final _themeState = context.watch<AppthemeCubit>().state;
-            final _themeMode;
-            switch (_themeState.themeOption) {
-              case AppthemeOption.dark:
-                _themeMode = ThemeMode.light;
-                break;
-              case AppthemeOption.light:
-                _themeMode = ThemeMode.dark;
-                break;
-              case AppthemeOption.system:
-                _themeMode = ThemeMode.system;
-                break;
-            }
             return MaterialApp(
               title: 'Collegenius',
               theme: AppTheme.light,
               darkTheme: AppTheme.dark,
-              themeMode: _themeMode,
+              themeMode: _themeState.themeMode,
               onGenerateRoute: _appRouter.generateRoute,
               home: IconTheme(
                 data: _theme.iconTheme,
@@ -157,14 +191,12 @@ class MyApp extends StatelessWidget {
                     case 3:
                       return MainScaffold(
                         title: 'Bulletins',
-                        body: EeclassCoursePageView(
-                          courseSerial: "10501",
-                        ),
+                        body: SizedBox(),
                       );
                     case 4:
                       return MainScaffold(
                         title: 'EEclass',
-                        body: EeclassHomePageView(),
+                        body: EeclassCoursesListView(),
                       );
                     case 5:
                       return MainScaffold(
