@@ -1,28 +1,37 @@
 part of 'authentication_bloc.dart';
 
+enum AuthStatus { loading, authed, unauth }
+
+extension CoursepageStatusX on AuthStatus {
+  bool get isLoading => this == AuthStatus.loading;
+  bool get isAuthed => this == AuthStatus.authed;
+  bool get isUnauth => this == AuthStatus.unauth;
+}
+
+@JsonSerializable()
 class AuthenticationState extends Equatable {
   const AuthenticationState({
     this.eeclassUserData = User.empty,
-    this.eeclassAuthenticated = false,
+    this.eeclassAuthenticated = AuthStatus.unauth,
     this.courseSelectUserData = User.empty,
-    this.courseSelectAuthenticated = false,
+    this.courseSelectAuthenticated = AuthStatus.unauth,
   });
 
   final User eeclassUserData;
-  final bool eeclassAuthenticated;
+  final AuthStatus eeclassAuthenticated;
   final User courseSelectUserData;
-  final bool courseSelectAuthenticated;
+  final AuthStatus courseSelectAuthenticated;
 
-  //  factory AuthenticationState.fromJson(Map<String, dynamic> json) =>
-  //      _$AuthenticationStateFromJson(json);
+  factory AuthenticationState.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticationStateFromJson(json);
 
-  // Map<String, dynamic> toJson() => _$AuthenticationStateToJson(this);
+  Map<String, dynamic> toJson() => _$AuthenticationStateToJson(this);
 
   AuthenticationState copyWith({
     User? eeclassUserData,
-    bool? eeclassAuthenticated,
+    AuthStatus? eeclassAuthenticated,
     User? courseSelectUserData,
-    bool? courseSelectAuthenticated,
+    AuthStatus? courseSelectAuthenticated,
   }) {
     return AuthenticationState(
         eeclassUserData: eeclassUserData ?? this.eeclassUserData,
