@@ -11,6 +11,7 @@ class EeclassMaterialBrief extends Equatable {
   final String discussion;
   final String auther;
   final String updateDate;
+  final String type;
 
   EeclassMaterialBrief({
     required this.title,
@@ -19,6 +20,7 @@ class EeclassMaterialBrief extends Equatable {
     required this.discussion,
     required this.auther,
     required this.updateDate,
+    required this.type,
   });
   factory EeclassMaterialBrief.fromJson(Map<String, dynamic> data) =>
       _$EeclassMaterialBriefFromJson(data);
@@ -32,5 +34,6 @@ class EeclassMaterialBrief extends Equatable {
         discussion,
         auther,
         updateDate,
+        type,
       ];
 }

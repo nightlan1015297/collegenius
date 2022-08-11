@@ -15,6 +15,7 @@ EeclassMaterialBrief _$EeclassMaterialBriefFromJson(
       discussion: json['discussion'] as String,
       auther: json['auther'] as String,
       updateDate: json['updateDate'] as String,
+      type: json['type'] as String,
     );
 
 Map<String, dynamic> _$EeclassMaterialBriefToJson(
@@ -26,4 +27,5 @@ Map<String, dynamic> _$EeclassMaterialBriefToJson(
       'discussion': instance.discussion,
       'auther': instance.auther,
       'updateDate': instance.updateDate,
+      'type': instance.type,
     };
