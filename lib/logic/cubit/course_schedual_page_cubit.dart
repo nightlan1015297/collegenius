@@ -56,11 +56,8 @@ class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
 
 // Initialize the state of the page
   void initState() async {
-    final isAuthed = authenticateBloc.state.courseSelectAuthenticated;
-    final user = authenticateBloc.state.courseSelectUserData;
+    final isAuthed = authenticateBloc.state.courseSelectAuthenticated.isAuthed;
     if (isAuthed) {
-      await courseSchedualRepository.login(
-          username: user.id, password: user.password);
       await fetchData();
     } else {
       emit(CourseSchedualPageState(
@@ -70,13 +67,8 @@ class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
 // This will be called when the page needs to be rendered and the state is initial
 
   Future<void> mapAuthenticationEventToState(AuthenticationState event) async {
-    switch (event.courseSelectAuthenticated) {
+    switch (event.courseSelectAuthenticated.isAuthed) {
       case true:
-        final user = authenticateBloc.state.courseSelectUserData;
-        await courseSchedualRepository.login(
-          username: user.id,
-          password: user.password,
-        );
         await fetchData();
         break;
       case false:
@@ -111,7 +103,9 @@ class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
         selectedSemester: semester, status: CourseSchedualPageStatus.loading));
     try {
       final schedual = await courseSchedualRepository.getCourseSchedual(
-          semester: semester, fromLocal: state.fetchFromLocal);
+        semester: semester,
+        fromLocal: state.fetchFromLocal,
+      );
       emit(state.copywithNullableSchedual(
           status: CourseSchedualPageStatus.success,
           schedual: schedual,
@@ -134,6 +128,10 @@ class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
           fromLocal: state.fetchFromLocal);
       final currentSemester =
           await courseSchedualRepository.getCurrentSemester();
+      emit(state.copywith(
+        currentSemester: currentSemester,
+        selectedSemester: currentSemester,
+      ));
       final selectedCourseSchedual =
           await courseSchedualRepository.getCourseSchedual(
               semester: state.selectedSemester,
@@ -141,8 +139,6 @@ class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
       emit(state.copywith(
         status: CourseSchedualPageStatus.success,
         semesterList: result,
-        currentSemester: currentSemester,
-        selectedSemester: currentSemester,
         schedual: selectedCourseSchedual,
       ));
     } catch (e) {

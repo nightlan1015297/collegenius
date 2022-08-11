@@ -39,7 +39,7 @@ class CourseSchedualPageState extends Equatable {
     this.status = CourseSchedualPageStatus.initial,
     CourseSchedual? schedual,
   })  : schedual = schedual,
-        fetchFromLocal = fetchFromLocal ?? true,
+        fetchFromLocal = fetchFromLocal ?? false,
         semesterList = semesterList ?? <Semester>[],
         cerrentSection = cerrentSection ?? 0,
         currentSemester = currentSemester ?? '1112',

@@ -50,7 +50,7 @@ class EeclassHomePageBloc
     InitializeRequest event,
     Emitter<EeclassHomePageState> emit,
   ) {
-    switch (authenticateBloc.state.eeclassAuthenticated) {
+    switch (authenticateBloc.state.eeclassAuthenticated.isAuthed) {
       case true:
         add(FetchDataRequest());
         break;
@@ -66,9 +66,7 @@ class EeclassHomePageBloc
     Emitter<EeclassHomePageState> emit,
   ) async {
     emit(EeclassHomePageState(status: EeclassHomePageStatus.loading));
-    final user = authenticateBloc.state.eeclassUserData;
 
-    await eeclassRepository.login(username_: user.id, password_: user.password);
     final semesterList = await eeclassRepository.getAvaliableSemester();
     final defaultSemester = semesterList[0];
     final defaultCourseList =
