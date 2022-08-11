@@ -1,5 +1,6 @@
-export 'information_provider.dart';
-export 'picker.dart';
+export 'TextInformationProvider.dart';
+export 'Picker.dart';
 export 'tag_widget.dart';
-export 'loading.dart';
+export 'Loading.dart';
 export 'circle_dotted_border_painter.dart';
+export 'IconInformationProvider.dart';
