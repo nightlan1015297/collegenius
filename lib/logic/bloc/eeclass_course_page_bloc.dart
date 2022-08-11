@@ -36,7 +36,7 @@ class EeclassCoursePageBloc
     InitializeRequest event,
     Emitter<EeclassCoursePageState> emit,
   ) {
-    switch (authenticateBloc.state.eeclassAuthenticated) {
+    switch (authenticateBloc.state.eeclassAuthenticated.isAuthed) {
       case true:
         add(FetchDataRequest());
         break;
@@ -54,14 +54,11 @@ class EeclassCoursePageBloc
     emit(EeclassCoursePageState(
         status: EeclassCoursePageStatus.loading,
         quizInfoStatus: EeclassQuizInfoStatus.loading));
-    final user = authenticateBloc.state.eeclassUserData;
-
-    await eeclassRepository.login(username_: user.id, password_: user.password);
 
     final courseInformation = await eeclassRepository.getCourseInformation(
         courseSerial: this.courseSerial);
     final courseBulletin = await eeclassRepository.getCourseBulletin(
-        courseSerial: this.courseSerial, page: state.bullitinFetchedPage);
+        courseSerial: this.courseSerial, page: 1);
     final courseAssignment = await eeclassRepository.getCourseAssignment(
         courseSerial: this.courseSerial);
     final courseMaterial = await eeclassRepository.getCourseMaterial(

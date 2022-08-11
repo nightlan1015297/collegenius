@@ -20,8 +20,6 @@ enum EeclassQuizInfoStatus {
 class EeclassCoursePageState extends Equatable {
   EeclassCoursePageState(
       {EeclassCoursePageStatus? status,
-      bool? bullitinHasFechedToEnd,
-      int? bullitinFetchedPage,
       List<EeclassBullitinBrief>? bullitinList,
       List<EeclassAssignmentBrief>? assignmentList,
       List<EeclassQuizBrief>? quizList,
@@ -32,8 +30,6 @@ class EeclassCoursePageState extends Equatable {
       EeclassQuizInfoStatus? quizInfoStatus,
       String? firstQuizName})
       : status = status ?? EeclassCoursePageStatus.initial,
-        bullitinHasFechedToEnd = bullitinHasFechedToEnd ?? false,
-        bullitinFetchedPage = bullitinFetchedPage ?? 1,
         bullitinList = bullitinList ?? [],
         assignmentList = assignmentList ?? [],
         quizList = quizList ?? [],
@@ -44,9 +40,6 @@ class EeclassCoursePageState extends Equatable {
         firstQuizFullmarks = firstQuizFullmarks,
         quizInfoStatus = quizInfoStatus ?? EeclassQuizInfoStatus.loading;
 
-  final bool bullitinHasFechedToEnd;
-
-  final int bullitinFetchedPage;
   final EeclassCoursePageStatus status;
   final List<EeclassBullitinBrief> bullitinList;
   final List<EeclassAssignmentBrief> assignmentList;
@@ -62,8 +55,6 @@ class EeclassCoursePageState extends Equatable {
 
   EeclassCoursePageState copyWith({
     EeclassCoursePageStatus? status,
-    bool? bullitinHasFechedToEnd,
-    int? bullitinFetchedPage,
     List<EeclassBullitinBrief>? bullitinList,
     List<EeclassAssignmentBrief>? assignmentList,
     List<EeclassQuizBrief>? quizList,
@@ -76,9 +67,6 @@ class EeclassCoursePageState extends Equatable {
   }) {
     return EeclassCoursePageState(
         status: status ?? this.status,
-        bullitinHasFechedToEnd:
-            bullitinHasFechedToEnd ?? this.bullitinHasFechedToEnd,
-        bullitinFetchedPage: bullitinFetchedPage ?? this.bullitinFetchedPage,
         bullitinList: bullitinList ?? this.bullitinList,
         assignmentList: assignmentList ?? this.assignmentList,
         quizList: quizList ?? this.quizList,
@@ -93,8 +81,6 @@ class EeclassCoursePageState extends Equatable {
   @override
   List<Object?> get props => [
         status,
-        bullitinHasFechedToEnd,
-        bullitinFetchedPage,
         bullitinList,
         assignmentList,
         quizList,
