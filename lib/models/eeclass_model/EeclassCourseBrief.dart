@@ -6,18 +6,18 @@ part 'EeclassCourseBrief.g.dart';
 @JsonSerializable()
 class EeclassCourseBrief extends Equatable {
   const EeclassCourseBrief({
-    this.name,
+    required this.name,
     this.credit,
     this.professor,
     this.courseCode,
-    this.courseSerial,
+    required this.courseSerial,
   });
 
-  final String? name;
+  final String name;
   final String? credit;
   final String? professor;
   final String? courseCode;
-  final String? courseSerial;
+  final String courseSerial;
 
   factory EeclassCourseBrief.fromJson(Map<String, dynamic> data) =>
       _$EeclassCourseBriefFromJson(data);
