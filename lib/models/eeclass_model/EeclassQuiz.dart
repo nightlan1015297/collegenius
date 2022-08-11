@@ -17,6 +17,7 @@ class EeclassQuiz extends Equatable {
   final String? scoreDistributionUrl;
   final String? quizRecordUrl;
   final String? answerUrl;
+  final List? attachments;
   final List<int>? scoreDistribution;
 
   EeclassQuiz({
@@ -33,6 +34,7 @@ class EeclassQuiz extends Equatable {
     this.quizRecordUrl,
     this.answerUrl,
     this.scoreDistribution,
+    this.attachments,
   });
 
   factory EeclassQuiz.fromJson(Map<String, dynamic> data) =>
@@ -53,5 +55,6 @@ class EeclassQuiz extends Equatable {
         quizRecordUrl,
         answerUrl,
         scoreDistribution,
+        attachments
       ];
 }

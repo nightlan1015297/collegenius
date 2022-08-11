@@ -8,13 +8,13 @@ class EeclassQuizBrief extends Equatable {
   final String title;
   final String url;
   final String deadLine;
-  final String score;
+  final double? score;
 
   EeclassQuizBrief(
       {required this.title,
       required this.url,
       required this.deadLine,
-      required this.score});
+      this.score});
 
   factory EeclassQuizBrief.fromJson(Map<String, dynamic> data) =>
       _$EeclassQuizBriefFromJson(data);

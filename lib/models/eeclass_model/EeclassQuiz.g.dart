@@ -22,6 +22,7 @@ EeclassQuiz _$EeclassQuizFromJson(Map<String, dynamic> json) => EeclassQuiz(
       scoreDistribution: (json['scoreDistribution'] as List<dynamic>?)
           ?.map((e) => e as int)
           .toList(),
+      attachments: json['attachments'] as List<dynamic>?,
     );
 
 Map<String, dynamic> _$EeclassQuizToJson(EeclassQuiz instance) =>
@@ -38,5 +39,6 @@ Map<String, dynamic> _$EeclassQuizToJson(EeclassQuiz instance) =>
       'scoreDistributionUrl': instance.scoreDistributionUrl,
       'quizRecordUrl': instance.quizRecordUrl,
       'answerUrl': instance.answerUrl,
+      'attachments': instance.attachments,
       'scoreDistribution': instance.scoreDistribution,
     };
