@@ -1,26 +1,19 @@
 part of 'apptheme_cubit.dart';
 
-enum AppthemeOption { dark, light, system }
-
-extension CoursepageStatusX on AppthemeOption {
-  bool get isDark => this == AppthemeOption.dark;
-  bool get isLight => this == AppthemeOption.light;
-  bool get isSystem => this == AppthemeOption.system;
-}
-
 @JsonSerializable()
 class AppthemeState extends Equatable {
-  final AppthemeOption themeOption;
+  final ThemeMode themeMode;
 
-  AppthemeState({required this.themeOption});
+  AppthemeState({required this.themeMode});
 
-  AppthemeState copywith({AppthemeOption? option}) {
-    return AppthemeState(themeOption: option ?? this.themeOption);
+  AppthemeState copywith({ThemeMode? option}) {
+    return AppthemeState(themeMode: option ?? this.themeMode);
   }
 
   factory AppthemeState.fromJson(Map<String, dynamic> json) =>
       _$AppthemeStateFromJson(json);
   Map<String, dynamic> toJson() => _$AppthemeStateToJson(this);
+
   @override
-  List<Object?> get props => [this.themeOption];
+  List<Object?> get props => [this.themeMode];
 }

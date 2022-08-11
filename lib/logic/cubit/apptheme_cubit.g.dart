@@ -8,16 +8,16 @@ part of 'apptheme_cubit.dart';
 
 AppthemeState _$AppthemeStateFromJson(Map<String, dynamic> json) =>
     AppthemeState(
-      themeOption: $enumDecode(_$AppthemeOptionEnumMap, json['themeOption']),
+      themeMode: $enumDecode(_$ThemeModeEnumMap, json['themeMode']),
     );
 
 Map<String, dynamic> _$AppthemeStateToJson(AppthemeState instance) =>
     <String, dynamic>{
-      'themeOption': _$AppthemeOptionEnumMap[instance.themeOption]!,
+      'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
     };
 
-const _$AppthemeOptionEnumMap = {
-  AppthemeOption.dark: 'dark',
-  AppthemeOption.light: 'light',
-  AppthemeOption.system: 'system',
+const _$ThemeModeEnumMap = {
+  ThemeMode.system: 'system',
+  ThemeMode.light: 'light',
+  ThemeMode.dark: 'dark',
 };
