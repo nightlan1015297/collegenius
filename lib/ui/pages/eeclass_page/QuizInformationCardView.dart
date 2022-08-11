@@ -7,139 +7,177 @@ import 'package:vector_math/vector_math.dart' as vmath;
 class QuizInformationCardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _theme = Theme.of(context);
     return BlocBuilder<EeclassCoursePageBloc, EeclassCoursePageState>(
       builder: (context, state) {
         switch (state.quizInfoStatus) {
           case EeclassQuizInfoStatus.loading:
-            return Card(
-                clipBehavior: Clip.antiAlias,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border:
-                        Border(left: BorderSide(color: Colors.blue, width: 10)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Spacer(),
-                        SizedBox(
-                            width: 220,
-                            height: 120,
-                            child: Center(
-                              child: InformationProvider(
-                                  labelTexttheme: _theme.textTheme.labelLarge,
-                                  label: "最新成績",
-                                  informationTexttheme: TextStyle(fontSize: 20),
-                                  informationMaxLines: 3,
-                                  information: "載入中"),
-                            )),
-                        Spacer(),
-                        Loading(size: 60)
-                      ],
-                    ),
-                  ),
-                ));
+            return QuizInformationLoadingCard();
           case EeclassQuizInfoStatus.good:
             return QuizInformationCard(
-              quizName: state.firstQuizName ?? "Get Quiz Name Failed",
-              fullMarks: state.firstQuizFullmarks!.round(),
-              score: state.firstQuizscore!.round(),
+              quizName: state.firstQuizName,
+              fullMarks: state.firstQuizFullmarks!,
+              score: state.firstQuizscore!,
               mainColor: Colors.green,
               sideColor: Colors.green[100]!,
             );
           case EeclassQuizInfoStatus.normal:
             return QuizInformationCard(
-              quizName: state.firstQuizName ?? "Get Quiz Name Failed",
-              fullMarks: state.firstQuizFullmarks!.round(),
-              score: state.firstQuizscore!.round(),
+              quizName: state.firstQuizName,
+              fullMarks: state.firstQuizFullmarks!,
+              score: state.firstQuizscore!,
               mainColor: Colors.yellow,
               sideColor: Colors.yellow[100]!,
             );
           case EeclassQuizInfoStatus.bad:
             return QuizInformationCard(
-              quizName: state.firstQuizName ?? "Get Quiz Name Failed",
-              fullMarks: state.firstQuizFullmarks!.round(),
-              score: state.firstQuizscore!.round(),
+              quizName: state.firstQuizName,
+              fullMarks: state.firstQuizFullmarks!,
+              score: state.firstQuizscore!,
               mainColor: Colors.red,
               sideColor: Colors.red[100]!,
             );
           case EeclassQuizInfoStatus.canNotParse:
-            return Card(
-                clipBehavior: Clip.antiAlias,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                        left: BorderSide(color: Colors.orange, width: 10)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Spacer(),
-                        SizedBox(
-                            width: 200,
-                            height: 120,
-                            child: Center(
-                              child: InformationProvider(
-                                  labelTexttheme: _theme.textTheme.labelLarge,
-                                  label: "最新成績",
-                                  informationTexttheme: TextStyle(fontSize: 20),
-                                  informationMaxLines: 3,
-                                  information: state.firstQuizName ?? '-'),
-                            )),
-                        Spacer(),
-                        AnimatedPercentageIndicator(
-                          mainColor: Colors.orange,
-                          sideColor: Colors.orange[100]!,
-                          percentage: 1,
-                          child: Text("無法解析"),
-                        )
-                      ],
-                    ),
-                  ),
-                ));
+            return QuizInformationParseErrorCard(
+              quizName: state.firstQuizName,
+            );
           case EeclassQuizInfoStatus.noQuiz:
-            return Card(
-                clipBehavior: Clip.antiAlias,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                        left: BorderSide(color: Colors.green, width: 10)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Spacer(),
-                        SizedBox(
-                            width: 220,
-                            height: 120,
-                            child: Center(
-                              child: InformationProvider(
-                                  labelTexttheme: _theme.textTheme.labelLarge,
-                                  label: "最新成績",
-                                  informationTexttheme: TextStyle(fontSize: 20),
-                                  informationMaxLines: 3,
-                                  information: '-'),
-                            )),
-                        Spacer(),
-                        AnimatedPercentageIndicator(
-                          mainColor: Colors.green,
-                          sideColor: Colors.green[100]!,
-                          percentage: 1,
-                          child: Text(
-                            "沒有考試",
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ));
+            return QuizInformationNoQuizCard();
         }
       },
     );
+  }
+}
+
+class QuizInformationNoQuizCard extends StatelessWidget {
+  const QuizInformationNoQuizCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+    return Card(
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(left: BorderSide(color: Colors.green, width: 10)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Spacer(),
+                SizedBox(
+                    width: 220,
+                    height: 130,
+                    child: Center(
+                      child: TextInformationProvider(
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          label: "最新成績",
+                          informationTexttheme: _theme.textTheme.headline6,
+                          informationMaxLines: 2,
+                          information: '-'),
+                    )),
+                Spacer(),
+                AnimatedPercentageIndicator(
+                  mainColor: Colors.green,
+                  sideColor: Colors.green[100]!,
+                  percentage: 1,
+                  child: Text(
+                    "沒有考試",
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
+  }
+}
+
+class QuizInformationParseErrorCard extends StatelessWidget {
+  const QuizInformationParseErrorCard({
+    Key? key,
+    required String? quizName,
+  })  : quizName = quizName ?? "-",
+        super(key: key);
+
+  final String quizName;
+
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+    return Card(
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(left: BorderSide(color: Colors.orange, width: 10)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Spacer(),
+                SizedBox(
+                    width: 200,
+                    height: 120,
+                    child: Center(
+                      child: TextInformationProvider(
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          label: "最新成績",
+                          informationTexttheme: _theme.textTheme.bodyLarge!
+                              .copyWith(fontSize: 18),
+                          informationMaxLines: 2,
+                          information: quizName),
+                    )),
+                Spacer(),
+                AnimatedPercentageIndicator(
+                  mainColor: Colors.orange,
+                  sideColor: Colors.orange[100]!,
+                  percentage: 1,
+                  child: Text("無法解析"),
+                )
+              ],
+            ),
+          ),
+        ));
+  }
+}
+
+class QuizInformationLoadingCard extends StatelessWidget {
+  const QuizInformationLoadingCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+    return Card(
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(left: BorderSide(color: Colors.blue, width: 10)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Spacer(),
+                SizedBox(
+                    width: 220,
+                    child: Center(
+                      child: TextInformationProvider(
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          label: "最新成績",
+                          informationTexttheme: _theme.textTheme.headline6,
+                          informationMaxLines: 2,
+                          information: "載入中"),
+                    )),
+                Spacer(),
+                Loading(size: 60)
+              ],
+            ),
+          ),
+        ));
   }
 }
 
@@ -150,14 +188,17 @@ class QuizInformationCard extends StatelessWidget {
   final int fullMarks;
   final int score;
 
-  const QuizInformationCard(
-      {Key? key,
-      required this.mainColor,
-      required this.sideColor,
-      required this.fullMarks,
-      required this.score,
-      required this.quizName})
-      : super(key: key);
+  QuizInformationCard({
+    Key? key,
+    required this.mainColor,
+    required this.sideColor,
+    required double fullMarks,
+    required double score,
+    String? quizName,
+  })  : fullMarks = fullMarks.round(),
+        score = score.round(),
+        quizName = quizName ?? "-",
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -176,13 +217,13 @@ class QuizInformationCard extends StatelessWidget {
                 Spacer(),
                 SizedBox(
                     width: 220,
-                    height: 120,
+                    height: 130,
                     child: Center(
-                      child: InformationProvider(
+                      child: TextInformationProvider(
                           labelTexttheme: _theme.textTheme.labelLarge,
                           label: "最新成績",
-                          informationTexttheme: TextStyle(fontSize: 20),
-                          informationMaxLines: 3,
+                          informationTexttheme: _theme.textTheme.headline6,
+                          informationMaxLines: 2,
                           information: quizName),
                     )),
                 Spacer(),
@@ -222,7 +263,7 @@ class AnimatedPercentageIndicator extends StatelessWidget {
       tween: Tween<double>(begin: 0, end: percentage),
       child: SizedBox(
         width: 120,
-        height: 120,
+        height: 130,
         child: Center(child: child),
       ),
       duration: Duration(milliseconds: 2000),
@@ -271,6 +312,8 @@ class PercantageIndicator extends CustomPainter {
 
     // Create a new layer where we will be painting the
     // actual progress indicator
+    //! Function [saveLayer()] is expensive and will cause performance issue
+    //! Think twice to call.
     canvas.saveLayer(
       Rect.fromCenter(
           center: center, width: radius * 2.5, height: radius * 2.5),

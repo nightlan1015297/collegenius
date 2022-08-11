@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -14,25 +16,26 @@ class NotAuthenticated implements Exception {}
 
 class LogInFailed implements Exception {}
 
-dynamic elemToString(dom.Element element) {
-  switch (element.localName) {
-    case 'p':
-      return element.text.trim();
-    case 'ol':
-      return element.children.map((e) => e.text.trim());
-    case 'div':
-      return element.text.trim();
-    default:
-      return element.text.trim();
-  }
+void printHighlight(
+  dynamic elem,
+) {
+  final text = elem.toString();
+  print('\x1B[33m$text\x1B[0m');
 }
 
 class EeclassApiClient {
   EeclassApiClient() {
     dio.interceptors.add(CookieManager(cookieJar));
   }
-  final String url = 'https://ncueeclass.ncu.edu.tw';
-  var dio = Dio();
+  static String url = 'https://ncueeclass.ncu.edu.tw';
+  static BaseOptions options = new BaseOptions(
+      baseUrl: url,
+      receiveDataWhenStatusError: true,
+      connectTimeout: 60 * 1000, // 60 seconds
+      receiveTimeout: 60 * 1000 // 60 seconds
+      );
+
+  var dio = Dio(options);
   var cookieJar = CookieJar();
   var isInitialize = false;
   String? id;
@@ -46,7 +49,7 @@ class EeclassApiClient {
   /// will have no old session inside to reach the logout purpose.
 
   Future<String> getCsrfToken() async {
-    var response = await dio.get(url);
+    var response = await dio.get('');
     if (response.statusCode != 200) {
       throw RequestToServerFailed();
     }
@@ -66,15 +69,35 @@ class EeclassApiClient {
   /// The reason why [EeclassApiClient] need to storage user id and password
   /// is because that eeclass backend will kick the session that is not active
   /// for a while.
-  //! Complete the comment later (not first priority).
+  /// So we can not determine whenever we need to login again, the best practice
+  /// is to [checkLogInStatus] in each time we need to access Eeclass system's
+  /// resource.
+  /// It will reduce readibility if we implement logic above in business logic layer
+  /// thus we implement it in Api layer.Storage user information inside instance,
+  /// makes user data is accessable at everytime Api needs to login.
 
-  void setAccount({required String id_, required String password_}) {
+  void setAccount({
+    required String id_,
+    required String password_,
+  }) {
     id = id_;
     password = password_;
     isInitialize = true;
   }
 
-  /* Function that used to Login to the eeclass system */
+  /// [logIn] function is used to let dio instance to log in eeclass system
+  /// If [logIn] function returns, it will always be true.
+  /// If login failed the function will raise different error based on
+  /// different type of login error was cast.
+  /// The most common login error [LogInFailed] will raised for following reason :
+  /// -> The whole [login] proccess was done (the post method has post the login formdata
+  /// and get the response) but [checkLogInStatus] still returns that the dio instance was
+  /// not login.
+  /// It may happens because of the wrong password or student id
+  /// or Eeclass system's some mechanism block the login proccess
+  /// If you find out that you did not enter wrong id & password, but the Api keep
+  /// raise [LogInFailed] error, un comment the printHighlight function to check what
+  /// Eeclass system prompt.
 
   Future<bool> logIn() async {
     if (!isInitialize) {
@@ -84,7 +107,7 @@ class EeclassApiClient {
       return true;
     }
     var csrfToken = await getCsrfToken();
-    var response = await dio.post(url + '/index/login',
+    var response = await dio.post('/index/login',
         data: FormData.fromMap({
           '_fmSubmit': 'yes',
           'formVer': '3.0',
@@ -101,6 +124,8 @@ class EeclassApiClient {
       password = null;
       throw RequestToServerFailed();
     }
+
+    ///printHighlight(response.data);
     final loginState = await this.checkLogInStatus();
     if (!loginState) {
       id = null;
@@ -112,30 +137,39 @@ class EeclassApiClient {
   }
 
   Future<bool> checkLogInStatus() async {
-    var res = await dio.get(url + '/index/login');
+    var res = await dio.get('/index/login');
     return res.isRedirect ?? false;
+  }
+
+  Future<List<Cookie>> cookies() async {
+    var loginStat = await checkLogInStatus();
+    if (!loginStat) {
+      loginStat = await logIn();
+    }
+    return await cookieJar
+        .loadForRequest(Uri.https('ncueeclass.ncu.edu.tw', ''));
   }
 
   Future<void> toggleToEng() async {
     if (!await checkLogInStatus()) {
       throw NotAuthenticated();
     }
-    var res = await dio.get(url + '/dashboard');
+    var res = await dio.get('/dashboard');
     final resText = res.data.toString();
     final reg =
         RegExp(r'\/ajax\/sys\.app\.service\/changeLocale\/\?ajaxAuth=\w+');
     var ajaxAuth = reg.firstMatch(resText)![0];
-    await dio.post(url + ajaxAuth!,
-        data: FormData.fromMap({'locale': 'en-us'}));
+    await dio.post(ajaxAuth!, data: FormData.fromMap({'locale': 'en-us'}));
   }
 
-  Future<List> getCourses({required String semester}) async {
+  Future<List> getCourses({
+    required String semester,
+  }) async {
     var loginStat = await checkLogInStatus();
-    while (!loginStat) {
+    if (!loginStat) {
       loginStat = await logIn();
     }
-    var response =
-        await dio.get(url + '/dashboard/historyCourse?termId=' + semester);
+    var response = await dio.get('/dashboard/historyCourse?termId=' + semester);
     dom.Document document = htmlparser.parse(response.data.toString());
     var target = document.getElementById('myCourseHistoryTable');
     const key = [
@@ -178,7 +212,7 @@ class EeclassApiClient {
     while (!loginStat) {
       loginStat = await logIn();
     }
-    var response = await dio.get(url + '/dashboard/historyCourse');
+    var response = await dio.get('/dashboard/historyCourse');
     dom.Document document = htmlparser.parse(response.data.toString());
     var target = document.getElementById('termId');
     if (target != null) {
@@ -197,13 +231,14 @@ class EeclassApiClient {
     }
   }
 
-  Future<Map<String, dynamic>> getCourseInformation(
-      {required String courseSerial}) async {
+  Future<Map<String, dynamic>> getCourseInformation({
+    required String courseSerial,
+  }) async {
     var loginStat = await checkLogInStatus();
     while (!loginStat) {
       loginStat = await logIn();
     }
-    var response = await dio.get(url + '/course/info/' + courseSerial);
+    var response = await dio.get('/course/info/' + courseSerial);
     dom.Document document = htmlparser.parse(response.data.toString());
     var info = document.getElementsByClassName(
         'module app-course_info app-course_info-show')[0];
@@ -320,14 +355,16 @@ class EeclassApiClient {
     return result;
   }
 
-  Future<List<Map<String, String?>>> getCourseBulletin(
-      {required String courseSerial, required int page}) async {
+  Future<List<Map<String, String?>>> getCourseBulletin({
+    required String courseSerial,
+    required int page,
+  }) async {
     var loginStat = await checkLogInStatus();
     while (!loginStat) {
       loginStat = await logIn();
     }
-    var response = await dio.get(
-        url + '/course/bulletin/' + courseSerial + '?page=' + page.toString());
+    var response = await dio
+        .get('/course/bulletin/' + courseSerial + '?page=' + page.toString());
     dom.Document document = htmlparser.parse(response.data.toString());
     var target = document.getElementById('bulletinMgrTable');
 
@@ -355,13 +392,14 @@ class EeclassApiClient {
     return [];
   }
 
-  Future<List<Map<String, String?>>> getCourseMaterial(
-      {required String courseSerial}) async {
+  Future<List<Map<String, dynamic>>> getCourseMaterial({
+    required String courseSerial,
+  }) async {
     var loginStat = await checkLogInStatus();
-    while (!loginStat) {
+    if (!loginStat) {
       loginStat = await logIn();
     }
-    var response = await dio.get(url + '/course/material/' + courseSerial);
+    var response = await dio.get('/course/material/' + courseSerial);
     dom.Document document = htmlparser.parse(response.data.toString());
     var target = document.getElementById('materialListTable');
     if (target != null) {
@@ -370,16 +408,40 @@ class EeclassApiClient {
       if (materials[0].id == "noData") {
         return [];
       }
-      var result = <Map<String, String?>>[];
-      for (var element in materials) {
+      var result = <Map<String, dynamic>>[];
+      for (var element in materials.sublist(1)) {
         var values = element.getElementsByTagName('td');
-        Map<String, String?> temp = {};
+        Map<String, dynamic> temp = {};
         for (var i = 0; i < values.length; i++) {
           switch (i) {
             case 1:
-              temp['title'] = values[i].text.trim();
+              temp['title'] = values[i]
+                  .text
+                  .trim()
+                  .replaceAll(RegExp(r'\n'), "")
+                  .replaceAll(RegExp(r'( )\1+'), " ");
+
               temp['url'] =
                   values[i].getElementsByTagName('a')[0].attributes['href'];
+              switch (values[i]
+                  .getElementsByClassName("fs-iconfont")[0]
+                  .className) {
+                case "fs-iconfont far fa-file-alt":
+                  temp['type'] = "attachment";
+                  break;
+                case "fs-iconfont far fa-file-pdf":
+                  temp['type'] = "pdf";
+                  break;
+                case "fs-iconfont fab fa-youtube":
+                  temp['type'] = "youtube";
+                  break;
+                case "fs-iconfont fal fa-file-audio":
+                  temp['type'] = "audio";
+                  break;
+                default:
+                  temp['type'] = "unknown";
+              }
+
               break;
             case 2:
               temp['auther'] = values[i].text.trim();
@@ -402,13 +464,63 @@ class EeclassApiClient {
     return [];
   }
 
-  Future<List<Map<String, dynamic>>> getCourseAssignment(
-      {required String courseSerial}) async {
+  Future<Map<String, dynamic>> getMaterial({
+    required String type,
+    required String materialUrl,
+  }) async {
+    var loginStat = await checkLogInStatus();
+    if (!loginStat) {
+      loginStat = await logIn();
+    }
+    var response = await dio.get(materialUrl);
+    dom.Document document = htmlparser.parse(response.data.toString());
+    Map<String, dynamic> result = {};
+    switch (type) {
+      case "attachment":
+        var description =
+            document.getElementsByClassName("fs-block-body list-margin");
+        if (description[0].children.isNotEmpty) {
+          result['description'] = description[0].text.trim();
+        }
+        var fileListTag = document
+            .getElementsByClassName("fs-list fs-filelist ")[0]
+            .getElementsByTagName("a");
+        var fileList = [];
+        for (var element in fileListTag) {
+          fileList.add([element.text, element.attributes['href']]);
+        }
+        result['fileList'] = fileList;
+        return result;
+      case "youtube":
+        var sourceTag = document
+            .getElementById("info-tabs-detail")!
+            .getElementsByTagName("dd")[4];
+        var source = sourceTag.getElementsByTagName("a")[0].attributes['href'];
+        result['source'] = source;
+        return result;
+      case "audio":
+        return result;
+      case "unknown":
+        return result;
+      case "pdf":
+        var source = document
+            .getElementsByClassName("btn  mobile-only btn-primary")[0]
+            .attributes['href'];
+        result['source'] = source;
+        return result;
+      default:
+        return result;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getCourseAssignment({
+    required String courseSerial,
+  }) async {
     var loginStat = await checkLogInStatus();
     while (!loginStat) {
       loginStat = await logIn();
     }
-    var response = await dio.get(url + '/course/homeworkList/' + courseSerial);
+    var response = await dio.get('/course/homeworkList/' + courseSerial);
     dom.Document document = htmlparser.parse(response.data.toString());
     var target = document.getElementById('homeworkListTable');
     if (target != null) {
@@ -421,12 +533,14 @@ class EeclassApiClient {
       for (var element in homework) {
         var values = element.getElementsByTagName('td');
         Map<String, dynamic> temp = {};
-        for (var i = 0; i < values.length; i++) {
+        for (var i = 1; i < values.length; i++) {
           switch (i) {
             case 1:
-              temp['title'] = values[i].text.trim();
+              temp['title'] =
+                  values[i].text.trim().replaceAll(RegExp(r'\n'), "");
               temp['url'] =
                   values[i].getElementsByTagName('a')[0].attributes['href'];
+
               break;
             case 2:
               temp['isTeamHomework'] = values[i]
@@ -445,7 +559,7 @@ class EeclassApiClient {
                   .hasChildNodes();
               break;
             case 6:
-              temp['score'] = values[i].text.trim();
+              temp['score'] = double.tryParse(values[i].text.trim());
           }
         }
         result.add(temp);
@@ -455,13 +569,34 @@ class EeclassApiClient {
     return [];
   }
 
-  Future<List<Map<String, dynamic>>> getCourseQuiz(
-      {required String courseSerial}) async {
+  Future<Map<String, dynamic>> getAssignment({
+    required String assignmentUrl,
+  }) async {
+    var loginStat = await checkLogInStatus();
+    if (!loginStat) {
+      loginStat = await logIn();
+    }
+    var response = await dio.get(assignmentUrl);
+    dom.Document document = htmlparser.parse(response.data.toString());
+    final informationTable =
+        document.getElementsByClassName("dl-horizontal ")[0];
+    final infoTitle = informationTable.getElementsByTagName('dt');
+    final infoBody = informationTable.getElementsByTagName('dd');
+    Map<String, dynamic> result = {};
+    for (int i = 0; i < infoTitle.length; i++) {
+      printHighlight(infoTitle[i].text.trim());
+    }
+    return {};
+  }
+
+  Future<List<Map<String, dynamic>>> getCourseQuiz({
+    required String courseSerial,
+  }) async {
     var loginStat = await checkLogInStatus();
     while (!loginStat) {
       loginStat = await logIn();
     }
-    var response = await dio.get(url + '/course/examList/' + courseSerial);
+    var response = await dio.get('/course/examList/' + courseSerial);
     dom.Document document = htmlparser.parse(response.data.toString());
     var target = document.getElementById('examListTable');
     if (target != null) {
@@ -485,7 +620,7 @@ class EeclassApiClient {
               temp['deadLine'] = values[i].text.trim();
               break;
             case 3:
-              temp['score'] = values[i].text.trim();
+              temp['score'] = double.tryParse(values[i].text.trim());
               break;
           }
         }
@@ -496,12 +631,14 @@ class EeclassApiClient {
     return [];
   }
 
-  Future<Map<String, dynamic>> getQuiz({required String quizUrl}) async {
+  Future<Map<String, dynamic>> getQuiz({
+    required String quizUrl,
+  }) async {
     var loginStat = await checkLogInStatus();
     while (!loginStat) {
       loginStat = await logIn();
     }
-    var response = await dio.get(url + quizUrl);
+    var response = await dio.get(quizUrl);
     dom.Document document = htmlparser.parse(response.data.toString());
     var target = document
         .getElementsByClassName('fs-page-header-mobile hidden-md hidden-lg');
@@ -527,8 +664,22 @@ class EeclassApiClient {
         infoKeys[4].text.trim() == "時間限制") {
       result['timeLimit'] = infoValues[4].text.trim();
     }
-    result['discription'] =
-        infoValues[5].text.trim().replaceAll(RegExp(r'\n\n'), "\n");
+    var discription = '';
+    var attachments = [];
+    for (var element in infoValues[5].children) {
+      if (element.className == "fs-list fs-filelist ") {
+        for (var attachmentTag in element.getElementsByTagName("a")) {
+          attachments
+              .add([attachmentTag.text, attachmentTag.attributes['href']]);
+        }
+      } else {
+        discription += element.text;
+        discription += "\n";
+      }
+    }
+    result['discription'] = discription.trim();
+    result['attachments'] = attachments;
+
     var tooltable = document.getElementsByClassName("fs-tools");
     if (tooltable.isNotEmpty) {
       for (var element in tooltable[0].getElementsByTagName("a")) {
@@ -554,17 +705,17 @@ class EeclassApiClient {
         }
       }
     }
-    print(result);
     return result;
   }
 
-  Future<List<int>> getQuizScoreDistribution(
-      {required String scoreDistributionUrl}) async {
+  Future<List<int>> getQuizScoreDistribution({
+    required String scoreDistributionUrl,
+  }) async {
     var loginStat = await checkLogInStatus();
     while (!loginStat) {
       loginStat = await logIn();
     }
-    var response = await dio.get(url + scoreDistributionUrl);
+    var response = await dio.get(scoreDistributionUrl);
     dom.Document document = htmlparser.parse(response.data.toString());
     var target = document.getElementById("exam_paper_statistics");
     var infoTags = target!

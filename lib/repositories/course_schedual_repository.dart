@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:collegenius/models/course_schedual_model/CourseSchedual.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:course_select_api/course_select_api.dart';
-import 'package:eeclass_api/eeclass_api.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 /// ***************************************************************************
@@ -73,6 +72,7 @@ class CourseSchedualRepository {
             ..name = item
             ..value = item);
         }
+
         return _semesterbox.values.toList();
       }
     }

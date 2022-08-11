@@ -1,6 +1,3 @@
-import 'dart:isolate';
-import 'dart:ui';
-
 import 'package:collegenius/routes/hero_dialog_route.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collegenius/logic/cubit/school_events_cubit.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:path_provider/path_provider.dart';
 
 Map<String, Color> eventCategoryToColor = {
   '行政': Color.fromARGB(255, 100, 193, 236),
@@ -42,7 +38,6 @@ class BulletinHomePageView extends StatelessWidget {
                   child: ListView.builder(
                       physics: BouncingScrollPhysics(),
                       itemCount: _schoolEventsState.events.length + 1,
-                      itemExtent: 145,
                       itemBuilder: (context, index) {
                         if (index == _schoolEventsState.events.length) {
                           context.read<SchoolEventsCubit>().fetchMoreEvents();
@@ -50,15 +45,12 @@ class BulletinHomePageView extends StatelessWidget {
                         }
                         var item = _schoolEventsState.events[index];
 
-                        return Container(
-                          margin: EdgeInsets.all(4),
-                          child: EventCard(
-                            category: item.category,
-                            group: item.group,
-                            time: item.time,
-                            title: item.title,
-                            url: item.href,
-                          ),
+                        return EventCard(
+                          category: item.category,
+                          group: item.group,
+                          time: item.time,
+                          title: item.title,
+                          url: item.href,
                         );
                       }),
                 )),
@@ -88,18 +80,12 @@ class BulletinHomePageView extends StatelessWidget {
                         }
                         var item = _schoolEventsState.events[index];
 
-                        return SizedBox(
-                          child: Container(
-                            height: 145,
-                            margin: EdgeInsets.all(4),
-                            child: EventCard(
-                                category: item.category,
-                                group: item.group,
-                                time: item.time,
-                                title: item.title,
-                                url: item.href),
-                          ),
-                        );
+                        return EventCard(
+                            category: item.category,
+                            group: item.group,
+                            time: item.time,
+                            title: item.title,
+                            url: item.href);
                       }),
                 )),
               ],
@@ -129,37 +115,37 @@ class EventCard extends StatelessWidget {
     var _theme = Theme.of(context);
 
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(HeroDialogRoute(
-            fullscreenDialog: true,
-            builder: (BuildContext context) {
-              if (url == null) {
-                return Center(child: PopupLoadFailedCard());
-              }
-              return Center(child: PopupWebViewCard(url: url!));
-            }));
-      },
-      child: Card(
-          child: Container(
+        onTap: () {
+          Navigator.of(context).push(HeroDialogRoute(
+              fullscreenDialog: true,
+              builder: (BuildContext context) {
+                if (url == null) {
+                  return Center(child: PopupLoadFailedCard());
+                }
+                return Center(child: PopupWebViewCard(url: url!));
+              }));
+        },
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: Text(title ?? 'Load Failed',
-                      textAlign: TextAlign.left,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: _theme.textTheme.titleLarge),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(1.0),
+          padding: const EdgeInsets.all(4.0),
+          child: Card(
+              child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(title ?? 'Load Failed',
+                        textAlign: TextAlign.left,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: _theme.textTheme.headline6),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Tag(
@@ -178,7 +164,7 @@ class EventCard extends StatelessWidget {
                               tagText: group ?? 'Load Failed',
                             )),
                         Expanded(child: SizedBox()),
-                        InformationProvider(
+                        TextInformationProvider(
                           mainAxisAlignment: MainAxisAlignment.end,
                           information: time ?? 'Load Failed',
                           label: '發布日期',
@@ -187,11 +173,9 @@ class EventCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
-              ]),
-        ),
-      )),
-    );
+                ]),
+          )),
+        ));
   }
 }
 
@@ -209,36 +193,6 @@ class PopupWebViewCard extends StatefulWidget {
 
 class _PopupWebViewCardState extends State<PopupWebViewCard> {
   late InAppWebViewController _webViewController;
-  ReceivePort _port = ReceivePort();
-
-  @override
-  void initState() {
-    super.initState();
-
-    IsolateNameServer.registerPortWithName(
-        _port.sendPort, 'downloader_send_port');
-    _port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
-      setState(() {});
-    });
-
-    FlutterDownloader.registerCallback(downloadCallback);
-  }
-
-  @override
-  void dispose() {
-    IsolateNameServer.removePortNameMapping('downloader_send_port');
-    super.dispose();
-  }
-
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port')!;
-    send.send([id, status, progress]);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -340,7 +294,6 @@ class PopupLoadFailedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ConstrainedBox(

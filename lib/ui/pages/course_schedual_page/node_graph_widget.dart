@@ -42,7 +42,7 @@ class TimeLineLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 16,
-      height: 150,
+      height: 124,
       child: CustomPaint(
         foregroundPainter: TimeLineLinePainter(),
       ),
@@ -55,7 +55,7 @@ class TimeLineShortLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 16,
-      height: 30,
+      height: 20,
       child: CustomPaint(
         foregroundPainter: TimeLineLinePainter(),
       ),
@@ -133,7 +133,7 @@ class _TimeLineDottedLineState extends State<TimeLineDottedLine>
   Widget build(BuildContext context) {
     return SizedBox(
       width: 16,
-      height: 150,
+      height: 124,
       child: AnimatedBuilder(
           animation: _animationController.view,
           builder: (context, child) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Tag extends StatelessWidget {
-  final tagHeight = 30.0;
   final String tagText;
   final Color color;
 
@@ -10,7 +9,6 @@ class Tag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: tagHeight,
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -18,13 +16,9 @@ class Tag extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
-      child: Baseline(
-        baseline: tagHeight / 2,
-        baselineType: TextBaseline.alphabetic,
-        child: Text(tagText,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.subtitle2),
-      ),
+      child: Text(tagText,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.subtitle2),
     );
   }
 }

@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
-import 'package:collegenius/models/eeclass_model/EeclassQuiz.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:eeclass_api/eeclass_api.dart';
 
@@ -40,13 +41,29 @@ class EeclassRepository {
     return semesterList;
   }
 
+  Future<String> getCookiesStringForDownload() async {
+    final cookies = await _eeclassApiClient.cookies();
+    var cookiesString = '';
+    for (Cookie cookie in cookies) {
+      cookiesString += '${cookie.name}=${cookie.value};';
+    }
+    return cookiesString;
+  }
+
+  Future<List<Cookie>> getCookiesListForDownload() async {
+    final cookies = await _eeclassApiClient.cookies();
+    return cookies;
+  }
+
   Future<List<EeclassCourseBrief>> getCourses(String semester) async {
     final mapCourses = await _eeclassApiClient.getCourses(semester: semester);
     final List<EeclassCourseBrief> courses = [];
     mapCourses.forEach((element) {
       courses.add(EeclassCourseBrief.fromJson(element));
     });
-
+    //! TESTING CODE
+    _eeclassApiClient.getAssignment(assignmentUrl: '/course/homework/12245');
+    //! REMOVE BEFORE FLIGHT
     return courses;
   }
 
@@ -65,10 +82,6 @@ class EeclassRepository {
     courseBulletinJson.forEach((element) {
       courseBulletinList.add(EeclassBullitinBrief.fromJson(element));
     });
-
-    //! Testing code
-    _eeclassApiClient.getQuiz(quizUrl: "/course/exam/5234");
-    //! REMOVE BEFORE FLIGHT.
 
     return courseBulletinList;
   }
@@ -113,5 +126,16 @@ class EeclassRepository {
   Future<EeclassQuiz> getQuiz({required String url}) async {
     final quizJson = await _eeclassApiClient.getQuiz(quizUrl: url);
     return EeclassQuiz.fromJson(quizJson);
+  }
+
+  Future<EeclassMaterial> getMaterial({
+    required String type,
+    required String url,
+  }) async {
+    final materialJson = await _eeclassApiClient.getMaterial(
+      type: type,
+      materialUrl: url,
+    );
+    return EeclassMaterial.fromJson(materialJson);
   }
 }

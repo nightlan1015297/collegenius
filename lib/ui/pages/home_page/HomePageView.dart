@@ -124,12 +124,12 @@ class WeatherCard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: <Widget>[
-                  InformationProvider(
+                  TextInformationProvider(
                     label: '平均氣溫',
                     information: _avgTemp.toString() + '°C',
                   ),
                   VerticalSeperater(),
-                  InformationProvider(
+                  TextInformationProvider(
                     label: '降雨機率',
                     information: _rainPercentage.toString() + '%',
                   ),
