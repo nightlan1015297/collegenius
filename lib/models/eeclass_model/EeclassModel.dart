@@ -6,3 +6,4 @@ export 'EeclassMaterialBrief.dart';
 export 'EeclassMaterial.dart';
 export 'EeclassQuizBrief.dart';
 export 'EeclassQuiz.dart';
+export 'EeclassAssignment.dart';
