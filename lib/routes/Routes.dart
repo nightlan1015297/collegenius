@@ -1,4 +1,5 @@
 import 'package:collegenius/routes/route_arguments.dart';
+import 'package:collegenius/ui/pages/eeclass_page/EeclassAssignmentPopupDetailCard.dart';
 import 'package:collegenius/ui/pages/eeclass_page/EeclassPage.dart';
 import 'package:collegenius/ui/pages/eeclass_page/EeclassQuizPopupDetailCard.dart';
 import 'package:collegenius/ui/pages/home_page/HomePageView.dart';
@@ -51,7 +52,6 @@ class AppRouter {
             final args = routsettings.arguments as EeclassQuizzPopupArguments;
             return EeclassQuizPopupDetailCard(
               quizUrl: args.quizUrl,
-              heroKey: args.heroKey,
             );
           },
         );
@@ -73,6 +73,16 @@ class AppRouter {
                 routsettings.arguments as EeclassAssignmentsPageArguments;
             return EeclassAssignmentsListView(
               assignmentList: args.assignmentList,
+            );
+          },
+        );
+      case '/eeclassCourse/assignments/popup':
+        return HeroDialogRoute(
+          builder: (context) {
+            final args =
+                routsettings.arguments as EeclassAssignmentsPopupArguments;
+            return EeclassAssignmentPopupDetailCard(
+              assignmentBrief: args.assignmentBrief,
             );
           },
         );
