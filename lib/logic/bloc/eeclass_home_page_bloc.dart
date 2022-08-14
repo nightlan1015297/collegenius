@@ -5,7 +5,7 @@ import 'package:collegenius/models/eeclass_model/EeclassCourseBrief.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../models/semester_model/semester_model.dart';
+import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'authentication_bloc.dart';
 
 part 'eeclass_home_page_event.dart';
@@ -38,7 +38,8 @@ class EeclassHomePageBloc
     emit(state.copyWith(
       status: EeclassHomePageStatus.loading,
     ));
-    final courseList = await eeclassRepository.getCourses(event.semester.value);
+    final courseList =
+        await eeclassRepository.getCourses(semester: event.semester.value);
 
     emit(state.copyWith(
         status: EeclassHomePageStatus.success,
@@ -70,7 +71,7 @@ class EeclassHomePageBloc
     final semesterList = await eeclassRepository.getAvaliableSemester();
     final defaultSemester = semesterList[0];
     final defaultCourseList =
-        await eeclassRepository.getCourses(defaultSemester.value);
+        await eeclassRepository.getCourses(semester: defaultSemester.value);
     emit(EeclassHomePageState(
         status: EeclassHomePageStatus.success,
         currentSemester: defaultSemester,

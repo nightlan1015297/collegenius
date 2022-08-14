@@ -81,14 +81,8 @@ class CourseSchedualPageCubit extends Cubit<CourseSchedualPageState> {
   void mapConnectivityEventToState(ConnectivityResult event) {
     switch (event) {
       case ConnectivityResult.bluetooth:
-        emit(state.copywith(fetchFromLocal: false));
-        break;
       case ConnectivityResult.wifi:
-        emit(state.copywith(fetchFromLocal: false));
-        break;
       case ConnectivityResult.ethernet:
-        emit(state.copywith(fetchFromLocal: false));
-        break;
       case ConnectivityResult.mobile:
         emit(state.copywith(fetchFromLocal: false));
         break;
