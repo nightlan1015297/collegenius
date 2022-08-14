@@ -12,7 +12,7 @@ class EeclassQuiz extends Equatable {
   final double? fullMarks;
   final double? passingMarks;
   final String? timeLimit;
-  final String discription;
+  final String description;
   final double? score;
   final String? scoreDistributionUrl;
   final String? quizRecordUrl;
@@ -28,7 +28,7 @@ class EeclassQuiz extends Equatable {
     this.fullMarks,
     this.passingMarks,
     this.timeLimit,
-    required this.discription,
+    required this.description,
     this.score,
     this.scoreDistributionUrl,
     this.quizRecordUrl,
@@ -49,7 +49,7 @@ class EeclassQuiz extends Equatable {
         fullMarks,
         passingMarks,
         timeLimit,
-        discription,
+        description,
         score,
         scoreDistributionUrl,
         quizRecordUrl,
