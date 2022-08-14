@@ -114,7 +114,7 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var _theme = Theme.of(context);
 
-    return GestureDetector(
+    return InkWell(
         onTap: () {
           Navigator.of(context).push(HeroDialogRoute(
               fullscreenDialog: true,
