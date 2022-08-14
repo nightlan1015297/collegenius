@@ -17,9 +17,8 @@ class EeclassQuizzesPageArguments {
 }
 
 class EeclassQuizzPopupArguments {
-  EeclassQuizzPopupArguments({required this.quizUrl, required this.heroKey});
+  EeclassQuizzPopupArguments({required this.quizUrl});
   final String quizUrl;
-  final UniqueKey heroKey;
 }
 
 class EeclassMaterialsPageArguments {
@@ -30,4 +29,12 @@ class EeclassMaterialsPageArguments {
 class EeclassAssignmentsPageArguments {
   EeclassAssignmentsPageArguments({required this.assignmentList});
   final List<EeclassAssignmentBrief> assignmentList;
+}
+
+class EeclassAssignmentsPopupArguments {
+  EeclassAssignmentsPopupArguments({
+    required this.assignmentBrief,
+  });
+
+  final EeclassAssignmentBrief assignmentBrief;
 }
