@@ -513,7 +513,7 @@ class PopupInformationCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(
-                  height: 40,
+                  height: 50,
                   child: Stack(
                     children: [
                       Align(
@@ -604,7 +604,6 @@ class NormalCourseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constrains) {
       final _theme = Theme.of(context);
-      final heroKey = UniqueKey();
       return Row(
         children: [
           RegulerNode(),
@@ -612,45 +611,40 @@ class NormalCourseCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: SizedBox(
               width: constrains.maxWidth - 70,
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () {
                   Navigator.of(context).push(HeroDialogRoute(
                       fullscreenDialog: true,
                       builder: (BuildContext context) {
                         return Center(
-                            child: Hero(
-                                tag: heroKey,
-                                child: PopupInformationCard(
-                                  coursename: coursename,
-                                  teacher: teacher,
-                                  location: location,
-                                )));
+                            child: PopupInformationCard(
+                          coursename: coursename,
+                          teacher: teacher,
+                          location: location,
+                        ));
                       }));
                 },
-                child: Hero(
-                  tag: heroKey,
-                  child: CourseCard(
-                    courseTitle: coursename,
-                    informations: [
-                      SizedBox(
-                        width: 120,
-                        child: TextInformationProvider(
-                          label: '上課教室',
-                          information: location,
-                          informationTexttheme: _theme.textTheme.titleLarge,
-                        ),
+                child: CourseCard(
+                  courseTitle: coursename,
+                  informations: [
+                    SizedBox(
+                      width: 120,
+                      child: TextInformationProvider(
+                        label: '上課教室',
+                        information: location,
+                        informationTexttheme: _theme.textTheme.titleLarge,
                       ),
-                      Spacer(),
-                      SizedBox(
-                        width: 140,
-                        child: TextInformationProvider(
-                          label: '上課時間',
-                          information: startTime + ' - ' + endTime,
-                          informationTexttheme: _theme.textTheme.titleLarge,
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                    Spacer(),
+                    SizedBox(
+                      width: 140,
+                      child: TextInformationProvider(
+                        label: '上課時間',
+                        information: startTime + ' - ' + endTime,
+                        informationTexttheme: _theme.textTheme.titleLarge,
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),

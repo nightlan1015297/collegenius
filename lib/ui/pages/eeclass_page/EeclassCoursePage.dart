@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:collegenius/logic/bloc/authentication_bloc.dart';
 import 'package:collegenius/logic/bloc/eeclass_course_page_bloc.dart';
+import 'package:collegenius/models/eeclass_model/EeclassBullitinBrief.dart';
 import 'package:collegenius/models/eeclass_model/EeclassCourseInformation.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/routes/route_arguments.dart';
@@ -7,6 +10,7 @@ import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'EeclassBullitinsListView.dart';
 import 'EeclassUnauthticateView.dart';
 import 'QuizInformationCardView.dart';
 
@@ -55,11 +59,11 @@ class _EeclassCoursePageState extends State<EeclassCoursePage> {
                   case EeclassCoursePageStatus.unAuthentucated:
                     return EeclassUnauthticateView();
                   case EeclassCoursePageStatus.initial:
-                    return Loading();
                   case EeclassCoursePageStatus.loading:
                     return Loading();
                   case EeclassCoursePageStatus.success:
-                    return EeclassCoursePageSuccessView();
+                    return EeclassCoursePageSuccessView(
+                        courseSerial: widget.courseSerial);
                   case EeclassCoursePageStatus.failed:
                     return Center(
                       child: Text("Failed"),
@@ -77,8 +81,9 @@ class _EeclassCoursePageState extends State<EeclassCoursePage> {
 class EeclassCoursePageSuccessView extends StatelessWidget {
   const EeclassCoursePageSuccessView({
     Key? key,
+    required this.courseSerial,
   }) : super(key: key);
-
+  final String courseSerial;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EeclassCoursePageBloc, EeclassCoursePageState>(
@@ -89,7 +94,7 @@ class EeclassCoursePageSuccessView extends StatelessWidget {
             child: Column(
               children: [
                 CourseInformationCard(),
-                GestureDetector(
+                InkWell(
                     onTap: () {
                       Navigator.of(context).pushNamed(
                         '/eeclassCourse/quizzes',
@@ -99,29 +104,13 @@ class EeclassCoursePageSuccessView extends StatelessWidget {
                       );
                     },
                     child: QuizInformationCardView()),
-                Builder(builder: (_) {
-                  if (state.bullitinList.length > 3) {
-                    return AtAGlanceCard(
-                        title: "Latest Bulletin",
-                        itemList: state.bullitinList
-                            .sublist(0, 3)
-                            .map((e) =>
-                                AtAGlanceItem(title: e.title, url: e.url))
-                            .toList());
-                  } else if (state.bullitinList.isEmpty) {
-                    return NoDataCard(title: "Latest Bulletin");
-                  }
-                  return AtAGlanceCard(
-                    title: "Latest Bulletin",
-                    itemList: state.bullitinList
-                        .map((e) => AtAGlanceItem(title: e.title, url: e.url))
-                        .toList(),
-                  );
-                }),
+                CourseBullitinBoard(
+                    courseSerial: courseSerial,
+                    bullitinList: state.bullitinList),
                 Row(
                   children: [
                     Expanded(
-                      child: GestureDetector(
+                      child: InkWell(
                         onTap: () {
                           Navigator.of(context).pushNamed(
                             '/eeclassCourse/materials',
@@ -149,7 +138,7 @@ class EeclassCoursePageSuccessView extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      child: GestureDetector(
+                      child: InkWell(
                         onTap: () {
                           Navigator.of(context).pushNamed(
                             '/eeclassCourse/assignments',
@@ -355,57 +344,13 @@ class CourseInformationCard extends StatelessWidget {
   }
 }
 
-class AtAGlanceItem {
-  final String title;
-  final String url;
-
-  AtAGlanceItem({required this.title, required this.url});
-}
-
-class NoDataCard extends StatelessWidget {
-  final String title;
-
-  const NoDataCard({Key? key, required this.title}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final _theme = Theme.of(context);
-
-    return Card(
-      child: SizedBox(
-        height: 120,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: Text(title, style: _theme.textTheme.labelLarge),
-                ),
-                Spacer()
-              ],
-            ),
-            Expanded(
-              child: Center(
-                  child:
-                      Text("No data", style: _theme.textTheme.headlineSmall)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AtAGlanceCard extends StatelessWidget {
-  final String title;
-  final List<AtAGlanceItem> itemList;
-
-  const AtAGlanceCard({
+class CourseBullitinBoard extends StatelessWidget {
+  final List<EeclassBullitinBrief> bullitinList;
+  final String courseSerial;
+  const CourseBullitinBoard({
     Key? key,
-    required this.title,
-    required this.itemList,
+    required this.bullitinList,
+    required this.courseSerial,
   }) : super(key: key);
 
   @override
@@ -417,38 +362,74 @@ class AtAGlanceCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-                  child: Text(title, style: _theme.textTheme.labelLarge),
-                ),
-                Spacer()
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListView.separated(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: itemList.length,
-                  separatorBuilder: (context, index) => Divider(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EeclassBullitinListView(
+                        courseSerial: courseSerial,
                       ),
-                      child: Text(
-                        itemList[index].title,
-                        overflow: TextOverflow.ellipsis,
-                        style: _theme.textTheme.bodyLarge,
-                      ),
-                    );
-                  }),
-            )
+                    ),
+                  );
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
+                      child: Text('最新公告', style: _theme.textTheme.labelLarge),
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 16, 16, 16),
+                      child: Icon(Icons.arrow_forward_ios_rounded),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Builder(builder: (context) {
+              if (bullitinList.isEmpty) {
+                return SizedBox(
+                  height: 100,
+                  child: Center(
+                    child: Text('沒有資料', style: _theme.textTheme.headline6),
+                  ),
+                );
+              }
+              final itemLength;
+              if (bullitinList.length > 3) {
+                itemLength = 3;
+              } else {
+                itemLength = bullitinList.length;
+              }
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: itemLength,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Card(
+                          elevation: 5,
+                          color: _theme.focusColor,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              bullitinList[index].title,
+                              overflow: TextOverflow.ellipsis,
+                              style: _theme.textTheme.bodyLarge,
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+              );
+            })
           ],
         ),
       ),

@@ -4,8 +4,6 @@ import 'package:collegenius/logic/cubit/eeclass_quiz_detail_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
-import 'package:collegenius/ui/pages/eeclass_page/EeclassUnauthticateView.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -13,11 +11,9 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 class EeclassQuizPopupDetailCard extends StatefulWidget {
   const EeclassQuizPopupDetailCard({
     Key? key,
-    required this.heroKey,
     required this.quizUrl,
   }) : super(key: key);
   final String quizUrl;
-  final UniqueKey heroKey;
   @override
   State<EeclassQuizPopupDetailCard> createState() =>
       _EeclassQuizPopupDetailCardState();
@@ -42,123 +38,74 @@ class _EeclassQuizPopupDetailCardState
       create: (context) => eeclassQuizDetailCubit,
       child: BlocBuilder<EeclassQuizDetailCubit, EeclassQuizDetailState>(
         builder: (context, state) {
-          return Hero(
-            tag: widget.heroKey,
-            child: Builder(
-              builder: (context) {
-                switch (state.quizCardStatus) {
-                  case EeclassQuizDetailCardStatus.loading:
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Card(
-                          child: ConstrainedBox(
-                            constraints:
-                                BoxConstraints(maxWidth: 450, maxHeight: 600),
-                            child: Loading(),
-                          ),
-                        ),
-                      ),
-                    );
-                  case EeclassQuizDetailCardStatus.success:
-                    return EeclassPopUpQuizInformationSuccessCard(
-                      quizInformation: state.quizCardData!,
-                    );
-                  case EeclassQuizDetailCardStatus.failed:
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Card(
-                          child: ConstrainedBox(
-                            constraints:
-                                BoxConstraints(maxWidth: 450, maxHeight: 600),
-                            child: Text("Failed"),
-                          ),
-                        ),
-                      ),
-                    );
-                  case EeclassQuizDetailCardStatus.unauthenticate:
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Card(
-                          child: ConstrainedBox(
-                            constraints:
-                                BoxConstraints(maxWidth: 450, maxHeight: 600),
-                            child: EeclassUnauthticateView(),
-                          ),
-                        ),
-                      ),
-                    );
-                }
-              },
-            ),
-          );
+          switch (state.quizCardStatus) {
+            case EeclassQuizDetailCardStatus.loading:
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Card(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(maxWidth: 450, maxHeight: 600),
+                      child: Loading(),
+                    ),
+                  ),
+                ),
+              );
+            case EeclassQuizDetailCardStatus.success:
+              return EeclassPopUpQuizDetailSuccessCard(
+                quizInformation: state.quizCardData!,
+              );
+            case EeclassQuizDetailCardStatus.failed:
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Card(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(maxWidth: 450, maxHeight: 600),
+                      child: Text("Failed"),
+                    ),
+                  ),
+                ),
+              );
+          }
         },
       ),
     );
   }
 }
 
-class EeclassPopUpQuizInformationSuccessCard extends StatefulWidget {
-  const EeclassPopUpQuizInformationSuccessCard(
+class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
+  const EeclassPopUpQuizDetailSuccessCard(
       {Key? key, required this.quizInformation})
       : super(key: key);
   final EeclassQuiz quizInformation;
 
-  @override
-  State<EeclassPopUpQuizInformationSuccessCard> createState() =>
-      _EeclassPopUpQuizInformationSuccessCardState();
-}
-
-class _EeclassPopUpQuizInformationSuccessCardState
-    extends State<EeclassPopUpQuizInformationSuccessCard> {
-  static Map<String, String> mapQuizInformationKeyToChinese = {
-    'quizTitle': '測驗標題',
-    'timeDuration': '考試時間',
-    'percentage': '權重',
-    'fullMarks': '滿分',
-    'passingMarks': '及格分數',
-    'discription': '內容',
-    'attachments': '附件',
-  };
-
   Widget _attachmentWidgetBuilder(List attachments, BuildContext context) {
+    if (attachments.isEmpty) {
+      return SizedBox();
+    }
     final _theme = Theme.of(context);
     var widgetList = <Widget>[
-      Text(
-        mapQuizInformationKeyToChinese['attachments']!,
-        style: _theme.textTheme.labelLarge,
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          '附件',
+          style: _theme.textTheme.labelLarge,
+        ),
       ),
     ];
+
     for (var element in attachments) {
       widgetList.add(
-        RichText(
-          text: TextSpan(
-            style: _theme.textTheme.bodyLarge!.copyWith(
-              color: Colors.blue,
-            ),
-            text: element[0],
-            recognizer: TapGestureRecognizer()
-              ..onTap = () async {
-                final eeclassRepo = context.read<EeclassRepository>();
-                final cookiesString =
-                    await eeclassRepo.getCookiesStringForDownload();
-                await FlutterDownloader.enqueue(
-                    headers: {
-                      HttpHeaders.connectionHeader: 'keep-alive',
-                      HttpHeaders.cookieHeader: cookiesString,
-                    },
-                    url: 'https://ncueeclass.ncu.edu.tw' + element[1],
-                    savedDir: "/storage/emulated/0/Download/",
-                    showNotification: true,
-                    openFileFromNotification: true,
-                    saveInPublicStorage: true);
-              },
-          ),
-        ),
+        DownloadAttachmentTags(element: element, theme: _theme),
       );
+      if (element != attachments.last) {
+        widgetList.add(Divider());
+      }
     }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -168,10 +115,111 @@ class _EeclassPopUpQuizInformationSuccessCardState
     );
   }
 
+  Widget _quizInformationWidgetBuilder(
+      EeclassQuiz quizInfo, BuildContext context) {
+    final _theme = Theme.of(context);
+    var _widgetList = <Widget>[];
+    _widgetList.add(
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextInformationProvider(
+          label: '測驗標題',
+          information: quizInfo.quizTitle,
+          informationTextOverFlow: TextOverflow.visible,
+        ),
+      ),
+    );
+    _widgetList.add(Divider());
+    _widgetList.add(
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextInformationProvider(
+          label: '考試時間',
+          information: quizInfo.timeDuration,
+          informationTexttheme: _theme.textTheme.bodyLarge,
+          informationTextOverFlow: TextOverflow.visible,
+        ),
+      ),
+    );
+    _widgetList.add(Divider());
+    _widgetList.add(
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextInformationProvider(
+          label: '測驗時間',
+          information: quizInfo.timeDuration,
+          informationTexttheme: _theme.textTheme.bodyLarge,
+          informationTextOverFlow: TextOverflow.visible,
+        ),
+      ),
+    );
+    _widgetList.add(Divider());
+    _widgetList.add(
+      Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextInformationProvider(
+              label: '滿分',
+              information: quizInfo.fullMarks?.round().toString() ?? "-",
+              informationTextOverFlow: TextOverflow.visible,
+            ),
+          ),
+          VerticalSeperater(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextInformationProvider(
+              label: '及格分數',
+              information: quizInfo.passingMarks?.round().toString() ?? "-",
+              informationTextOverFlow: TextOverflow.visible,
+            ),
+          ),
+          VerticalSeperater(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextInformationProvider(
+              label: '得分',
+              information: quizInfo.score?.round().toString() ?? "-",
+              informationTextOverFlow: TextOverflow.visible,
+            ),
+          ),
+          VerticalSeperater(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextInformationProvider(
+              label: '權重',
+              information: quizInfo.percentage,
+              informationTextOverFlow: TextOverflow.visible,
+            ),
+          ),
+        ],
+      ),
+    );
+    _widgetList.add(Divider());
+    _widgetList.add(
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextInformationProvider(
+          label: '內容',
+          information: quizInfo.description,
+          informationTexttheme: _theme.textTheme.bodyLarge,
+          informationTextOverFlow: TextOverflow.visible,
+        ),
+      ),
+    );
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _widgetList,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-    final jsonQuizInformation = widget.quizInformation.toJson();
+    final jsonQuizInformation = quizInformation.toJson();
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -206,47 +254,15 @@ class _EeclassPopUpQuizInformationSuccessCardState
                 ),
                 ConstrainedBox(
                   constraints: BoxConstraints(maxHeight: 550),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView.separated(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: 7,
-                      itemBuilder: ((context, index) {
-                        final _key = mapQuizInformationKeyToChinese.keys
-                            .elementAt(index);
-                        if (index == 3 || index == 4) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextInformationProvider(
-                              label: mapQuizInformationKeyToChinese[_key]!,
-                              information: jsonQuizInformation[_key]
-                                      ?.round()
-                                      .toString() ??
-                                  "-",
-                              informationTexttheme: _theme.textTheme.bodyLarge,
-                              informationTextOverFlow: TextOverflow.visible,
-                            ),
-                          );
-                        } else if (index == 6) {
-                          if (jsonQuizInformation['attachments'].isNotEmpty) {
-                            return _attachmentWidgetBuilder(
-                                jsonQuizInformation['attachments'], context);
-                          } else {
-                            return SizedBox();
-                          }
-                        } else {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextInformationProvider(
-                              label: mapQuizInformationKeyToChinese[_key]!,
-                              information: jsonQuizInformation[_key] ?? "-",
-                              informationTexttheme: _theme.textTheme.bodyLarge,
-                              informationTextOverFlow: TextOverflow.visible,
-                            ),
-                          );
-                        }
-                      }),
-                      separatorBuilder: (context, index) => Divider(),
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _quizInformationWidgetBuilder(quizInformation, context),
+                        _attachmentWidgetBuilder(
+                            jsonQuizInformation['attachments'], context),
+                      ],
                     ),
                   ),
                 )
@@ -255,6 +271,60 @@ class _EeclassPopUpQuizInformationSuccessCardState
           ),
         ),
       ),
+    );
+  }
+}
+
+class DownloadAttachmentTags extends StatelessWidget {
+  const DownloadAttachmentTags({
+    Key? key,
+    required this.element,
+    required ThemeData theme,
+  })  : _theme = theme,
+        super(key: key);
+
+  final List element;
+  final ThemeData _theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Spacer(),
+        SizedBox(
+          width: 200,
+          child: Text(
+            element[0] ?? "",
+            style: _theme.textTheme.bodyLarge,
+            overflow: TextOverflow.visible,
+          ),
+        ),
+        SizedBox(
+          width: 20,
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            final eeclassRepo = context.read<EeclassRepository>();
+            final cookiesString =
+                await eeclassRepo.getCookiesStringForDownload();
+            await FlutterDownloader.enqueue(
+                headers: {
+                  HttpHeaders.connectionHeader: 'keep-alive',
+                  HttpHeaders.cookieHeader: cookiesString,
+                },
+                url: 'https://ncueeclass.ncu.edu.tw' + element[1],
+                savedDir: "/storage/emulated/0/Download/",
+                showNotification: true,
+                openFileFromNotification: true,
+                saveInPublicStorage: true);
+          },
+          child: Text(
+            "下載",
+            style: _theme.textTheme.labelLarge,
+          ),
+        ),
+        Spacer()
+      ],
     );
   }
 }

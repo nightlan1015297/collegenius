@@ -248,56 +248,34 @@ class EeclassApiClient {
     for (int i = 0; i < infoTitle.length; i++) {
       switch (infoTitle[i].text.trim()) {
         case 'Code':
-          result['classCode'] = infoBody[i].text.trim();
-          break;
         case '課程代碼':
           result['classCode'] = infoBody[i].text.trim();
           break;
         case 'Course name':
-          result['name'] = infoBody[i].text.trim();
-          break;
         case '課程名稱':
           result['name'] = infoBody[i].text.trim();
           break;
         case 'Credits':
-          result['credit'] = infoBody[i].text.trim();
-          break;
         case '學分':
           result['credit'] = infoBody[i].text.trim();
           break;
         case 'Semester':
-          result['semester'] = infoBody[i].text.trim();
-          break;
         case '學期':
           result['semester'] = infoBody[i].text.trim();
           break;
         case 'Division':
-          result['division'] = infoBody[i].text.trim();
-          break;
         case '單位':
           result['division'] = infoBody[i].text.trim();
           break;
         case 'Class':
-          result['classes'] = infoBody[i].text.trim();
-          break;
         case '班級':
           result['classes'] = infoBody[i].text.trim();
           break;
         case 'Members':
-          result['members'] = infoBody[i].text.trim().split(' ')[0];
-          break;
         case '修課人數':
           result['members'] = infoBody[i].text.trim().split(' ')[0];
           break;
         case 'Instructor':
-          result['instroctors'] = infoBody[i]
-              .children
-              .map((e) => e.children[1].children[0].children
-                  .map((e) => e.text)
-                  .toList()
-                  .sublist(0, 2))
-              .toList();
-          break;
         case '老師':
           result['instroctors'] = infoBody[i]
               .children
@@ -308,14 +286,6 @@ class EeclassApiClient {
               .toList();
           break;
         case 'Teaching assistant':
-          result['assistants'] = infoBody[i]
-              .children
-              .map((e) => e.children[1].children[0].children
-                  .map((e) => e.text)
-                  .toList()
-                  .sublist(0, 2))
-              .toList();
-          break;
         case '助教':
           result['assistants'] = infoBody[i]
               .children
@@ -326,27 +296,18 @@ class EeclassApiClient {
               .toList();
           break;
         case 'Description':
-          result['description'] = infoBody[i].text;
-          break;
         case '課程簡介':
           result['description'] = infoBody[i].text;
           break;
         case 'Syllabus':
-          result['syllabus'] = infoBody[i].text;
-          break;
         case '課程大綱':
           result['syllabus'] = infoBody[i].text;
-
           break;
         case 'Textbooks':
-          result['textbooks'] = infoBody[i].text;
-          break;
         case '教科書':
           result['textbooks'] = infoBody[i].text;
           break;
         case 'Grading description':
-          result['gradingDescription'] = infoBody[i].text;
-          break;
         case '成績說明':
           result['gradingDescription'] = infoBody[i].text;
           break;
@@ -390,6 +351,44 @@ class EeclassApiClient {
       return result;
     }
     return [];
+  }
+
+  Future<Map<String, dynamic>> getBullitin({
+    required String bullitinUrl,
+  }) async {
+    var loginStat = await checkLogInStatus();
+    if (!loginStat) {
+      loginStat = await logIn();
+    }
+    var response = await dio.get('/course/material/' + bullitinUrl);
+    dom.Document document = htmlparser.parse(response.data.toString());
+    var content = document.getElementsByClassName('app-bulletin-content')[0];
+    var result = <String, dynamic>{};
+    var textContentList = [];
+    var textContent = content.getElementsByClassName('bulletin-content');
+
+    if (textContent.isNotEmpty) {
+      for (var element in textContent[0].children) {
+        if (element.localName == 'a') {
+          textContentList.add([element.text, element.attributes['href']]);
+        } else {
+          textContentList.add(element.text);
+        }
+      }
+    }
+    result['content'] = textContentList;
+    var fileContent = content.getElementsByClassName('fs-list fs-filelist ');
+    var fileContentList = [];
+    if (fileContent.isNotEmpty) {
+      for (var element in fileContent[0].getElementsByTagName('a')) {
+        fileContentList.add([
+          element.text,
+          element.attributes['href'],
+        ]);
+      }
+    }
+    result['fileContent'] = fileContentList;
+    return result;
   }
 
   Future<List<Map<String, dynamic>>> getCourseMaterial({
@@ -584,9 +583,52 @@ class EeclassApiClient {
     final infoBody = informationTable.getElementsByTagName('dd');
     Map<String, dynamic> result = {};
     for (int i = 0; i < infoTitle.length; i++) {
-      printHighlight(infoTitle[i].text.trim());
+      switch (infoTitle[i].text.trim()) {
+        case 'Start Time':
+        case '開放繳交':
+          result['allowUploadDate'] = infoBody[i].text.trim();
+          break;
+        case 'Submitted':
+        case '已繳交':
+          result['hasUploadedPeople'] = infoBody[i].text.trim();
+          break;
+        case 'End Time':
+        case '繳交期限':
+          result['deadline'] = infoBody[i].text.trim();
+          break;
+        case 'Allow late submission':
+        case '允許遲交':
+          if (infoBody[i].text.trim() == '是' ||
+              infoBody[i].text.trim() == 'Yes') {
+            result['canDelay'] = true;
+          } else {
+            result['canDelay'] = false;
+          }
+          break;
+        case 'Percentage':
+        case '成績比重':
+          result['percentage'] = infoBody[i].text.trim();
+          break;
+        case 'Grading method':
+        case '評分方式':
+          result['gradingMethod'] = infoBody[i].text.trim();
+          break;
+        case 'Description':
+        case '說明':
+          result['description'] = infoBody[i].text.trim();
+          break;
+        case 'Attachment(s)':
+        case '附件':
+          var fileListTag = infoBody[i].getElementsByTagName("a");
+          var fileList = [];
+          for (var element in fileListTag) {
+            fileList.add([element.text, element.attributes['href']]);
+          }
+          result['fileList'] = fileList;
+          break;
+      }
     }
-    return {};
+    return result;
   }
 
   Future<List<Map<String, dynamic>>> getCourseQuiz({
@@ -664,7 +706,7 @@ class EeclassApiClient {
         infoKeys[4].text.trim() == "時間限制") {
       result['timeLimit'] = infoValues[4].text.trim();
     }
-    var discription = '';
+    var description = '';
     var attachments = [];
     for (var element in infoValues[5].children) {
       if (element.className == "fs-list fs-filelist ") {
@@ -673,11 +715,11 @@ class EeclassApiClient {
               .add([attachmentTag.text, attachmentTag.attributes['href']]);
         }
       } else {
-        discription += element.text;
-        discription += "\n";
+        description += element.text;
+        description += "\n";
       }
     }
-    result['discription'] = discription.trim();
+    result['description'] = description.trim();
     result['attachments'] = attachments;
 
     var tooltable = document.getElementsByClassName("fs-tools");

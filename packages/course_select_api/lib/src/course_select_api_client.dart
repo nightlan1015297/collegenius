@@ -16,19 +16,6 @@ class UnAuthenticatedFailure implements Exception {}
 
 class NotReadyFailure implements Exception {}
 
-dynamic elemToString(dom.Element element) {
-  switch (element.localName) {
-    case 'p':
-      return element.text.trim();
-    case 'ol':
-      return element.children.map((e) => e.text.trim());
-    case 'div':
-      return element.text.trim();
-    default:
-      return element.text.trim();
-  }
-}
-
 String indexToCode(int index) {
   switch (index) {
     case 1:

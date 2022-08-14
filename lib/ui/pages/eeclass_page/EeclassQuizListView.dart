@@ -67,72 +67,67 @@ class EeclassQuizCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-    final heroKey = UniqueKey();
 
     return LayoutBuilder(
       builder: (context, constrains) {
-        return GestureDetector(
+        return InkWell(
           onTap: () {
             Navigator.of(context).pushNamed(
               '/eeclassCourse/quizzes/popup',
               arguments: EeclassQuizzPopupArguments(
                 quizUrl: quizUrl,
-                heroKey: heroKey,
               ),
             );
           },
-          child: Hero(
-            tag: heroKey,
-            child: Card(
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: SizedBox(
-                  height: 110,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              quizTitle,
-                              style: _theme.textTheme.headline6,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+          child: Card(
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: SizedBox(
+                height: 100,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            quizTitle,
+                            style: _theme.textTheme.headline6,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          Icon(
-                            Icons.chevron_right_outlined,
-                            color: _theme.iconTheme.color,
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Row(children: [
-                          SizedBox(
-                            width: 140,
-                            child: TextInformationProvider(
-                                informationTextOverFlow: TextOverflow.ellipsis,
-                                label: "考試日期",
-                                information: quizDeadline),
-                          ),
-                          VerticalSeperater(),
-                          SizedBox(
-                            width: 40,
-                            child: TextInformationProvider(
-                                informationTextOverFlow: TextOverflow.ellipsis,
-                                label: "分數",
-                                information: score),
-                          ),
-                        ]),
-                      )
-                    ],
-                  ),
+                        ),
+                        Icon(
+                          Icons.chevron_right_outlined,
+                          color: _theme.iconTheme.color,
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(children: [
+                        SizedBox(
+                          width: 140,
+                          child: TextInformationProvider(
+                              informationTextOverFlow: TextOverflow.ellipsis,
+                              label: "考試日期",
+                              information: quizDeadline),
+                        ),
+                        VerticalSeperater(),
+                        SizedBox(
+                          width: 40,
+                          child: TextInformationProvider(
+                              informationTextOverFlow: TextOverflow.ellipsis,
+                              label: "分數",
+                              information: score),
+                        ),
+                      ]),
+                    )
+                  ],
                 ),
               ),
-              elevation: 5.0,
             ),
+            elevation: 5.0,
           ),
         );
       },

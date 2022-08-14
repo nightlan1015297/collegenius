@@ -1,3 +1,4 @@
+import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
@@ -31,16 +32,11 @@ class EeclassAssignmentsListView extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               itemCount: assignmentList.length,
               itemBuilder: (context, index) {
-                final assignmentInfoBrief = assignmentList[index];
+                final assignmentBrief = assignmentList[index];
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: EeclassAssignmentCard(
-                      assignmentTitle: assignmentInfoBrief.title,
-                      assignmentScore:
-                          assignmentInfoBrief.score?.round().toString() ?? "-",
-                      assignmentDeadline: assignmentInfoBrief.deadline,
-                      assignmentIsHandedOn: assignmentInfoBrief.isHandedOn,
-                      assignmentUrl: assignmentInfoBrief.url),
+                  child:
+                      EeclassAssignmentCard(assignmentBrief: assignmentBrief),
                 );
               },
             ),
@@ -53,95 +49,88 @@ class EeclassAssignmentsListView extends StatelessWidget {
 }
 
 class EeclassAssignmentCard extends StatelessWidget {
-  final String assignmentTitle;
-  final String assignmentScore;
-  final String assignmentUrl;
-  final String assignmentDeadline;
-  final bool assignmentIsHandedOn;
+  final EeclassAssignmentBrief assignmentBrief;
   EeclassAssignmentCard({
-    required this.assignmentTitle,
-    required this.assignmentScore,
-    required this.assignmentDeadline,
-    required this.assignmentUrl,
-    required this.assignmentIsHandedOn,
+    required this.assignmentBrief,
   });
 
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-    return LayoutBuilder(
-      builder: (context, constrains) {
-        return GestureDetector(
-          onTap: () {},
-          child: Card(
-            margin: EdgeInsets.zero,
-            child: Container(
-              padding: EdgeInsets.all(10),
-              width: constrains.maxWidth - 20,
-              height: 120,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed('/eeclassCourse/assignments/popup',
+            arguments: EeclassAssignmentsPopupArguments(
+              assignmentBrief: assignmentBrief,
+            ));
+      },
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: Container(
+          padding: EdgeInsets.all(10),
+          height: 120,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          assignmentTitle,
-                          style: _theme.textTheme.headline6,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Icon(
-                        Icons.chevron_right_outlined,
-                        color: _theme.iconTheme.color,
-                      ),
-                    ],
+                  Expanded(
+                    child: Text(
+                      assignmentBrief.title,
+                      style: _theme.textTheme.headline6,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Row(children: [
-                      SizedBox(
-                        width: 140,
-                        child: TextInformationProvider(
-                            informationTextOverFlow: TextOverflow.ellipsis,
-                            label: "繳交期限",
-                            information: assignmentDeadline),
-                      ),
-                      Spacer(),
-                      SizedBox(
-                        width: 80,
-                        child: IconInformationProvider(
-                            label: "繳交狀態",
-                            informationIcon: assignmentIsHandedOn
-                                ? Icon(
-                                    Icons.check_circle_outline,
-                                    size: 22,
-                                    color: Colors.green,
-                                  )
-                                : Icon(
-                                    Icons.cancel_outlined,
-                                    size: 22,
-                                    color: Colors.red,
-                                  )),
-                      ),
-                      VerticalSeperater(),
-                      SizedBox(
-                        width: 40,
-                        child: TextInformationProvider(
-                            informationTextOverFlow: TextOverflow.ellipsis,
-                            label: "分數",
-                            information: assignmentScore),
-                      ),
-                    ]),
-                  )
+                  Icon(
+                    Icons.chevron_right_outlined,
+                    color: _theme.iconTheme.color,
+                  ),
                 ],
               ),
-            ),
-            elevation: 5.0,
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(children: [
+                  SizedBox(
+                    width: 140,
+                    child: TextInformationProvider(
+                        informationTextOverFlow: TextOverflow.ellipsis,
+                        label: "繳交期限",
+                        information: assignmentBrief.deadline),
+                  ),
+                  Spacer(),
+                  SizedBox(
+                    width: 80,
+                    child: IconInformationProvider(
+                        label: "繳交狀態",
+                        informationIcon: assignmentBrief.isHandedOn
+                            ? Icon(
+                                Icons.check_circle_outline,
+                                size: 22,
+                                color: Colors.green,
+                              )
+                            : Icon(
+                                Icons.cancel_outlined,
+                                size: 22,
+                                color: Colors.red,
+                              )),
+                  ),
+                  VerticalSeperater(),
+                  SizedBox(
+                    width: 40,
+                    child: TextInformationProvider(
+                        informationTextOverFlow: TextOverflow.ellipsis,
+                        label: "分數",
+                        information:
+                            assignmentBrief.score?.round().toString() ?? ""),
+                  ),
+                ]),
+              )
+            ],
           ),
-        );
-      },
+        ),
+        elevation: 5.0,
+      ),
     );
   }
 }

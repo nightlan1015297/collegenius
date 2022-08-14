@@ -35,7 +35,6 @@ class _EeclassCoursesListViewState extends State<EeclassCoursesListView> {
             case EeclassHomePageStatus.unAuthentucated:
               return EeclassUnauthticateView();
             case EeclassHomePageStatus.initial:
-              return Center(child: Loading(size: 120));
             case EeclassHomePageStatus.loading:
               return Center(child: Loading(size: 120));
             case EeclassHomePageStatus.success:
@@ -123,7 +122,7 @@ class EeclassCourseCard extends StatelessWidget {
     return SizedBox(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
+        child: InkWell(
           onTap: () {
             Navigator.of(context).pushNamed('/eeclassCourse',
                 arguments: EeclassCourseArguments(courseSerial: courseSerial));

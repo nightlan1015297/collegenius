@@ -56,7 +56,7 @@ class EeclassMaterialCard extends StatelessWidget {
   });
 
   final EeclassMaterialBrief materialInfoBrief;
-  Map<String, IconData> mapMaterialTypeToIcon = {
+  final Map<String, IconData> mapMaterialTypeToIcon = {
     "attachment": Icons.attach_file,
     "pdf": Icons.picture_as_pdf,
     "youtube": Icons.video_label,
@@ -67,7 +67,7 @@ class EeclassMaterialCard extends StatelessWidget {
     final heroKey = UniqueKey();
     return LayoutBuilder(
       builder: (context, constrains) {
-        return GestureDetector(
+        return InkWell(
           onTap: () {
             Navigator.of(context).push(
               HeroDialogRoute(

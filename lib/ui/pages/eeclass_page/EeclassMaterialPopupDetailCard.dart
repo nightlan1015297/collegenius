@@ -10,7 +10,6 @@ import 'package:collegenius/logic/cubit/eeclass_material_detail_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
-import 'package:collegenius/ui/pages/eeclass_page/EeclassUnauthticateView.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class EeclassMaterialPopupDetailCard extends StatefulWidget {
@@ -46,16 +45,16 @@ class _EeclassMaterialPopupDetailCardState
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => eeclassMaterialDetailCubit,
-      child:
-          BlocBuilder<EeclassMaterialDetailCubit, EeclassMaterialDetailState>(
-        builder: (context, state) {
-          switch (state.detailCardStatus) {
-            case EeclassMaterialDetailCardStatus.loading:
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Hero(
-                    tag: widget.heroKey,
+      child: Hero(
+        tag: widget.heroKey,
+        child:
+            BlocBuilder<EeclassMaterialDetailCubit, EeclassMaterialDetailState>(
+          builder: (context, state) {
+            switch (state.detailCardStatus) {
+              case EeclassMaterialDetailCardStatus.loading:
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Card(
                       child: ConstrainedBox(
                         constraints:
@@ -64,41 +63,28 @@ class _EeclassMaterialPopupDetailCardState
                       ),
                     ),
                   ),
-                ),
-              );
-            case EeclassMaterialDetailCardStatus.success:
-              return EeclassMaterialDetailedSuccessCard(
-                materialBrief: widget.materialBrief,
-                materialDetail: state.materialCardData!,
-              );
-            case EeclassMaterialDetailCardStatus.failed:
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Card(
-                    child: ConstrainedBox(
-                      constraints:
-                          BoxConstraints(maxWidth: 450, maxHeight: 600),
-                      child: Text("Failed"),
+                );
+              case EeclassMaterialDetailCardStatus.success:
+                return EeclassMaterialDetailedSuccessCard(
+                  materialBrief: widget.materialBrief,
+                  materialDetail: state.materialCardData!,
+                );
+              case EeclassMaterialDetailCardStatus.failed:
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Card(
+                      child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(maxWidth: 450, maxHeight: 600),
+                        child: Text("Failed"),
+                      ),
                     ),
                   ),
-                ),
-              );
-            case EeclassMaterialDetailCardStatus.unauthenticate:
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Card(
-                    child: ConstrainedBox(
-                      constraints:
-                          BoxConstraints(maxWidth: 450, maxHeight: 600),
-                      child: EeclassUnauthticateView(),
-                    ),
-                  ),
-                ),
-              );
-          }
-        },
+                );
+            }
+          },
+        ),
       ),
     );
   }
@@ -177,7 +163,9 @@ class _EeclassMaterialDetailedSuccessCardState
   }
 
   Column _materialBriefBuilder(
-      {required Map<String, dynamic> jsonMaterialBrief}) {
+      {required Map<String, dynamic> jsonMaterialBrief,
+      required BuildContext context}) {
+    final _theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -185,6 +173,7 @@ class _EeclassMaterialDetailedSuccessCardState
           padding: const EdgeInsets.all(8.0),
           child: TextInformationProvider(
               informationTextOverFlow: TextOverflow.visible,
+              informationTexttheme: _theme.textTheme.bodyLarge,
               label: "標題",
               information: jsonMaterialBrief["title"] ?? "-"),
         ),
@@ -193,18 +182,22 @@ class _EeclassMaterialDetailedSuccessCardState
           padding: const EdgeInsets.all(8.0),
           child: TextInformationProvider(
               label: "閱讀次數",
+              informationTexttheme: _theme.textTheme.bodyLarge,
               information: jsonMaterialBrief["readCount"] ?? "-"),
         ),
         Divider(),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextInformationProvider(
-              label: "作者", information: jsonMaterialBrief["auther"] ?? "-"),
+              informationTexttheme: _theme.textTheme.bodyLarge,
+              label: "作者",
+              information: jsonMaterialBrief["auther"] ?? "-"),
         ),
         Divider(),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextInformationProvider(
+              informationTexttheme: _theme.textTheme.bodyLarge,
               label: "更新日期",
               information: jsonMaterialBrief["updateDate"] ?? "-"),
         ),
@@ -226,7 +219,7 @@ class _EeclassMaterialDetailedSuccessCardState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(
-                  height: 40,
+                  height: 50,
                   child: Stack(
                     children: [
                       Align(
@@ -249,7 +242,7 @@ class _EeclassMaterialDetailedSuccessCardState
                   ),
                 ),
                 ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 560),
+                  constraints: BoxConstraints(maxHeight: 550),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListView.separated(
@@ -258,7 +251,8 @@ class _EeclassMaterialDetailedSuccessCardState
                       itemBuilder: ((context, index) {
                         if (index == 0) {
                           return _materialBriefBuilder(
-                              jsonMaterialBrief: jsonMaterialBrief);
+                              jsonMaterialBrief: jsonMaterialBrief,
+                              context: context);
                         } else {
                           return _materialBuilder(
                               context: context,
