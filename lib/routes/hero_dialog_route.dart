@@ -29,7 +29,9 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    return child;
+    return ScaleTransition(
+        scale: CurveTween(curve: Curves.easeInOutBack).animate(animation),
+        child: child);
   }
 
   @override
