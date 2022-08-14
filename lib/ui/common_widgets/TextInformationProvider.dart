@@ -35,10 +35,12 @@ class TextInformationProvider extends StatelessWidget {
             maxLines: labelMaxLines,
             overflow: labelTextOverFlow,
             style: labelTexttheme ?? _theme.textTheme.labelLarge),
-        Text(information,
+        SelectableText(information,
             maxLines: informationMaxLines,
-            overflow: informationTextOverFlow,
-            style: informationTexttheme ?? _theme.textTheme.headline6)
+            style: informationTexttheme?.copyWith(
+                    overflow: informationTextOverFlow) ??
+                _theme.textTheme.headline6!
+                    .copyWith(overflow: informationTextOverFlow))
       ],
     );
   }
