@@ -4,7 +4,6 @@ enum EeclassMaterialDetailCardStatus {
   loading,
   success,
   failed,
-  unauthenticate,
 }
 
 class EeclassMaterialDetailState extends Equatable {
