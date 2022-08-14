@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collegenius/models/eeclass_model/EeclassAssignment.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:eeclass_api/eeclass_api.dart';
@@ -55,27 +56,30 @@ class EeclassRepository {
     return cookies;
   }
 
-  Future<List<EeclassCourseBrief>> getCourses(String semester) async {
+  Future<List<EeclassCourseBrief>> getCourses({
+    required String semester,
+  }) async {
     final mapCourses = await _eeclassApiClient.getCourses(semester: semester);
     final List<EeclassCourseBrief> courses = [];
     mapCourses.forEach((element) {
       courses.add(EeclassCourseBrief.fromJson(element));
     });
-    //! TESTING CODE
-    _eeclassApiClient.getAssignment(assignmentUrl: '/course/homework/12245');
-    //! REMOVE BEFORE FLIGHT
+
     return courses;
   }
 
-  Future<EeclassCourseInformation> getCourseInformation(
-      {required String courseSerial}) async {
+  Future<EeclassCourseInformation> getCourseInformation({
+    required String courseSerial,
+  }) async {
     final courseInformation = await _eeclassApiClient.getCourseInformation(
         courseSerial: courseSerial);
     return EeclassCourseInformation.fromJson(courseInformation);
   }
 
-  Future<List<EeclassBullitinBrief>> getCourseBulletin(
-      {required String courseSerial, required int page}) async {
+  Future<List<EeclassBullitinBrief>> getCourseBulletin({
+    required String courseSerial,
+    required int page,
+  }) async {
     final courseBulletinJson = await _eeclassApiClient.getCourseBulletin(
         courseSerial: courseSerial, page: page);
     final List<EeclassBullitinBrief> courseBulletinList = [];
@@ -86,8 +90,9 @@ class EeclassRepository {
     return courseBulletinList;
   }
 
-  Future<List<EeclassQuizBrief>> getCourseQuiz(
-      {required String courseSerial}) async {
+  Future<List<EeclassQuizBrief>> getCourseQuiz({
+    required String courseSerial,
+  }) async {
     final courseQuizJson =
         await _eeclassApiClient.getCourseQuiz(courseSerial: courseSerial);
     final List<EeclassQuizBrief> courseQuizList = [];
@@ -98,8 +103,9 @@ class EeclassRepository {
     return courseQuizList;
   }
 
-  Future<List<EeclassMaterialBrief>> getCourseMaterial(
-      {required String courseSerial}) async {
+  Future<List<EeclassMaterialBrief>> getCourseMaterial({
+    required String courseSerial,
+  }) async {
     final courseMaterialJson =
         await _eeclassApiClient.getCourseMaterial(courseSerial: courseSerial);
 
@@ -111,8 +117,9 @@ class EeclassRepository {
     return courseMaterialList;
   }
 
-  Future<List<EeclassAssignmentBrief>> getCourseAssignment(
-      {required String courseSerial}) async {
+  Future<List<EeclassAssignmentBrief>> getCourseAssignment({
+    required String courseSerial,
+  }) async {
     final courseAssignmentJson =
         await _eeclassApiClient.getCourseAssignment(courseSerial: courseSerial);
     final List<EeclassAssignmentBrief> courseAssignmentList = [];
@@ -123,7 +130,9 @@ class EeclassRepository {
     return courseAssignmentList;
   }
 
-  Future<EeclassQuiz> getQuiz({required String url}) async {
+  Future<EeclassQuiz> getQuiz({
+    required String url,
+  }) async {
     final quizJson = await _eeclassApiClient.getQuiz(quizUrl: url);
     return EeclassQuiz.fromJson(quizJson);
   }
@@ -137,5 +146,13 @@ class EeclassRepository {
       materialUrl: url,
     );
     return EeclassMaterial.fromJson(materialJson);
+  }
+
+  Future<EeclassAssignment> getAssignment({
+    required String url,
+  }) async {
+    final assignmentJson =
+        await _eeclassApiClient.getAssignment(assignmentUrl: url);
+    return EeclassAssignment.fromJson(assignmentJson);
   }
 }
