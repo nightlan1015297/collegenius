@@ -4,7 +4,6 @@ enum EeclassQuizDetailCardStatus {
   loading,
   success,
   failed,
-  unauthenticate,
 }
 
 class EeclassQuizDetailState extends Equatable {
