@@ -17,4 +17,6 @@ class User extends Equatable {
   List<Object> get props => [id, password];
 
   static const empty = User(id: '-', password: '-');
+
+  bool get isEmpty => this == empty;
 }
