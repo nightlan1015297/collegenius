@@ -16,20 +16,22 @@ class EeclassBullitinListCubit extends Cubit<EeclassBullitinListState> {
   final EeclassRepository eeclassRepository;
 
   Future<void> fetchInitBullitin() async {
-    emit(state.copywith(status: EeclassBullitinListStatus.loading));
+    emit(state.copyWith(status: EeclassBullitinListStatus.loading));
     try {
       var fetchedList = await eeclassRepository.getCourseBulletin(
         courseSerial: courseSerial,
         page: 1,
       );
       emit(
-        state.copywith(
+        state.copyWith(
             status: EeclassBullitinListStatus.success,
             bullitins: fetchedList,
             loadedPage: 1),
       );
     } catch (error) {
-      emit(state.copywith(status: EeclassBullitinListStatus.failure));
+      if (!isClosed) {
+        emit(state.copyWith(status: EeclassBullitinListStatus.failure));
+      }
     }
   }
 
@@ -40,15 +42,15 @@ class EeclassBullitinListCubit extends Cubit<EeclassBullitinListState> {
         page: state.loadedPage + 1,
       );
       if (newFetched.isEmpty) {
-        emit(state.copywith(isLoadedEnd: true));
+        emit(state.copyWith(isLoadedEnd: true));
       } else {
-        emit(state.copywith(
+        emit(state.copyWith(
             status: EeclassBullitinListStatus.success,
             bullitins: state.bullitins + newFetched,
             loadedPage: state.loadedPage + 1));
       }
     } catch (error, stacktrace) {
-      emit(state.copywith(status: EeclassBullitinListStatus.failure));
+      emit(state.copyWith(status: EeclassBullitinListStatus.failure));
     }
   }
 }

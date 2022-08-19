@@ -18,7 +18,7 @@ class EeclassBullitinListState extends Equatable {
   final int loadedPage;
   final List<EeclassBullitinBrief> bullitins;
 
-  EeclassBullitinListState copywith({
+  EeclassBullitinListState copyWith({
     EeclassBullitinListStatus? status,
     bool? isLoadedEnd,
     int? loadedPage,
