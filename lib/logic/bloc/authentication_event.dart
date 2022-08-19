@@ -7,12 +7,12 @@ abstract class AuthenticationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class InitializeRequested extends AuthenticationEvent {
-  InitializeRequested();
+class InitializeRequest extends AuthenticationEvent {
+  InitializeRequest();
 }
 
-class EeclassAuthenticatedRequested extends AuthenticationEvent {
-  EeclassAuthenticatedRequested({required this.user});
+class EeclassAuthenticateRequest extends AuthenticationEvent {
+  EeclassAuthenticateRequest({required this.user});
 
   final User user;
 
@@ -20,8 +20,8 @@ class EeclassAuthenticatedRequested extends AuthenticationEvent {
   List<Object> get props => [user];
 }
 
-class CourseSelectAuthenticatedRequested extends AuthenticationEvent {
-  CourseSelectAuthenticatedRequested({required this.user});
+class CourseSelectAuthenticateRequest extends AuthenticationEvent {
+  CourseSelectAuthenticateRequest({required this.user});
 
   final User user;
 
@@ -29,4 +29,18 @@ class CourseSelectAuthenticatedRequested extends AuthenticationEvent {
   List<Object> get props => [user];
 }
 
-class AuthenticationLogoutRequested extends AuthenticationEvent {}
+class PortalAuthenticateRequest extends AuthenticationEvent {
+  PortalAuthenticateRequest({required this.user});
+
+  final User user;
+
+  @override
+  List<Object> get props => [user];
+}
+
+class PortalCaptchaAcquiredRequest extends AuthenticationEvent {
+  final List<Cookie> cookies;
+  PortalCaptchaAcquiredRequest({required this.cookies});
+}
+
+class AuthenticationLogoutRequest extends AuthenticationEvent {}
