@@ -1,5 +1,7 @@
-import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
+import 'package:collegenius/models/error_model/ErrorModel.dart';
 import 'package:flutter/cupertino.dart';
+
+import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 
 class EeclassCourseArguments {
   EeclassCourseArguments({required this.courseSerial});
@@ -37,4 +39,23 @@ class EeclassAssignmentsPopupArguments {
   });
 
   final EeclassAssignmentBrief assignmentBrief;
+}
+
+class EeclassBullitinsPageArguments {
+  EeclassBullitinsPageArguments({
+    required this.courseSerial,
+  });
+  final String courseSerial;
+}
+
+class EeclassBulliitinsPopupArguments {
+  EeclassBulliitinsPopupArguments({
+    required this.bullitinBrief,
+  });
+  final EeclassBullitinBrief bullitinBrief;
+}
+
+class LoginFailedArguments {
+  LoginFailedArguments({required this.err});
+  final ErrorModel err;
 }
