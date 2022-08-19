@@ -28,7 +28,7 @@ class CourseSchedualSuccessView extends StatelessWidget {
           switch (state.renderStatus) {
             case CourseSchedualPageRenderStatus.noData:
               return Center(
-                child: Text(_locale.courseSchedualNoData),
+                child: Text(_locale.noData),
               );
             case CourseSchedualPageRenderStatus.noCourse:
               return Center(
@@ -94,35 +94,33 @@ class SemesterPicker extends StatelessWidget {
             children: [
               Text(_locale.semesterPicker),
               SizedBox(height: 5),
-              StatefulBuilder(builder: (context, setState) {
-                return Container(
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: _theme.textTheme.bodyLarge!.color!),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: InkWell(
-                    child: SizedBox(
-                      child: Row(
-                        children: [
-                          SizedBox(width: 15),
-                          Spacer(),
-                          Text("-", style: _theme.textTheme.titleLarge),
-                          Spacer(),
-                          Container(
-                            margin: EdgeInsets.all(1),
-                            padding: EdgeInsets.all(1),
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: _theme.iconTheme.color,
-                              size: 30,
-                            ),
+              Container(
+                decoration: BoxDecoration(
+                    border:
+                        Border.all(color: _theme.textTheme.bodyLarge!.color!),
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: InkWell(
+                  child: SizedBox(
+                    child: Row(
+                      children: [
+                        SizedBox(width: 15),
+                        Spacer(),
+                        Text("-", style: _theme.textTheme.titleLarge),
+                        Spacer(),
+                        Container(
+                          margin: EdgeInsets.all(1),
+                          padding: EdgeInsets.all(1),
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: _theme.iconTheme.color,
+                            size: 30,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              })
+                ),
+              ),
             ],
           );
         }

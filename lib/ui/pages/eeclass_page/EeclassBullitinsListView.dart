@@ -7,6 +7,7 @@ import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EeclassBullitinListView extends StatefulWidget {
   const EeclassBullitinListView({
@@ -74,6 +75,8 @@ class EeclassBullitinListViewSuccess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
+
     return BlocBuilder<EeclassBullitinListCubit, EeclassBullitinListState>(
       builder: (context, state) {
         if (state.bullitins.isEmpty) {
@@ -86,12 +89,12 @@ class EeclassBullitinListViewSuccess extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '(=\'X\'=)',
+                      _locale.noDataEmoticon,
                       style: _theme.textTheme.displayMedium!
                           .copyWith(fontWeight: FontWeight.w900),
                     )
                   ]),
-              Text('No bullitins'),
+              Text(_locale.noBullitins),
             ],
           );
         }
@@ -115,7 +118,7 @@ class EeclassBullitinListViewSuccess extends StatelessWidget {
                         return Card(
                           child: SizedBox(
                             height: 120,
-                            child: Center(child: Text("End of Bullitin")),
+                            child: Center(child: Text(_locale.endOfBullitin)),
                           ),
                         );
                       }
@@ -143,6 +146,7 @@ class EeclassBullitinCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return InkWell(
       onTap: () {
         Navigator.of(context).pushNamed(
@@ -186,7 +190,7 @@ class EeclassBullitinCard extends StatelessWidget {
                         width: 130,
                         child: TextInformationProvider(
                             informationTextOverFlow: TextOverflow.ellipsis,
-                            label: "發布時間",
+                            label: _locale.publicationDate,
                             information: bullitinBrief.date),
                       ),
                       VerticalSeperater(),
@@ -194,7 +198,7 @@ class EeclassBullitinCard extends StatelessWidget {
                         width: 70,
                         child: TextInformationProvider(
                             informationTextOverFlow: TextOverflow.ellipsis,
-                            label: "閱讀人數",
+                            label: _locale.readCount,
                             information: bullitinBrief.readCount),
                       ),
                       Spacer(),
@@ -202,7 +206,7 @@ class EeclassBullitinCard extends StatelessWidget {
                         width: 100,
                         child: TextInformationProvider(
                             informationTextOverFlow: TextOverflow.ellipsis,
-                            label: "發布者",
+                            label: _locale.publisher,
                             information: bullitinBrief.auther),
                       ),
                     ]),

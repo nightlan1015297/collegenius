@@ -3,11 +3,11 @@ import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collegenius/constants/Constants.dart';
 
-
 import 'package:collegenius/logic/cubit/eeclass_bullitin_detail_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EeclassBullitinPopupDetailCard extends StatefulWidget {
   const EeclassBullitinPopupDetailCard({
@@ -96,6 +96,7 @@ class EeclassBullitinDetailedSuccessCard extends StatelessWidget {
     required BuildContext context,
   }) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     var _widgetList = <Widget>[];
     _widgetList.add(
       Padding(
@@ -103,7 +104,7 @@ class EeclassBullitinDetailedSuccessCard extends StatelessWidget {
         child: TextInformationProvider(
             informationTextOverFlow: TextOverflow.visible,
             informationTexttheme: _theme.textTheme.bodyLarge,
-            label: "標題",
+            label: _locale.bullitinTitle,
             information: bullitinBrief.title),
       ),
     );
@@ -116,7 +117,7 @@ class EeclassBullitinDetailedSuccessCard extends StatelessWidget {
             child: TextInformationProvider(
                 informationTextOverFlow: TextOverflow.visible,
                 informationTexttheme: _theme.textTheme.bodyLarge,
-                label: "發布日期",
+                label: _locale.publicationDate,
                 information: bullitinBrief.date),
           ),
           VerticalSeperater(),
@@ -125,7 +126,7 @@ class EeclassBullitinDetailedSuccessCard extends StatelessWidget {
             child: TextInformationProvider(
                 informationTextOverFlow: TextOverflow.visible,
                 informationTexttheme: _theme.textTheme.bodyLarge,
-                label: "閱讀人數",
+                label: _locale.readCount,
                 information: bullitinBrief.readCount),
           ),
         ],
@@ -141,6 +142,7 @@ class EeclassBullitinDetailedSuccessCard extends StatelessWidget {
     required EeclassBullitin bullitinDetail,
     required BuildContext context,
   }) {
+    final _locale = AppLocalizations.of(context)!;
     var _widgetList = <Widget>[];
     _widgetList.add(
       Padding(
@@ -149,7 +151,7 @@ class EeclassBullitinDetailedSuccessCard extends StatelessWidget {
             informationTextOverFlow: TextOverflow.visible,
             informationTexttheme: Theme.of(context).textTheme.bodyLarge,
             selectable: true,
-            label: "內容",
+            label: _locale.content,
             information: bullitinDetail.content.join("")),
       ),
     );
@@ -163,7 +165,7 @@ class EeclassBullitinDetailedSuccessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-
+    final _locale = AppLocalizations.of(context)!;
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -180,7 +182,7 @@ class EeclassBullitinDetailedSuccessCard extends StatelessWidget {
                       Align(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("公告資訊",
+                          child: Text(_locale.bullitinInformation,
                               style: _theme.textTheme.titleLarge,
                               textAlign: TextAlign.start),
                         ),

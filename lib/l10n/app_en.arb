@@ -19,7 +19,7 @@
     }
   },
 	"courseSchedualNotLoginMessage":"You have to login first to view Course schedual",
-	"courseSchedualNoData":"No Data Founded",
+	"noData":"No Data Founded",
 	"courseSchedualNoCourse":"No Courses Today",
 	"daysPicker":"Days",
 	"semesterPicker":"Semester",
@@ -27,6 +27,63 @@
 	"time":"Time",
 	"courseInformation":"Course Information",
 	"courseName":"Course Name",
-	"professor":"Professor"
+	"professor":"Professor",
+
+  "assignmentTitle":"Assignment title",
+  "avaliableToUploadTime":"Time avaliable to upload",
+  "deadline":"Deadline",
+  "scooringMethod" : "Grading method",
+  "score":"Geade",
+  "content":"Content",
+  "assignmentInformation":"Assignment information",
+  "assignmentOverview":"Assignment overview",
+  "noDataEmoticon":"(='X'=)",
+  "canHandInPeriod":"Deadline",
+  "handInStatus":"status",
+
+  "attachments":"Attachments",
+  "download":"Download",
+  
+  "bullitinTitle":"Bulletin title",
+  "publicationDate":"Publication date",
+  "readCount" : "Read count",
+  "bullitinInformation":"Bulletin information",
+
+  "courseBullitin":"Course bulletin",
+  "noBullitins":"No bulletins",
+  "endOfBullitin":"End of bulletin",
+  "publisher":"Publisher",
+
+  "materialOverview":"Material overview",
+  "uploadDate":"Upload date",
+  "updateDate":"Update date",
+  "type":"Type",
+  "auther":"Auther",
+  "title":"Title",
+  "materialInformation":"Material information",
+  "openVideo":"Open Video",
+  "openInBrowser":"Open in browser",
+  "quizOverview":"Quiz overview",
+  "quizDate":"Date",
+  "quizTitle":"Quiz title",
+  "quizTime":"Time",
+  "timeLimit":"Time limitation",
+  "fullMarks":"Full marks",
+  "passingMarks":"Passing marks",
+  "weights":"Weights",
+  "quizInformation":"Quiz information",
+  "eeclassNotLoginMessage":"You have to login first to access Eeclass related service",
+  "latestScore":"Latest score",
+  "noQuiz":"No Quiz",
+  "parseError":"-",
+  "loading":"Loading",
+
+  "loadError":"Load error",
+  "exceptionDescription":"Exception Description",
+  "errorStacktrace":"Error Stacktrace",
+  "retry":"Retry",
+  "courseCode":"Course code",
+  "credit":"Credit"
+
 } 
 

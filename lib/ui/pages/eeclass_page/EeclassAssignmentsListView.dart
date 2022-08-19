@@ -2,6 +2,7 @@ import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EeclassAssignmentsListView extends StatelessWidget {
   final List<EeclassAssignmentBrief> assignmentList;
@@ -13,10 +14,11 @@ class EeclassAssignmentsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Assignment overview",
+          _locale.assignmentOverview,
           style: _theme.textTheme.titleLarge,
         ),
         elevation: 0,
@@ -51,12 +53,12 @@ class EeclassAssignmentsListView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '(=\'X\'=)',
+                      _locale.noDataEmoticon,
                       style: _theme.textTheme.displayMedium!
                           .copyWith(fontWeight: FontWeight.w900),
                     )
                   ]),
-              Text('沒有資料'),
+              Text(_locale.noData),
             ],
           );
       }),
@@ -73,6 +75,8 @@ class EeclassAssignmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
+
     return InkWell(
       onTap: () {
         Navigator.of(context).pushNamed('/eeclassCourse/assignments/popup',
@@ -111,14 +115,14 @@ class EeclassAssignmentCard extends StatelessWidget {
                     width: 140,
                     child: TextInformationProvider(
                         informationTextOverFlow: TextOverflow.ellipsis,
-                        label: "繳交期限",
+                        label: _locale.canHandInPeriod,
                         information: assignmentBrief.deadline),
                   ),
                   Spacer(),
                   SizedBox(
                     width: 80,
                     child: IconInformationProvider(
-                        label: "繳交狀態",
+                        label: _locale.handInStatus,
                         informationIcon: assignmentBrief.isHandedOn
                             ? Icon(
                                 Icons.check_circle_outline,
@@ -136,7 +140,7 @@ class EeclassAssignmentCard extends StatelessWidget {
                     width: 40,
                     child: TextInformationProvider(
                         informationTextOverFlow: TextOverflow.ellipsis,
-                        label: "分數",
+                        label: _locale.score,
                         information:
                             assignmentBrief.score?.round().toString() ?? ""),
                   ),

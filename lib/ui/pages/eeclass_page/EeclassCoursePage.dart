@@ -4,6 +4,7 @@ import 'package:collegenius/models/eeclass_model/EeclassBullitinBrief.dart';
 import 'package:collegenius/models/eeclass_model/EeclassCourseInformation.dart';
 import 'package:collegenius/models/error_model/ErrorModel.dart';
 import 'package:collegenius/constants/Constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/routes/route_arguments.dart';
@@ -84,6 +85,7 @@ class EeclassCoursePageFailedView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -93,7 +95,7 @@ class EeclassCoursePageFailedView extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    '載入發生錯誤',
+                    _locale.loadError,
                     style: _theme.textTheme.headline6,
                   )),
               Expanded(
@@ -105,7 +107,7 @@ class EeclassCoursePageFailedView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextInformationProvider(
-                          label: '例外描述 :',
+                          label: '${_locale.exceptionDescription} :',
                           information: err.exception,
                           labelTexttheme: _theme.textTheme.headline6,
                           informationTextOverFlow: TextOverflow.visible,
@@ -117,7 +119,7 @@ class EeclassCoursePageFailedView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextInformationProvider(
-                          label: '錯誤堆疊追蹤 :',
+                          label: '${_locale.errorStacktrace} :',
                           information: err.stackTrace,
                           informationTextOverFlow: TextOverflow.visible,
                           labelTexttheme: _theme.textTheme.headline6,
@@ -135,7 +137,7 @@ class EeclassCoursePageFailedView extends StatelessWidget {
                       context.read<EeclassCoursePageBloc>();
                   eeclassHomePageBloc.add(InitializeRequest());
                 },
-                child: Text('重試'),
+                child: Text(_locale.retry),
               ),
             ],
           ),
@@ -245,6 +247,7 @@ class EeclassCoursePageSuccessView extends StatelessWidget {
 
 class EeclassPopUpInformationCard extends StatelessWidget {
   final EeclassCourseInformation courseInformation;
+  //TODO: implement localization
   static Map<String, String> mappInformationKeyToChinese = {
     'classCode': '課程代碼',
     'name': '課程名稱',

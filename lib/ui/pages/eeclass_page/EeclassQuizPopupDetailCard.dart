@@ -9,6 +9,7 @@ import 'package:collegenius/constants/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EeclassQuizPopupDetailCard extends StatefulWidget {
   const EeclassQuizPopupDetailCard({
@@ -84,16 +85,20 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
       : super(key: key);
   final EeclassQuiz quizInformation;
 
-  Widget _attachmentWidgetBuilder(List attachments, BuildContext context) {
+  Widget _attachmentWidgetBuilder(
+    List attachments,
+    BuildContext context,
+  ) {
     if (attachments.isEmpty) {
       return SizedBox();
     }
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     var widgetList = <Widget>[
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
-          '附件',
+          _locale.attachments,
           style: _theme.textTheme.labelLarge,
         ),
       ),
@@ -120,12 +125,13 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
   Widget _quizInformationWidgetBuilder(
       EeclassQuiz quizInfo, BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     var _widgetList = <Widget>[];
     _widgetList.add(
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextInformationProvider(
-          label: '測驗標題',
+          label: _locale.quizTitle,
           information: quizInfo.quizTitle,
           informationTextOverFlow: TextOverflow.visible,
         ),
@@ -136,7 +142,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextInformationProvider(
-          label: '考試時間',
+          label: _locale.quizTime,
           information: quizInfo.timeDuration,
           informationTexttheme: _theme.textTheme.bodyLarge,
           informationTextOverFlow: TextOverflow.visible,
@@ -148,8 +154,8 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextInformationProvider(
-          label: '測驗時間',
-          information: quizInfo.timeDuration,
+          label: _locale.timeLimit,
+          information: quizInfo.timeLimit ?? "-",
           informationTexttheme: _theme.textTheme.bodyLarge,
           informationTextOverFlow: TextOverflow.visible,
         ),
@@ -162,7 +168,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextInformationProvider(
-              label: '滿分',
+              label: _locale.fullMarks,
               information: quizInfo.fullMarks?.round().toString() ?? "-",
               informationTextOverFlow: TextOverflow.visible,
             ),
@@ -171,7 +177,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextInformationProvider(
-              label: '及格分數',
+              label: _locale.passingMarks,
               information: quizInfo.passingMarks?.round().toString() ?? "-",
               informationTextOverFlow: TextOverflow.visible,
             ),
@@ -180,7 +186,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextInformationProvider(
-              label: '得分',
+              label: _locale.score,
               information: quizInfo.score?.round().toString() ?? "-",
               informationTextOverFlow: TextOverflow.visible,
             ),
@@ -189,7 +195,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextInformationProvider(
-              label: '權重',
+              label: _locale.weights,
               information: quizInfo.percentage,
               informationTextOverFlow: TextOverflow.visible,
             ),
@@ -202,7 +208,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextInformationProvider(
-          label: '內容',
+          label: _locale.content,
           information: quizInfo.description,
           informationTexttheme: _theme.textTheme.bodyLarge,
           informationTextOverFlow: TextOverflow.visible,
@@ -221,6 +227,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     final jsonQuizInformation = quizInformation.toJson();
     return Center(
       child: Padding(
@@ -238,7 +245,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
                       Align(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("測驗資訊",
+                          child: Text(_locale.quizInformation,
                               style: _theme.textTheme.titleLarge,
                               textAlign: TextAlign.start),
                         ),
@@ -289,6 +296,7 @@ class DownloadAttachmentTags extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     return Row(
       children: [
         Spacer(),
@@ -320,7 +328,7 @@ class DownloadAttachmentTags extends StatelessWidget {
                 saveInPublicStorage: true);
           },
           child: Text(
-            "下載",
+            _locale.download,
             style: _theme.textTheme.labelLarge,
           ),
         ),

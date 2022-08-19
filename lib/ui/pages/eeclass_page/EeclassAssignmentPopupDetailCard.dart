@@ -6,6 +6,7 @@ import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:collegenius/ui/pages/eeclass_page/EeclassAttachmentTile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EeclassAssignmentPopupDetailCard extends StatefulWidget {
   const EeclassAssignmentPopupDetailCard({
@@ -82,12 +83,14 @@ class EeclassPopUpAssignmentDetailSuccessCard extends StatelessWidget {
       required EeclassAssignmentBrief assignBrief,
       required BuildContext context}) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
+
     var _widgetList = <Widget>[];
     _widgetList.add(
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextInformationProvider(
-          label: '作業標題',
+          label: _locale.assignmentTitle,
           information: assignBrief.title,
           informationTexttheme: _theme.textTheme.bodyLarge,
           informationTextOverFlow: TextOverflow.visible,
@@ -99,7 +102,7 @@ class EeclassPopUpAssignmentDetailSuccessCard extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextInformationProvider(
-          label: '開放繳交時間',
+          label: _locale.avaliableToUploadTime,
           information: assignBrief.startHandInDate,
           informationTexttheme: _theme.textTheme.bodyLarge,
           informationTextOverFlow: TextOverflow.visible,
@@ -111,7 +114,7 @@ class EeclassPopUpAssignmentDetailSuccessCard extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextInformationProvider(
-          label: '截止時間',
+          label: _locale.deadline,
           information: assignBrief.deadline,
           informationTexttheme: _theme.textTheme.bodyLarge,
           informationTextOverFlow: TextOverflow.visible,
@@ -125,7 +128,7 @@ class EeclassPopUpAssignmentDetailSuccessCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextInformationProvider(
-              label: '評分方式',
+              label: _locale.scooringMethod,
               information: assignmentDetail.gradingMethod ?? "_",
               informationTexttheme: _theme.textTheme.bodyLarge,
               informationTextOverFlow: TextOverflow.visible,
@@ -135,7 +138,7 @@ class EeclassPopUpAssignmentDetailSuccessCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextInformationProvider(
-              label: '分數',
+              label: _locale.score,
               information: assignmentBrief.score?.round().toString() ?? "-",
               informationTextOverFlow: TextOverflow.visible,
             ),
@@ -167,6 +170,8 @@ class EeclassPopUpAssignmentDetailSuccessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -183,7 +188,7 @@ class EeclassPopUpAssignmentDetailSuccessCard extends StatelessWidget {
                       Align(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("作業詳情",
+                          child: Text(_locale.assignmentInformation,
                               style: _theme.textTheme.titleLarge,
                               textAlign: TextAlign.start),
                         ),

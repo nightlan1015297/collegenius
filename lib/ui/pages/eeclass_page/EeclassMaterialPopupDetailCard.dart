@@ -11,6 +11,7 @@ import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'EeclassAttachmentTile.dart';
 import 'EeclassOpenInBrowserTag.dart';
@@ -100,11 +101,13 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
     required BuildContext context,
   }) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
+
     var widgetList = <Widget>[
       Row(
         children: [
           Text(
-            "內容",
+            _locale.content,
             style: _theme.textTheme.labelLarge,
           ),
           Expanded(child: SizedBox()),
@@ -151,6 +154,8 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
       {required EeclassMaterialBrief materialBrief,
       required BuildContext context}) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -159,14 +164,14 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
           child: TextInformationProvider(
               informationTextOverFlow: TextOverflow.visible,
               informationTexttheme: _theme.textTheme.bodyLarge,
-              label: "標題",
+              label: _locale.title,
               information: materialBrief.title),
         ),
         Divider(),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextInformationProvider(
-              label: "閱讀次數",
+              label: _locale.readCount,
               informationTexttheme: _theme.textTheme.bodyLarge,
               information: materialBrief.readCount),
         ),
@@ -175,7 +180,7 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: TextInformationProvider(
               informationTexttheme: _theme.textTheme.bodyLarge,
-              label: "作者",
+              label: _locale.auther,
               information: materialBrief.auther),
         ),
         Divider(),
@@ -183,7 +188,7 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: TextInformationProvider(
               informationTexttheme: _theme.textTheme.bodyLarge,
-              label: "更新日期",
+              label: _locale.updateDate,
               information: materialBrief.updateDate),
         ),
       ],
@@ -193,6 +198,8 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -209,7 +216,7 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
                       Align(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("教材資訊",
+                          child: Text(_locale.materialInformation,
                               style: _theme.textTheme.titleLarge,
                               textAlign: TextAlign.start),
                         ),
@@ -263,6 +270,7 @@ class DownloadPdfTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -286,7 +294,7 @@ class DownloadPdfTag extends StatelessWidget {
                     saveInPublicStorage: true);
               },
               child: Text(
-                "下載",
+                _locale.download,
                 style: _theme.textTheme.headline6,
               ),
             ),
@@ -307,6 +315,7 @@ class LaunchYoutubeTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -340,7 +349,7 @@ class LaunchYoutubeTag extends StatelessWidget {
                 }
               },
               child: Text(
-                "開啟影片",
+                _locale.openVideo,
                 style: _theme.textTheme.headline6,
               ),
             ),

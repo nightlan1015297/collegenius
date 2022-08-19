@@ -21,7 +21,9 @@ class SchoolEventsCubit extends Cubit<SchoolEventsState> {
           events: fetchedList.map((e) => SchoolEvent.fromJson(e)).toList(),
           loadedPage: 1));
     } catch (error) {
-      emit(state.copyWith(status: SchoolEventsStatus.failure));
+      if (!isClosed) {
+        emit(state.copyWith(status: SchoolEventsStatus.failure));
+      }
     }
   }
 

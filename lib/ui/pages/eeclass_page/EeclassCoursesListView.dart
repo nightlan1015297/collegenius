@@ -5,6 +5,7 @@ import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:collegenius/constants/Constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:collegenius/ui/pages/eeclass_page/EeclassUnauthticateView.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,7 @@ class EeclassCourseListFailedView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -80,7 +82,7 @@ class EeclassCourseListFailedView extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    '載入發生錯誤',
+                    _locale.loadError,
                     style: _theme.textTheme.headline6,
                   )),
               Expanded(
@@ -92,7 +94,7 @@ class EeclassCourseListFailedView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextInformationProvider(
-                          label: '例外描述 :',
+                          label: '${_locale.exceptionDescription} :',
                           information: err.exception,
                           labelTexttheme: _theme.textTheme.headline6,
                           informationTextOverFlow: TextOverflow.visible,
@@ -104,7 +106,7 @@ class EeclassCourseListFailedView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextInformationProvider(
-                          label: '錯誤堆疊追蹤 :',
+                          label: '${_locale.errorStacktrace} :',
                           information: err.stackTrace,
                           informationTextOverFlow: TextOverflow.visible,
                           labelTexttheme: _theme.textTheme.headline6,
@@ -122,7 +124,7 @@ class EeclassCourseListFailedView extends StatelessWidget {
                       context.read<EeclassCourseListBloc>();
                   eeclassCourseListBloc.add(InitializeRequest());
                 },
-                child: Text('重試'),
+                child: Text(_locale.retry),
               ),
             ],
           ),
@@ -135,6 +137,7 @@ class EeclassCourseListFailedView extends StatelessWidget {
 class EeclassCourseListSuccessView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     return BlocBuilder<EeclassCourseListBloc, EeclassCourseListState>(
       builder: (context, state) {
         return Column(
@@ -146,7 +149,7 @@ class EeclassCourseListSuccessView extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: Picker(
-                  title: "Semester",
+                  title: _locale.semesterPicker,
                   currentItem:
                       state.semesterList.indexOf(state.selectedSemester!),
                   itemlist: state.semesterList.map((e) => e.name).toList(),
@@ -201,6 +204,7 @@ class EeclassCourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return SizedBox(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -237,13 +241,13 @@ class EeclassCourseCard extends StatelessWidget {
                       SizedBox(
                         width: 110,
                         child: TextInformationProvider(
-                            label: "課程代號", information: courseCode),
+                            label: _locale.courseCode, information: courseCode),
                       ),
                       VerticalSeperater(),
                       SizedBox(
                         width: 30,
                         child: TextInformationProvider(
-                            label: "學分", information: credit),
+                            label: _locale.credit, information: credit),
                       ),
                       VerticalSeperater(),
                       Spacer(),
@@ -251,7 +255,7 @@ class EeclassCourseCard extends StatelessWidget {
                         width: 80,
                         child: TextInformationProvider(
                             informationTextOverFlow: TextOverflow.ellipsis,
-                            label: "授課教師",
+                            label: _locale.professor,
                             information: professor),
                       ),
                     ]),

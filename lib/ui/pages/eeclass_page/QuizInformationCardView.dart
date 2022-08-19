@@ -2,6 +2,7 @@ import 'package:collegenius/logic/bloc/eeclass_course_page_bloc.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 
 import 'package:collegenius/constants/Constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,6 +60,7 @@ class QuizInformationNoQuizCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Card(
         clipBehavior: Clip.antiAlias,
         child: Container(
@@ -76,7 +78,7 @@ class QuizInformationNoQuizCard extends StatelessWidget {
                     child: Center(
                       child: TextInformationProvider(
                           labelTexttheme: _theme.textTheme.labelLarge,
-                          label: "最新成績",
+                          label: _locale.latestScore,
                           informationTexttheme: _theme.textTheme.headline6,
                           informationMaxLines: 2,
                           information: '-'),
@@ -86,9 +88,7 @@ class QuizInformationNoQuizCard extends StatelessWidget {
                   mainColor: Colors.green,
                   sideColor: Colors.green[100]!,
                   percentage: 1,
-                  child: Text(
-                    "沒有考試",
-                  ),
+                  child: Text(_locale.noQuiz),
                 )
               ],
             ),
@@ -109,6 +109,8 @@ class QuizInformationParseErrorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
+
     return Card(
         clipBehavior: Clip.antiAlias,
         child: Container(
@@ -126,7 +128,7 @@ class QuizInformationParseErrorCard extends StatelessWidget {
                     child: Center(
                       child: TextInformationProvider(
                           labelTexttheme: _theme.textTheme.labelLarge,
-                          label: "最新成績",
+                          label: _locale.latestScore,
                           informationTexttheme: _theme.textTheme.bodyLarge!
                               .copyWith(fontSize: 18),
                           informationMaxLines: 2,
@@ -137,7 +139,7 @@ class QuizInformationParseErrorCard extends StatelessWidget {
                   mainColor: Colors.orange,
                   sideColor: Colors.orange[100]!,
                   percentage: 1,
-                  child: Text("無法解析"),
+                  child: Text(_locale.parseError),
                 )
               ],
             ),
@@ -154,6 +156,7 @@ class QuizInformationLoadingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Card(
         clipBehavior: Clip.antiAlias,
         child: Container(
@@ -170,10 +173,10 @@ class QuizInformationLoadingCard extends StatelessWidget {
                     child: Center(
                       child: TextInformationProvider(
                           labelTexttheme: _theme.textTheme.labelLarge,
-                          label: "最新成績",
+                          label: _locale.latestScore,
                           informationTexttheme: _theme.textTheme.headline6,
                           informationMaxLines: 2,
-                          information: "載入中"),
+                          information: _locale.loading),
                     )),
                 Spacer(),
                 Loading(size: 60)
@@ -206,7 +209,7 @@ class QuizInformationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-
+    final _locale = AppLocalizations.of(context)!;
     return Card(
         clipBehavior: Clip.antiAlias,
         child: Container(
@@ -224,7 +227,7 @@ class QuizInformationCard extends StatelessWidget {
                     child: Center(
                       child: TextInformationProvider(
                           labelTexttheme: _theme.textTheme.labelLarge,
-                          label: "最新成績",
+                          label: _locale.latestScore,
                           informationTexttheme: _theme.textTheme.headline6,
                           informationMaxLines: 2,
                           information: quizName),

@@ -2,6 +2,7 @@ import 'package:collegenius/routes/hero_dialog_route.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'EeclassMaterialPopupDetailCard.dart';
 
@@ -15,6 +16,7 @@ class EeclassMaterialListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -53,12 +55,12 @@ class EeclassMaterialListView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '(=\'X\'=)',
+                      _locale.noDataEmoticon,
                       style: _theme.textTheme.displayMedium!
                           .copyWith(fontWeight: FontWeight.w900),
                     )
                   ]),
-              Text('沒有資料'),
+              Text(_locale.noData),
             ],
           );
       }),
@@ -80,6 +82,7 @@ class EeclassMaterialCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return LayoutBuilder(
       builder: (context, constrains) {
         return InkWell(
@@ -125,7 +128,7 @@ class EeclassMaterialCard extends StatelessWidget {
                       SizedBox(
                         child: TextInformationProvider(
                             informationTextOverFlow: TextOverflow.ellipsis,
-                            label: "上傳日期",
+                            label: _locale.uploadDate,
                             information: materialInfoBrief.updateDate),
                       ),
                       VerticalSeperater(),
@@ -135,7 +138,7 @@ class EeclassMaterialCard extends StatelessWidget {
                           informationIcon: Icon(
                               mapMaterialTypeToIcon[materialInfoBrief.type] ??
                                   Icons.help),
-                          label: "類型",
+                          label: _locale.type,
                         ),
                       ),
                       Spacer(),
@@ -143,7 +146,7 @@ class EeclassMaterialCard extends StatelessWidget {
                         width: 80,
                         child: TextInformationProvider(
                             informationTextOverFlow: TextOverflow.ellipsis,
-                            label: "作者",
+                            label: _locale.auther,
                             information: materialInfoBrief.auther),
                       ),
                     ]),

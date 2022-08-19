@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:collegenius/repositories/eeclass_repository.dart';
 
@@ -15,6 +16,7 @@ class EeclassOpenInBrowserTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -67,7 +69,7 @@ class EeclassOpenInBrowserTag extends StatelessWidget {
                 );
               },
               child: Text(
-                "在瀏覽器中開啟",
+                _locale.openInBrowser,
                 style: _theme.textTheme.headline6,
               ),
             ),

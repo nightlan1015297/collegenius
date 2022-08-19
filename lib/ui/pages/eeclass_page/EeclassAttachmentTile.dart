@@ -4,6 +4,7 @@ import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EeclassAttachmentTile extends StatelessWidget {
   const EeclassAttachmentTile({Key? key, required this.fileList})
@@ -16,11 +17,13 @@ class EeclassAttachmentTile extends StatelessWidget {
       return SizedBox();
     }
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
+
     var _widgetList = <Widget>[];
 
     _widgetList.add(
       Text(
-        "附件",
+        _locale.attachments,
         style: _theme.textTheme.bodyLarge,
       ),
     );
@@ -55,6 +58,8 @@ class DownloadAttachmentTags extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
+
     return Row(
       children: [
         Spacer(),
@@ -86,7 +91,7 @@ class DownloadAttachmentTags extends StatelessWidget {
                 saveInPublicStorage: true);
           },
           child: Text(
-            "下載",
+            _locale.download,
             style: _theme.textTheme.labelLarge,
           ),
         ),

@@ -1,6 +1,8 @@
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:flutter/material.dart';
 
 class EeclassQuizListView extends StatelessWidget {
@@ -13,10 +15,11 @@ class EeclassQuizListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Quiz overview",
+          _locale.quizOverview,
           style: _theme.textTheme.titleLarge,
         ),
         elevation: 0,
@@ -54,12 +57,12 @@ class EeclassQuizListView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '(=\'X\'=)',
+                      _locale.noDataEmoticon,
                       style: _theme.textTheme.displayMedium!
                           .copyWith(fontWeight: FontWeight.w900),
                     )
                   ]),
-              Text('沒有資料'),
+              Text(_locale.noData),
             ],
           );
         }
@@ -83,7 +86,7 @@ class EeclassQuizCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-
+    final _locale = AppLocalizations.of(context)!;
     return LayoutBuilder(
       builder: (context, constrains) {
         return InkWell(
@@ -126,7 +129,7 @@ class EeclassQuizCard extends StatelessWidget {
                           width: 140,
                           child: TextInformationProvider(
                               informationTextOverFlow: TextOverflow.ellipsis,
-                              label: "考試日期",
+                              label: _locale.quizDate,
                               information: quizDeadline),
                         ),
                         VerticalSeperater(),
@@ -134,7 +137,7 @@ class EeclassQuizCard extends StatelessWidget {
                           width: 40,
                           child: TextInformationProvider(
                               informationTextOverFlow: TextOverflow.ellipsis,
-                              label: "分數",
+                              label: _locale.score,
                               information: score),
                         ),
                       ]),
