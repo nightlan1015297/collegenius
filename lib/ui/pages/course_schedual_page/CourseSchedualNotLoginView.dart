@@ -1,4 +1,5 @@
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class CourseSchedualNotLoginView extends StatelessWidget {
@@ -6,6 +7,7 @@ class CourseSchedualNotLoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     final _theme = Theme.of(context);
     return Center(
       child: Column(
@@ -28,7 +30,7 @@ class CourseSchedualNotLoginView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Text(
-              "You have to login first to view Course schedual",
+              _locale.courseSchedualNotLoginMessage,
               textAlign: TextAlign.center,
               style: _theme.textTheme.bodyLarge,
             ),
@@ -37,7 +39,7 @@ class CourseSchedualNotLoginView extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pushNamed('/login');
             },
-            child: Text("Log in"),
+            child: Text(_locale.login),
           )
         ],
       ),

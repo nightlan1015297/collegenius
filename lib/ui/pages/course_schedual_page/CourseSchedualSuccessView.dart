@@ -5,6 +5,7 @@ import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:collegenius/ui/pages/course_schedual_page/node_graph_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// This Map[sectionToTime] map the section to it start hour.
 
@@ -12,6 +13,7 @@ class CourseSchedualSuccessView extends StatelessWidget {
   const CourseSchedualSuccessView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     return Column(
       children: [
         Row(
@@ -26,11 +28,11 @@ class CourseSchedualSuccessView extends StatelessWidget {
           switch (state.renderStatus) {
             case CourseSchedualPageRenderStatus.noData:
               return Center(
-                child: Text('No data'),
+                child: Text(_locale.courseSchedualNoData),
               );
             case CourseSchedualPageRenderStatus.noCourse:
               return Center(
-                child: Text("No Class Today"),
+                child: Text(_locale.courseSchedualNoCourse),
               );
             case CourseSchedualPageRenderStatus.normal:
               final selectedDaysKey = mapIndexToWeekday[state.selectedDays];
@@ -56,6 +58,7 @@ class CourseSchedualSuccessView extends StatelessWidget {
 class WeekDayPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     return BlocBuilder<CourseSchedualPageBloc, CourseSchedualPageState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
@@ -69,7 +72,7 @@ class WeekDayPicker extends StatelessWidget {
                     .read<CourseSchedualPageBloc>()
                     .add(ChangeSelectedDaysRequest(days: index));
               },
-              title: 'Days',
+              title: _locale.daysPicker,
               currentItem: state.selectedDays,
               itemlist: weekDayList,
             ));
@@ -81,6 +84,7 @@ class WeekDayPicker extends StatelessWidget {
 class SemesterPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     final _theme = Theme.of(context);
     return BlocBuilder<CourseSchedualPageBloc, CourseSchedualPageState>(
       builder: (context, state) {
@@ -88,7 +92,7 @@ class SemesterPicker extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Semester' + ' :'),
+              Text(_locale.semesterPicker),
               SizedBox(height: 5),
               StatefulBuilder(builder: (context, setState) {
                 return Container(
@@ -136,7 +140,7 @@ class SemesterPicker extends StatelessWidget {
                   .map((e) => e.value)
                   .toList()
                   .indexOf(state.selectedSemester),
-              title: 'Semester',
+              title: _locale.semesterPicker,
               itemlist: state.semesterList.map((e) => e.name).toList(),
             ));
       },
@@ -419,6 +423,7 @@ class ProgressingCourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constrains) {
+      final _locale = AppLocalizations.of(context)!;
       final _theme = Theme.of(context);
       return Row(
         children: [
@@ -444,13 +449,13 @@ class ProgressingCourseCard extends StatelessWidget {
                   courseTitle: coursename,
                   informations: [
                     TextInformationProvider(
-                      label: '上課教室',
+                      label: _locale.classroom,
                       information: location,
                       informationTexttheme: _theme.textTheme.headline6,
                     ),
                     Spacer(),
                     TextInformationProvider(
-                        label: '上課時間',
+                        label: _locale.time,
                         information: startTime + ' - ' + endTime,
                         informationTexttheme: _theme.textTheme.headline6),
                   ],
@@ -478,6 +483,7 @@ class PopupInformationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     final _theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -495,7 +501,7 @@ class PopupInformationCard extends StatelessWidget {
                       Align(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("課程資訊",
+                          child: Text(_locale.courseInformation,
                               style: _theme.textTheme.titleLarge,
                               textAlign: TextAlign.start),
                         ),
@@ -519,7 +525,7 @@ class PopupInformationCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 16.0),
                   child: TextInformationProvider(
-                    label: "課程名稱",
+                    label: _locale.courseName,
                     information: coursename,
                     labelTexttheme: _theme.textTheme.labelLarge,
                     informationTexttheme: _theme.textTheme.titleLarge,
@@ -531,7 +537,7 @@ class PopupInformationCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 16.0),
                   child: TextInformationProvider(
-                    label: "上課教室",
+                    label: _locale.classroom,
                     information: location,
                     labelTexttheme: _theme.textTheme.labelLarge,
                     informationTexttheme: _theme.textTheme.titleLarge,
@@ -543,7 +549,7 @@ class PopupInformationCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 16.0),
                   child: TextInformationProvider(
-                    label: "授課教師",
+                    label: _locale.professor,
                     information: teacher,
                     labelTexttheme: _theme.textTheme.labelLarge,
                     informationTexttheme: _theme.textTheme.titleLarge,
@@ -580,6 +586,7 @@ class NormalCourseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constrains) {
       final _theme = Theme.of(context);
+      final _locale = AppLocalizations.of(context)!;
       return Row(
         children: [
           RegulerNode(),
@@ -606,7 +613,7 @@ class NormalCourseCard extends StatelessWidget {
                     SizedBox(
                       width: 120,
                       child: TextInformationProvider(
-                        label: '上課教室',
+                        label: _locale.classroom,
                         information: location,
                         informationTexttheme: _theme.textTheme.titleLarge,
                       ),
@@ -615,7 +622,7 @@ class NormalCourseCard extends StatelessWidget {
                     SizedBox(
                       width: 140,
                       child: TextInformationProvider(
-                        label: '上課時間',
+                        label: _locale.time,
                         information: startTime + ' - ' + endTime,
                         informationTexttheme: _theme.textTheme.titleLarge,
                       ),
