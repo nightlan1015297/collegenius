@@ -6,7 +6,7 @@ class AppthemeState extends Equatable {
 
   AppthemeState({required this.themeMode});
 
-  AppthemeState copywith({ThemeMode? option}) {
+  AppthemeState copyWith({ThemeMode? option}) {
     return AppthemeState(themeMode: option ?? this.themeMode);
   }
 
