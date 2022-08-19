@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:collegenius/models/eeclass_model/EeclassQuiz.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
+import 'package:collegenius/utilties/ColorfulPrintFunction.dart';
 import 'package:equatable/equatable.dart';
 
 part 'eeclass_quiz_detail_state.dart';
@@ -18,7 +19,12 @@ class EeclassQuizDetailCubit extends Cubit<EeclassQuizDetailState> {
           quizCardStatus: EeclassQuizDetailCardStatus.success,
           quizCardData: quizInfo));
     } catch (e, stacktrace) {
-      emit(state.copyWith(quizCardStatus: EeclassQuizDetailCardStatus.failed));
+      printHighlight(e);
+      printHighlight(stacktrace);
+      if (!isClosed) {
+        emit(
+            state.copyWith(quizCardStatus: EeclassQuizDetailCardStatus.failed));
+      }
     }
   }
 }
