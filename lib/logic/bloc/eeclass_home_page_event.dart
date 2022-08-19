@@ -1,17 +1,17 @@
 part of 'eeclass_home_page_bloc.dart';
 
-abstract class EeclassHomePageEvent extends Equatable {
-  const EeclassHomePageEvent();
+abstract class EeclassCourseListEvent extends Equatable {
+  const EeclassCourseListEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class InitializeRequest extends EeclassHomePageEvent {}
+class InitializeRequest extends EeclassCourseListEvent {}
 
-class FetchDataRequest extends EeclassHomePageEvent {}
+class FetchDataRequest extends EeclassCourseListEvent {}
 
-class ChangeSemesterRequest extends EeclassHomePageEvent {
+class ChangeSemesterRequest extends EeclassCourseListEvent {
   final Semester semester;
 
   ChangeSemesterRequest({required this.semester});
