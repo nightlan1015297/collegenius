@@ -1,10 +1,14 @@
 import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/pages/eeclass_page/EeclassAssignmentPopupDetailCard.dart';
+import 'package:collegenius/ui/pages/eeclass_page/EeclassBullitinPopupDetailCard.dart';
+import 'package:collegenius/ui/pages/eeclass_page/EeclassBullitinsListView.dart';
 import 'package:collegenius/ui/pages/eeclass_page/EeclassPage.dart';
 import 'package:collegenius/ui/pages/eeclass_page/EeclassQuizPopupDetailCard.dart';
 import 'package:collegenius/ui/pages/home_page/HomePageView.dart';
 import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
 import 'package:collegenius/ui/pages/login_page/LoginPageView.dart';
+import 'package:collegenius/ui/pages/login_page/LoginResultView.dart';
+import 'package:collegenius/ui/pages/login_page/ManualLoginCard.dart';
 import 'package:flutter/material.dart';
 
 import 'hero_dialog_route.dart';
@@ -55,7 +59,26 @@ class AppRouter {
             );
           },
         );
-
+      case '/eeclassCourse/bullitins':
+        return MaterialPageRoute(
+          builder: (context) {
+            final args =
+                routsettings.arguments as EeclassBullitinsPageArguments;
+            return EeclassBullitinListView(
+              courseSerial: args.courseSerial,
+            );
+          },
+        );
+      case '/eeclassCourse/bullitins/popup':
+        return HeroDialogRoute(
+          builder: (context) {
+            final args =
+                routsettings.arguments as EeclassBulliitinsPopupArguments;
+            return EeclassBullitinPopupDetailCard(
+              bullitinBrief: args.bullitinBrief,
+            );
+          },
+        );
       case '/eeclassCourse/materials':
         return MaterialPageRoute(
           builder: (context) {
@@ -95,6 +118,41 @@ class AppRouter {
               ),
             ),
             body: LoginPageView(),
+          ),
+        );
+
+      case '/login/manual/courseSelect':
+        return HeroDialogRoute(
+          builder: (contex) => CourseSelectManualLoginCard(),
+        );
+      case '/login/manual/eeclass':
+        return HeroDialogRoute(
+          builder: (contex) => EeclassManualLoginCard(),
+        );
+      case '/login/manual/portal':
+        return HeroDialogRoute(
+          builder: (contex) => PortalManualLoginCard(),
+        );
+
+      case '/login/failedMessage/courseSelect':
+        final args = routsettings.arguments as LoginFailedArguments;
+        return HeroDialogRoute(
+          builder: (contex) => CourseSchedualLoginFailedMessage(
+            err: args.err,
+          ),
+        );
+      case '/login/failedMessage/eeclass':
+        final args = routsettings.arguments as LoginFailedArguments;
+        return HeroDialogRoute(
+          builder: (contex) => EeclassLoginFailedMessage(
+            err: args.err,
+          ),
+        );
+      case '/login/failedMessage/portal':
+        final args = routsettings.arguments as LoginFailedArguments;
+        return HeroDialogRoute(
+          builder: (contex) => PortalLoginFailedMessage(
+            err: args.err,
           ),
         );
       default:
