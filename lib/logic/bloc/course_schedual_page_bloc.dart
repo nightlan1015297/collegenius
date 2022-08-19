@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:collegenius/repositories/course_schedual_repository.dart';
-import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualSuccessView.dart';
 import 'package:collegenius/utilties/ticker.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
@@ -181,13 +180,13 @@ class CourseSchedualPageBloc
       return;
     } else {
       add(UpdateTimeRequest());
-      final selectedDays = indexToWeekday[state.selectedDays];
+      final selectedDays = mapIndexToWeekday[state.selectedDays];
       final jsonSchedual = state.schedual!.toJson();
       var firstClass = 0;
       var lastClass = 0;
       var isFirst = false;
       for (int i = 0; i < 16; i++) {
-        if (jsonSchedual[selectedDays][indexToSection[i]] != null) {
+        if (jsonSchedual[selectedDays][mapIndexToSection[i]] != null) {
           if (!isFirst) {
             firstClass = i;
             isFirst = !isFirst;

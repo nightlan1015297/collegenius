@@ -1,13 +1,5 @@
 part of 'eeclass_home_page_bloc.dart';
 
-enum EeclassCourseListStatus {
-  unAuthentucated,
-  initial,
-  loading,
-  success,
-  failed,
-}
-
 class EeclassCourseListState extends Equatable {
   EeclassCourseListState({
     EeclassCourseListStatus? status,

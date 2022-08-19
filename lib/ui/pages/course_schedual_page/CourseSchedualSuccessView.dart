@@ -1,4 +1,4 @@
-import 'package:collegenius/constants/maps.dart';
+import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/logic/bloc/course_schedual_page_bloc.dart';
 import 'package:collegenius/routes/hero_dialog_route.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
@@ -7,60 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// This Map[sectionToTime] map the section to it start hour.
-Map<String, String> sectionToTime = {
-  'one': '8:',
-  'two': '9:',
-  'three': '10:',
-  'four': '11:',
-  'Z': '12:',
-  'five': '13:',
-  'six': '14:',
-  'seven': '15:',
-  'eight': '16:',
-  'nine': '17:',
-  'A': '18:',
-  'B': '19:',
-  'C': '20:',
-  'D': '21:',
-  'E': '22:',
-  'F': '23:'
-};
-Map<int, String> indexToSection = {
-  0: 'one',
-  1: 'two',
-  2: 'three',
-  3: 'four',
-  5: 'Z',
-  6: 'five',
-  7: 'six',
-  8: 'seven',
-  9: 'eight',
-  10: 'nine',
-  11: 'A',
-  12: 'B',
-  13: 'C',
-  14: 'D',
-  15: 'E',
-  16: 'F'
-};
-Map<int, String> indexToWeekday = {
-  0: 'monday',
-  1: 'tuesday',
-  2: 'wednesday',
-  3: 'thursday',
-  4: 'friday',
-  5: 'saturday',
-  6: 'sunday',
-};
-final weekDayList = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
 
 class CourseSchedualSuccessView extends StatelessWidget {
   const CourseSchedualSuccessView({Key? key}) : super(key: key);
@@ -87,13 +33,13 @@ class CourseSchedualSuccessView extends StatelessWidget {
                 child: Text("No Class Today"),
               );
             case CourseSchedualPageRenderStatus.normal:
-              final selectedDaysKey = indexToWeekday[state.selectedDays];
+              final selectedDaysKey = mapIndexToWeekday[state.selectedDays];
               return NormalCourseSchedual(
                   renderFrom: state.firstClassSection,
                   renderLength: state.lastClassSection,
                   coursePerDay: state.schedual!.toJson()[selectedDaysKey]);
             case CourseSchedualPageRenderStatus.animated:
-              final selectedDaysKey = indexToWeekday[state.selectedDays];
+              final selectedDaysKey = mapIndexToWeekday[state.selectedDays];
               return AnimatedCourseSchedual(
                 renderFrom: state.firstClassSection,
                 renderLength: state.lastClassSection,
@@ -218,8 +164,8 @@ class NormalCourseSchedual extends StatelessWidget {
             shrinkWrap: true,
             itemCount: renderLength + 1,
             itemBuilder: (context, index) {
-              final _section = indexToSection[index];
-              final _time = sectionToTime[_section];
+              final _section = mapIndexToSection[index];
+              final _time = mapCourseSectionToTime[_section];
               final starttime, endtime;
               if (_time == null) {
                 starttime = '--:--';
@@ -240,8 +186,10 @@ class NormalCourseSchedual extends StatelessWidget {
                 final classroom;
                 if (_courseInfo['classroom'] != null) {
                   var _splited = _courseInfo['classroom'].split('-');
-                  if (codeToClass[_splited[0]] != null) {
-                    classroom = codeToClass[_splited[0]]! + ' ' + _splited[1];
+                  if (mapClassromCodeToDescription[_splited[0]] != null) {
+                    classroom = mapClassromCodeToDescription[_splited[0]]! +
+                        ' ' +
+                        _splited[1];
                   } else {
                     classroom = _courseInfo['classroom'];
                   }
@@ -285,8 +233,8 @@ class AnimatedCourseSchedual extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             itemCount: renderLength + 2,
             itemBuilder: (context, index) {
-              final _section = indexToSection[index];
-              final _time = sectionToTime[_section];
+              final _section = mapIndexToSection[index];
+              final _time = mapCourseSectionToTime[_section];
               final starttime, endtime;
               if (_time == null) {
                 starttime = '--:--';
@@ -311,8 +259,10 @@ class AnimatedCourseSchedual extends StatelessWidget {
                 final classroom;
                 if (_courseInfo['classroom'] != null) {
                   var _splited = _courseInfo['classroom'].split('-');
-                  if (codeToClass[_splited[0]] != null) {
-                    classroom = codeToClass[_splited[0]]! + ' ' + _splited[1];
+                  if (mapClassromCodeToDescription[_splited[0]] != null) {
+                    classroom = mapClassromCodeToDescription[_splited[0]]! +
+                        ' ' +
+                        _splited[1];
                   } else {
                     classroom = _courseInfo['classroom'];
                   }

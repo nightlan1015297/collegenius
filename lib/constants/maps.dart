@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 
 import 'enums.dart';
 
-const Map<String, String> codeToClass = {
+const Map<Language, String> mapAppLanguageToDescription = {
+  Language.zh: "中文",
+  Language.en: "英文",
+};
+
+const Map<Language, Locale> mapAppLanguageToLocal = {
+  Language.zh: Locale('zh', ''),
+  Language.en: Locale('en', ''),
+};
+
+const Map<String, String> mapClassromCodeToDescription = {
   'A': '文學一館',
   'C2': '文學二館',
   'E': '工程一館',
@@ -31,20 +41,24 @@ const Map<String, String> codeToClass = {
   'TR': '教學研究綜合大樓暨大禮堂',
   'YH': '依仁堂'
 };
-const Map<Language, Locale> mapAppLanguageToLocal = {
-  Language.zh: Locale('zh', ''),
-  Language.en: Locale('en', ''),
-};
 
-const Map<ThemeMode, String> mapThememodeToDescription = {
-  ThemeMode.system: 'system',
-  ThemeMode.light: 'light',
-  ThemeMode.dark: 'dark',
-};
-
-const Map<Language, String> mapAppLanguageToDescription = {
-  Language.zh: "中文",
-  Language.en: "英文",
+Map<String, String> mapCourseSectionToTime = {
+  'one': '8:',
+  'two': '9:',
+  'three': '10:',
+  'four': '11:',
+  'Z': '12:',
+  'five': '13:',
+  'six': '14:',
+  'seven': '15:',
+  'eight': '16:',
+  'nine': '17:',
+  'A': '18:',
+  'B': '19:',
+  'C': '20:',
+  'D': '21:',
+  'E': '22:',
+  'F': '23:'
 };
 
 const Map<String, Color> mapEventCategoryToColor = {
@@ -53,4 +67,39 @@ const Map<String, Color> mapEventCategoryToColor = {
   '徵才': Color.fromARGB(255, 243, 209, 249),
   '演講': Color.fromARGB(255, 244, 189, 108),
   '施工': Color.fromARGB(255, 255, 152, 186)
+};
+
+Map<int, String> mapIndexToSection = {
+  0: 'one',
+  1: 'two',
+  2: 'three',
+  3: 'four',
+  5: 'Z',
+  6: 'five',
+  7: 'six',
+  8: 'seven',
+  9: 'eight',
+  10: 'nine',
+  11: 'A',
+  12: 'B',
+  13: 'C',
+  14: 'D',
+  15: 'E',
+  16: 'F'
+};
+
+Map<int, String> mapIndexToWeekday = {
+  0: 'monday',
+  1: 'tuesday',
+  2: 'wednesday',
+  3: 'thursday',
+  4: 'friday',
+  5: 'saturday',
+  6: 'sunday',
+};
+
+const Map<ThemeMode, String> mapThememodeToDescription = {
+  ThemeMode.system: 'system',
+  ThemeMode.light: 'light',
+  ThemeMode.dark: 'dark',
 };
