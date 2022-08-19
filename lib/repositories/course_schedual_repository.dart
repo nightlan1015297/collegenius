@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:collegenius/models/course_schedual_model/CourseSchedual.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:course_select_api/course_select_api.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// ***************************************************************************
 ///         COURSESCHEDUALREPOSITORY HANDELS ALL COURSE SCHEDUAL DATA.        *
@@ -13,20 +15,31 @@ import 'package:hive_flutter/hive_flutter.dart';
 class CourseSchedualRepository {
   CourseSchedualRepository();
 
+  String? username;
+  String? password;
   CourseSelectApiClient courseSelectApiClient = CourseSelectApiClient();
 
   Future<bool> login(
-      {required String username, required String password}) async {
-    var isLogIn = await courseSelectApiClient.checkLogInStatus();
-    if (isLogIn) {
+      {required String username_, required String password_}) async {
+    if (username == username_ && password == password_) {
       return true;
     }
-    courseSelectApiClient.setAccount(id_: username, password_: password);
-    isLogIn = await courseSelectApiClient.checkLogInStatus();
+    courseSelectApiClient.setAccount(id_: username_, password_: password_);
+
+    final isLogIn = await courseSelectApiClient.logIn();
+    if (isLogIn) {
+      username = username_;
+      password = password_;
+    }
     return isLogIn;
   }
 
-  void logout() {
+  void logout() async {
+    username = null;
+    password = null;
+    final appDir = await getApplicationDocumentsDirectory();
+    final hiveDb = Directory('${appDir.path}/chosenPath');
+    hiveDb.delete(recursive: true);
     this.courseSelectApiClient = new CourseSelectApiClient();
   }
 
@@ -44,11 +57,9 @@ class CourseSchedualRepository {
       _schedualbox.put(semester, CourseSchedual.fromJson(_courseSchedual));
       _schedualbox.close();
       return CourseSchedual.fromJson(_courseSchedual);
-    }
-    _courseSchedual = _schedualbox.get(semester);
-    _schedualbox.close();
-    if (_courseSchedual == null) {
-      return null;
+    } else {
+      _courseSchedual = _schedualbox.get(semester);
+      _schedualbox.close();
     }
     return _courseSchedual;
   }
