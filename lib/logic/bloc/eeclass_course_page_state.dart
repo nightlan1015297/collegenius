@@ -25,6 +25,7 @@ class EeclassCoursePageState extends Equatable {
       List<EeclassQuizBrief>? quizList,
       List<EeclassMaterialBrief>? materialList,
       EeclassCourseInformation? courseInformation,
+      ErrorModel? error,
       double? firstQuizscore,
       double? firstQuizFullmarks,
       EeclassQuizInfoStatus? quizInfoStatus,
@@ -38,7 +39,8 @@ class EeclassCoursePageState extends Equatable {
         firstQuizName = firstQuizName,
         firstQuizscore = firstQuizscore,
         firstQuizFullmarks = firstQuizFullmarks,
-        quizInfoStatus = quizInfoStatus ?? EeclassQuizInfoStatus.loading;
+        quizInfoStatus = quizInfoStatus ?? EeclassQuizInfoStatus.loading,
+        error = error;
 
   final EeclassCoursePageStatus status;
   final List<EeclassBullitinBrief> bullitinList;
@@ -53,6 +55,7 @@ class EeclassCoursePageState extends Equatable {
   final double? firstQuizFullmarks;
   final EeclassQuizInfoStatus quizInfoStatus;
 
+  final ErrorModel? error;
   EeclassCoursePageState copyWith({
     EeclassCoursePageStatus? status,
     List<EeclassBullitinBrief>? bullitinList,
@@ -64,6 +67,7 @@ class EeclassCoursePageState extends Equatable {
     double? firstQuizscore,
     double? firstQuizFullmarks,
     EeclassQuizInfoStatus? quizInfoStatus,
+    ErrorModel? error,
   }) {
     return EeclassCoursePageState(
         status: status ?? this.status,
@@ -75,7 +79,8 @@ class EeclassCoursePageState extends Equatable {
         firstQuizName: firstQuizName ?? this.firstQuizName,
         firstQuizscore: firstQuizscore ?? this.firstQuizscore,
         firstQuizFullmarks: firstQuizFullmarks ?? this.firstQuizFullmarks,
-        quizInfoStatus: quizInfoStatus ?? this.quizInfoStatus);
+        quizInfoStatus: quizInfoStatus ?? this.quizInfoStatus,
+        error: error ?? this.error);
   }
 
   @override
@@ -90,5 +95,6 @@ class EeclassCoursePageState extends Equatable {
         firstQuizscore,
         firstQuizFullmarks,
         quizInfoStatus,
+        error
       ];
 }

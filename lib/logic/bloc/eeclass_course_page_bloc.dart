@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
+import 'package:collegenius/models/error_model/ErrorModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -36,7 +37,7 @@ class EeclassCoursePageBloc
     InitializeRequest event,
     Emitter<EeclassCoursePageState> emit,
   ) {
-    switch (authenticateBloc.state.eeclassAuthenticated.isAuthed) {
+    switch (authenticateBloc.state.eeclassAuthStatus.isAuthed) {
       case true:
         add(FetchDataRequest());
         break;
@@ -54,28 +55,33 @@ class EeclassCoursePageBloc
     emit(EeclassCoursePageState(
         status: EeclassCoursePageStatus.loading,
         quizInfoStatus: EeclassQuizInfoStatus.loading));
-
-    final courseInformation = await eeclassRepository.getCourseInformation(
-        courseSerial: this.courseSerial);
-    final courseBulletin = await eeclassRepository.getCourseBulletin(
-        courseSerial: this.courseSerial, page: 1);
-    final courseAssignment = await eeclassRepository.getCourseAssignment(
-        courseSerial: this.courseSerial);
-    final courseMaterial = await eeclassRepository.getCourseMaterial(
-        courseSerial: this.courseSerial);
-    final courseQuiz =
-        await eeclassRepository.getCourseQuiz(courseSerial: this.courseSerial);
-
-    emit(state.copyWith(
-        status: EeclassCoursePageStatus.success,
-        courseInformation: courseInformation,
-        bullitinList: courseBulletin,
-        assignmentList: courseAssignment,
-        materialList: courseMaterial,
-        quizList: courseQuiz));
-    if (courseQuiz.isNotEmpty) {
+    try {
+      final courseInformation = await eeclassRepository.getCourseInformation(
+          courseSerial: this.courseSerial);
+      final courseBulletin = await eeclassRepository.getCourseBulletin(
+          courseSerial: this.courseSerial, page: 1);
+      final courseAssignment = await eeclassRepository.getCourseAssignment(
+          courseSerial: this.courseSerial);
+      final courseMaterial = await eeclassRepository.getCourseMaterial(
+          courseSerial: this.courseSerial);
+      final courseQuiz = await eeclassRepository.getCourseQuiz(
+          courseSerial: this.courseSerial);
+      emit(state.copyWith(
+          status: EeclassCoursePageStatus.success,
+          courseInformation: courseInformation,
+          bullitinList: courseBulletin,
+          assignmentList: courseAssignment,
+          materialList: courseMaterial,
+          quizList: courseQuiz));
+    } catch (e, stacktrace) {
+      emit(EeclassCoursePageState(
+          status: EeclassCoursePageStatus.failed,
+          error: ErrorModel(
+              exception: e.toString(), stackTrace: stacktrace.toString())));
+    }
+    if (state.quizList.isNotEmpty) {
       final firstQuizInfo =
-          await eeclassRepository.getQuiz(url: courseQuiz.last.url);
+          await eeclassRepository.getQuiz(url: state.quizList.last.url);
       final fullmarks = firstQuizInfo.fullMarks;
       final score = firstQuizInfo.score;
       if (fullmarks == null || score == null) {
