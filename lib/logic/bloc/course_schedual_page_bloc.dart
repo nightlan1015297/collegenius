@@ -152,6 +152,9 @@ class CourseSchedualPageBloc
     ChangeSelectedSemesterRequest event,
     Emitter<CourseSchedualPageState> emit,
   ) async {
+    if (event.semester == state.selectedSemester) {
+      return;
+    }
     emit(state.copyWith(
         selectedSemester: event.semester,
         status: CourseSchedualPageStatus.loading));

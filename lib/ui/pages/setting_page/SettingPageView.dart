@@ -23,7 +23,7 @@ class SettingPageViewState extends State<SettingPageView> {
                       sectionname: "Preference",
                       tiles: <Widget>[
                         OptionalSettingTileWidget(
-                          icon: Icons.mode,
+                          icon: Icons.dark_mode,
                           currentOption:
                               mapThememodeToDescription[state.themeMode]!,
                           title: "Theme",
@@ -34,7 +34,7 @@ class SettingPageViewState extends State<SettingPageView> {
                       ]),
                   SettingSectionWidget(sectionname: "Language", tiles: <Widget>[
                     OptionalSettingTileWidget(
-                      icon: Icons.mode,
+                      icon: Icons.language,
                       currentOption:
                           mapAppLanguageToDescription[state.appLanguage]!,
                       title: "Theme",

@@ -49,7 +49,7 @@ class ThemePopupSettingCard extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Text("深色"),
+                          Text("深色", style: _theme.textTheme.headline6),
                           state.themeMode.isDark
                               ? Icon(Icons.check, color: Colors.green)
                               : SizedBox(),
@@ -64,7 +64,7 @@ class ThemePopupSettingCard extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Text("淺色"),
+                          Text("淺色", style: _theme.textTheme.headline6),
                           state.themeMode.isLight
                               ? Icon(Icons.check, color: Colors.green)
                               : SizedBox(),
@@ -79,7 +79,7 @@ class ThemePopupSettingCard extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Text("系統"),
+                          Text("系統", style: _theme.textTheme.headline6),
                           state.themeMode.isSystem
                               ? Icon(Icons.check, color: Colors.green)
                               : SizedBox(),

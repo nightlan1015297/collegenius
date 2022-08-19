@@ -37,42 +37,41 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
                             ),
                             alignment: Alignment.centerRight,
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              context.read<AppSettingBloc>().add(
-                                    ChangeAppLanguageRequest(lang: Language.zh),
-                                  );
-                            },
-                            child: Row(
-                              children: [
-                                Text("中文"),
-                                state.appLanguage.isZh
-                                    ? Icon(Icons.check, color: Colors.green)
-                                    : SizedBox(),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              context.read<AppSettingBloc>().add(
-                                    ChangeAppLanguageRequest(lang: Language.en),
-                                  );
-                            },
-                            child: Row(
-                              children: [
-                                Text("英文"),
-                                state.appLanguage.isEn
-                                    ? Icon(Icons.check, color: Colors.green)
-                                    : SizedBox(),
-                              ],
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                    SizedBox(),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context.read<AppSettingBloc>().add(
+                              ChangeAppLanguageRequest(lang: Language.zh),
+                            );
+                      },
+                      child: Row(
+                        children: [
+                          Text("中文", style: _theme.textTheme.headline6),
+                          state.appLanguage.isZh
+                              ? Icon(Icons.check, color: Colors.green)
+                              : SizedBox(),
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        context.read<AppSettingBloc>().add(
+                              ChangeAppLanguageRequest(lang: Language.en),
+                            );
+                      },
+                      child: Row(
+                        children: [
+                          Text("英文", style: _theme.textTheme.headline6),
+                          state.appLanguage.isEn
+                              ? Icon(Icons.check, color: Colors.green)
+                              : SizedBox(),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

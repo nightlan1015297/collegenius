@@ -11,15 +11,18 @@ AuthenticationState _$AuthenticationStateFromJson(Map<String, dynamic> json) =>
       eeclassUserData: json['eeclassUserData'] == null
           ? User.empty
           : User.fromJson(json['eeclassUserData'] as Map<String, dynamic>),
-      eeclassAuthStatus: json['eeclassAuthStatus'] ?? AuthStatus.unauth,
+      eeclassAuthStatus:
+          $enumDecodeNullable(_$AuthStatusEnumMap, json['eeclassAuthStatus']) ??
+              AuthStatus.unauth,
       eeclassError: json['eeclassError'] == null
           ? null
           : ErrorModel.fromJson(json['eeclassError'] as Map<String, dynamic>),
       courseSelectUserData: json['courseSelectUserData'] == null
           ? User.empty
           : User.fromJson(json['courseSelectUserData'] as Map<String, dynamic>),
-      courseSelectAuthStatus:
-          json['courseSelectAuthStatus'] ?? AuthStatus.unauth,
+      courseSelectAuthStatus: $enumDecodeNullable(
+              _$AuthStatusEnumMap, json['courseSelectAuthStatus']) ??
+          AuthStatus.unauth,
       courseSelectError: json['courseSelectError'] == null
           ? null
           : ErrorModel.fromJson(
@@ -27,7 +30,9 @@ AuthenticationState _$AuthenticationStateFromJson(Map<String, dynamic> json) =>
       portalUserData: json['portalUserData'] == null
           ? User.empty
           : User.fromJson(json['portalUserData'] as Map<String, dynamic>),
-      portalAuthStatus: json['portalAuthStatus'] ?? PortalAuthStatus.unauth,
+      portalAuthStatus: $enumDecodeNullable(
+              _$PortalAuthStatusEnumMap, json['portalAuthStatus']) ??
+          PortalAuthStatus.unauth,
       portalError: json['portalError'] == null
           ? null
           : ErrorModel.fromJson(json['portalError'] as Map<String, dynamic>),
@@ -37,12 +42,26 @@ Map<String, dynamic> _$AuthenticationStateToJson(
         AuthenticationState instance) =>
     <String, dynamic>{
       'eeclassUserData': instance.eeclassUserData,
-      'eeclassAuthStatus': instance.eeclassAuthStatus,
+      'eeclassAuthStatus': _$AuthStatusEnumMap[instance.eeclassAuthStatus]!,
       'eeclassError': instance.eeclassError,
       'courseSelectUserData': instance.courseSelectUserData,
-      'courseSelectAuthStatus': instance.courseSelectAuthStatus,
+      'courseSelectAuthStatus':
+          _$AuthStatusEnumMap[instance.courseSelectAuthStatus]!,
       'courseSelectError': instance.courseSelectError,
       'portalUserData': instance.portalUserData,
-      'portalAuthStatus': instance.portalAuthStatus,
+      'portalAuthStatus': _$PortalAuthStatusEnumMap[instance.portalAuthStatus]!,
       'portalError': instance.portalError,
     };
+
+const _$AuthStatusEnumMap = {
+  AuthStatus.loading: 'loading',
+  AuthStatus.authed: 'authed',
+  AuthStatus.unauth: 'unauth',
+};
+
+const _$PortalAuthStatusEnumMap = {
+  PortalAuthStatus.loading: 'loading',
+  PortalAuthStatus.needCaptcha: 'needCaptcha',
+  PortalAuthStatus.authed: 'authed',
+  PortalAuthStatus.unauth: 'unauth',
+};
