@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:collegenius/models/eeclass_model/EeclassAssignment.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:eeclass_api/eeclass_api.dart';
@@ -22,13 +21,14 @@ class EeclassRepository {
       return true;
     }
 
-    _eeclassApiClient.setAccount(id_: username_, password_: password_);
-    final isLogIn = await _eeclassApiClient.logIn();
-    if (isLogIn) {
-      username = username_;
-      password = password_;
-    }
-    return isLogIn;
+    final validationResult = await _eeclassApiClient.setAccountAndValidate(
+        id_: username_, password_: password_);
+
+    /// If the validation is failed, it will throw exception,
+    /// then the following code will not be executed.
+    username = username_;
+    password = password_;
+    return validationResult;
   }
 
   Future<List<Semester>> getAvaliableSemester() async {
@@ -154,5 +154,12 @@ class EeclassRepository {
     final assignmentJson =
         await _eeclassApiClient.getAssignment(assignmentUrl: url);
     return EeclassAssignment.fromJson(assignmentJson);
+  }
+
+  Future<EeclassBullitin> getBullitin({
+    required String url,
+  }) async {
+    final bullitinJson = await _eeclassApiClient.getBullitin(bullitinUrl: url);
+    return EeclassBullitin.fromJson(bullitinJson);
   }
 }
