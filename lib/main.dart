@@ -3,14 +3,16 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:collegenius/logic/bloc/authentication_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:collegenius/logic/bloc/authentication_bloc.dart' as authBloc;
 import 'package:collegenius/logic/bloc/login_page_bloc.dart';
 import 'package:collegenius/models/course_schedual_model/course_schedual_models.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
-import 'package:collegenius/repositories/authtication_repository.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
+import 'package:collegenius/repositories/portal_repository.dart';
 import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualView.dart';
 import 'package:collegenius/ui/pages/eeclass_page/EeclassCoursesListView.dart';
+import 'package:collegenius/ui/pages/school_event_page/SchoolEventPage.dart';
 import 'package:collegenius/utilties/AppBlocObserver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +23,6 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
-import 'package:collegenius/ui/pages/bulletin_page/BulletinPage.dart';
 import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualPage.dart';
 import 'package:collegenius/ui/theme/AppTheme.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -51,7 +52,8 @@ Future<void> main() async {
       );
 
   /* Using Hive to storage application data*/
-  await Hive.initFlutter();
+
+  await Hive.initFlutter('hive_database');
   Hive.registerAdapter(SemesterAdapter());
   Hive.registerAdapter(CourseAdapter());
   Hive.registerAdapter(CoursePerDayAdapter());
@@ -117,19 +119,24 @@ class _MyAppState extends State<MyApp> {
           create: (BuildContext context) => SchoolEventsRepository(),
         ),
         RepositoryProvider(
-          create: (BuildContext context) => AuthenticationRepository(),
+          create: (BuildContext context) {
+            final _portalRepo = PortalRepository();
+            _portalRepo.initializeDio();
+            return _portalRepo;
+          },
         ),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<AuthenticationBloc>(
+          BlocProvider<authBloc.AuthenticationBloc>(
             lazy: false,
             create: (BuildContext context) {
-              final authenticationBloc = AuthenticationBloc(
+              final authenticationBloc = authBloc.AuthenticationBloc(
                   eeclassRepository: context.read<EeclassRepository>(),
                   courseSchedualRepository:
-                      context.read<CourseSchedualRepository>());
-              authenticationBloc.add(InitializeRequested());
+                      context.read<CourseSchedualRepository>(),
+                  portalRepository: context.read<PortalRepository>());
+              authenticationBloc.add(authBloc.InitializeRequest());
               return authenticationBloc;
             },
           ),
@@ -148,10 +155,8 @@ class _MyAppState extends State<MyApp> {
             lazy: false,
             create: (BuildContext context) {
               final loginPageBloc = LoginPageBloc(
-                  authenticationRepository:
-                      context.read<AuthenticationRepository>(),
-                  authenticationBloc: context.read<AuthenticationBloc>());
-              loginPageBloc.add(InitializeRequest());
+                  authenticationBloc:
+                      context.read<authBloc.AuthenticationBloc>());
               return loginPageBloc;
             },
           ),
@@ -164,6 +169,8 @@ class _MyAppState extends State<MyApp> {
               theme: AppTheme.light,
               darkTheme: AppTheme.dark,
               themeMode: _themeState.themeMode,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
               onGenerateRoute: _appRouter.generateRoute,
               home: IconTheme(
                 data: _theme.iconTheme,
@@ -177,7 +184,7 @@ class _MyAppState extends State<MyApp> {
                       );
                     case 1:
                       return MainScaffold(
-                        title: 'Coueses',
+                        title: 'Courses',
                         body: CourseSchedualView(
                           courseSchedualRepository:
                               context.read<CourseSchedualRepository>(),
@@ -186,7 +193,7 @@ class _MyAppState extends State<MyApp> {
                     case 2:
                       return MainScaffold(
                         title: 'Bulletins',
-                        body: BulletinHomePageView(),
+                        body: SchoolEventPageView(),
                       );
                     case 3:
                       return MainScaffold(
