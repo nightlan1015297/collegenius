@@ -25,9 +25,10 @@ class EeclassAssignmentDetailCubit extends Cubit<EeclassAssignmentDetailState> {
     } catch (e, stacktrace) {
       print(e);
       printHighlight(stacktrace);
-
-      emit(state.copyWith(
-          detailCardStatus: EeclassAssignmentDetailCardStatus.failed));
+      if (!isClosed) {
+        emit(state.copyWith(
+            detailCardStatus: EeclassAssignmentDetailCardStatus.failed));
+      }
     }
   }
 }
