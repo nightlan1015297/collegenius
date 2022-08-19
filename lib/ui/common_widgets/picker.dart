@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Picker extends StatefulWidget {
+class Picker extends StatelessWidget {
   final int currentItem;
 
   final List<String> itemlist;
@@ -14,12 +14,6 @@ class Picker extends StatefulWidget {
     required this.title,
     required this.onSelectedItemChanged,
   }) : super(key: key);
-
-  @override
-  State<Picker> createState() => _PickerState();
-}
-
-class _PickerState extends State<Picker> {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
@@ -29,7 +23,7 @@ class _PickerState extends State<Picker> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.title + ' :'),
+          Text(title + ' :'),
           SizedBox(height: 5),
           StatefulBuilder(builder: (context, setState) {
             return Container(
@@ -42,7 +36,7 @@ class _PickerState extends State<Picker> {
                     children: [
                       SizedBox(width: 15),
                       Spacer(),
-                      Text(widget.itemlist[widget.currentItem].toString(),
+                      Text(itemlist[currentItem].toString(),
                           style: _theme.textTheme.titleLarge),
                       Spacer(),
                       Container(
@@ -68,7 +62,7 @@ class _PickerState extends State<Picker> {
                       builder: (context) {
                         FixedExtentScrollController scrollController =
                             FixedExtentScrollController(
-                                initialItem: widget.currentItem);
+                                initialItem: currentItem);
 
                         return SizedBox(
                             height: 320,
@@ -77,7 +71,7 @@ class _PickerState extends State<Picker> {
                               child: CupertinoPicker(
                                   scrollController: scrollController,
                                   looping: false,
-                                  children: widget.itemlist
+                                  children: itemlist
                                       .map((item) => Center(
                                               child: Text(
                                             item,
@@ -90,9 +84,8 @@ class _PickerState extends State<Picker> {
                             ));
                       }).whenComplete(() {
                     setState(() => FixedExtentScrollController(
-                        initialItem: selectedItem ?? widget.currentItem));
-                    widget.onSelectedItemChanged(
-                        selectedItem ?? widget.currentItem);
+                        initialItem: selectedItem ?? currentItem));
+                    onSelectedItemChanged(selectedItem ?? currentItem);
                   })
                 },
               ),
