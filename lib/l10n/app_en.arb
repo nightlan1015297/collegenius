@@ -1,0 +1,32 @@
+{
+    "helloWorld": "Hello World!",
+    "@helloWorld": {
+      "description": "The conventional newborn programmer greeting"
+    },
+    "home" : "Home",
+    "courses":"Courses",
+    "schoolEvents": "School Events",
+    "eeclass":"EEclass",
+    "setting":"Setting",
+    "login":"Login",
+    "buttonNavRouteError":"Route Error : No route defined for bottomNav index {bottomNavIndex}",
+    "@buttonNavRouteError": {
+      "description": "Error message when the bottomNav index is not defined in the route array",
+      "placeholders": {
+        "bottomNavIndex": {
+            "type": "int"
+      }
+    }
+  },
+	"courseSchedualNotLoginMessage":"You have to login first to view Course schedual",
+	"courseSchedualNoData":"No Data Founded",
+	"courseSchedualNoCourse":"No Courses Today",
+	"daysPicker":"Days :",
+	"semesterPicker":"Semester :",
+	"classroom":"Classroom",
+	"time":"Time",
+	"courseInformation":"Course Information",
+	"courseName":"Course Name",
+	"professor":"Professor"
+} 
+

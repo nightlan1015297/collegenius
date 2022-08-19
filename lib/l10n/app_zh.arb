@@ -1,0 +1,31 @@
+{  
+    "helloWorld": "世界你好",
+    "@helloWorld": {
+      "description": "菜鳥軟體工程師打招呼的傳統"
+    },
+    "home":"首頁",
+    "courses":"課程",
+    "schoolEvents": "校園資訊",
+    "eeclass":"EEclass",
+    "setting":"設定",
+    "login":"登入",
+    "buttonNavRouteError":"Route Error : No route defined for bottomNav index {bottomNavIndex}",
+    "@buttonNavRouteError": {
+      "description": "Error message when the bottomNav index is not defined in the route array",
+      "placeholders": {
+        "bottomNavIndex": {
+            "type": "int"
+      }
+    }
+  },
+	"courseSchedualNotLoginMessage":"你必須先登入才能查看課表",
+	"courseSchedualNoData":"沒有資料",
+	"courseSchedualNoCourse":"今天沒有課程",
+	"daysPicker":"星期 :",
+	"semesterPicker":"學期 :",
+	"classroom":"上課教室",
+	"time":"上課時間",
+	"courseInformation":"課程資訊",
+	"courseName":"課程名稱",
+	"professor":"授課教師"
+}
