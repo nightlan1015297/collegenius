@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:collegenius/constants/maps.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:collegenius/logic/bloc/authentication_bloc.dart' as authBloc;
 import 'package:collegenius/logic/bloc/login_page_bloc.dart';
@@ -27,13 +28,13 @@ import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualPage.dar
 import 'package:collegenius/ui/theme/AppTheme.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'logic/cubit/apptheme_cubit.dart';
+import 'logic/bloc/app_setting_bloc.dart';
 import 'logic/cubit/bottomnav_cubit.dart';
 import 'logic/cubit/school_events_cubit.dart';
 import 'repositories/course_schedual_repository.dart';
 import 'repositories/school_events_repository.dart';
 import 'ui/pages/home_page/HomePageView.dart';
-import 'ui/pages/SettingPage.dart';
+import 'ui/pages/setting_page/SettingPageView.dart';
 import 'routes/Routes.dart';
 
 Future<void> main() async {
@@ -128,6 +129,9 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<AppSettingBloc>(
+            create: (BuildContext context) => AppSettingBloc(),
+          ),
           BlocProvider<authBloc.AuthenticationBloc>(
             lazy: false,
             create: (BuildContext context) {
@@ -139,14 +143,6 @@ class _MyAppState extends State<MyApp> {
               authenticationBloc.add(authBloc.InitializeRequest());
               return authenticationBloc;
             },
-          ),
-          BlocProvider<SchoolEventsCubit>(
-            create: (BuildContext context) => SchoolEventsCubit(
-              schoolEventsRepository: context.read<SchoolEventsRepository>(),
-            ),
-          ),
-          BlocProvider<AppthemeCubit>(
-            create: (BuildContext context) => AppthemeCubit(),
           ),
           BlocProvider<BottomnavCubit>(
             create: (BuildContext context) => BottomnavCubit(),
@@ -163,28 +159,31 @@ class _MyAppState extends State<MyApp> {
         ],
         child: Builder(
           builder: (context) {
-            final _themeState = context.watch<AppthemeCubit>().state;
+            final _appSetting = context.watch<AppSettingBloc>().state;
+            final _bottomNavState = context.watch<BottomnavCubit>().state;
+
             return MaterialApp(
               title: 'Collegenius',
               theme: AppTheme.light,
               darkTheme: AppTheme.dark,
-              themeMode: _themeState.themeMode,
+              themeMode: _appSetting.themeMode,
+              locale: mapAppLanguageToLocal[_appSetting.appLanguage],
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               onGenerateRoute: _appRouter.generateRoute,
               home: IconTheme(
                 data: _theme.iconTheme,
                 child: Builder(builder: (context) {
-                  final _bottomNavState = context.watch<BottomnavCubit>().state;
+                  final _locale = AppLocalizations.of(context)!;
                   switch (_bottomNavState.index) {
                     case 0:
                       return MainScaffold(
-                        title: 'Home',
+                        title: _locale.home,
                         body: HomePageView(),
                       );
                     case 1:
                       return MainScaffold(
-                        title: 'Courses',
+                        title: _locale.courses,
                         body: CourseSchedualView(
                           courseSchedualRepository:
                               context.read<CourseSchedualRepository>(),
@@ -192,22 +191,22 @@ class _MyAppState extends State<MyApp> {
                       );
                     case 2:
                       return MainScaffold(
-                        title: 'Bulletins',
+                        title: _locale.schoolEvents,
                         body: SchoolEventPageView(),
                       );
                     case 3:
                       return MainScaffold(
-                        title: 'Bulletins',
+                        title: _locale.schoolEvents,
                         body: SizedBox(),
                       );
                     case 4:
                       return MainScaffold(
-                        title: 'EEclass',
+                        title: _locale.eeclass,
                         body: EeclassCoursesListView(),
                       );
                     case 5:
                       return MainScaffold(
-                        title: 'Setting',
+                        title: _locale.setting,
                         body: SettingPageView(),
                       );
                     default:

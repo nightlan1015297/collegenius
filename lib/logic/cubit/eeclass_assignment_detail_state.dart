@@ -1,11 +1,5 @@
 part of 'eeclass_assignment_detail_cubit.dart';
 
-enum EeclassAssignmentDetailCardStatus {
-  loading,
-  success,
-  failed,
-}
-
 class EeclassAssignmentDetailState extends Equatable {
   const EeclassAssignmentDetailState(
       {EeclassAssignmentDetailCardStatus? detailCardStatus,

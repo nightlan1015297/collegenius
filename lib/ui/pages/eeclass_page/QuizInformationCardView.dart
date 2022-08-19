@@ -1,5 +1,8 @@
 import 'package:collegenius/logic/bloc/eeclass_course_page_bloc.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
+
+import 'package:collegenius/constants/Constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vector_math/vector_math.dart' as vmath;

@@ -1,31 +1,5 @@
 part of 'authentication_bloc.dart';
 
-enum AuthStatus {
-  loading,
-  authed,
-  unauth,
-}
-
-enum PortalAuthStatus {
-  loading,
-  needCaptcha,
-  authed,
-  unauth,
-}
-
-extension CoursepageStatusX on AuthStatus {
-  bool get isLoading => this == AuthStatus.loading;
-  bool get isAuthed => this == AuthStatus.authed;
-  bool get isUnauth => this == AuthStatus.unauth;
-}
-
-extension PortalAuthStatusX on PortalAuthStatus {
-  bool get isLoading => this == PortalAuthStatus.loading;
-  bool get isAuthed => this == PortalAuthStatus.authed;
-  bool get isUnauth => this == PortalAuthStatus.unauth;
-  bool get isNeedCaptcha => this == PortalAuthStatus.needCaptcha;
-}
-
 @JsonSerializable()
 class AuthenticationState extends Equatable {
   const AuthenticationState({

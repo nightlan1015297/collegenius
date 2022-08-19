@@ -1,7 +1,5 @@
 part of 'eeclass_bullitin_list_cubit.dart';
 
-enum EeclassBullitinListStatus { initial, loading, success, failure }
-
 class EeclassBullitinListState extends Equatable {
   EeclassBullitinListState({
     EeclassBullitinListStatus? status,

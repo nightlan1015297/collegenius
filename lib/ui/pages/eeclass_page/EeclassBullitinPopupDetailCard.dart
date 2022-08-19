@@ -1,6 +1,8 @@
 import 'package:collegenius/ui/pages/eeclass_page/EeclassAttachmentTile.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:collegenius/constants/Constants.dart';
+
 
 import 'package:collegenius/logic/cubit/eeclass_bullitin_detail_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';

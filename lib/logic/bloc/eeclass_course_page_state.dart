@@ -1,22 +1,5 @@
 part of 'eeclass_course_page_bloc.dart';
 
-enum EeclassCoursePageStatus {
-  unAuthentucated,
-  initial,
-  loading,
-  success,
-  failed,
-}
-
-enum EeclassQuizInfoStatus {
-  loading,
-  good,
-  normal,
-  bad,
-  canNotParse,
-  noQuiz,
-}
-
 class EeclassCoursePageState extends Equatable {
   EeclassCoursePageState(
       {EeclassCoursePageStatus? status,

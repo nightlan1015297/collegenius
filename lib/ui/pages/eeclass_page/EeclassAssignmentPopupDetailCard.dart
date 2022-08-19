@@ -1,3 +1,4 @@
+import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/logic/cubit/eeclass_assignment_detail_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';

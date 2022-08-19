@@ -1,5 +1,7 @@
 import 'package:collegenius/logic/bloc/authentication_bloc.dart';
 import 'package:collegenius/logic/bloc/login_page_bloc.dart';
+import 'package:collegenius/constants/Constants.dart';
+
 import 'package:collegenius/models/error_model/ErrorModel.dart';
 import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
@@ -306,7 +308,7 @@ abstract class LoginFailedMessage extends StatelessWidget {
                   onPressed: () {
                     retry(context);
                   },
-                  child: Text('重試'),
+                  child: Text('關閉'),
                 ),
               ],
             ),

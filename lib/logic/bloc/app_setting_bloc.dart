@@ -1,3 +1,4 @@
+import 'package:collegenius/constants/enums.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -10,7 +11,7 @@ part 'app_setting_bloc.g.dart';
 class AppSettingBloc extends HydratedBloc<AppSettingEvent, AppSettingState> {
   AppSettingBloc() : super(AppSettingState()) {
     on<ChangeThemeRequest>(_onChangeThemeRequest);
-    on<ChangeLocalizeRequest>(_onChangeLocalizeRequest);
+    on<ChangeAppLanguageRequest>(_onChangeAppLanguageRequest);
   }
 
   void _onChangeThemeRequest(
@@ -20,11 +21,11 @@ class AppSettingBloc extends HydratedBloc<AppSettingEvent, AppSettingState> {
     emit(state.copyWith(themeMode: event.themeMode));
   }
 
-  void _onChangeLocalizeRequest(
-    ChangeLocalizeRequest event,
+  void _onChangeAppLanguageRequest(
+    ChangeAppLanguageRequest event,
     Emitter<AppSettingState> emit,
   ) {
-    emit(state.copyWith(locale: event.locale));
+    emit(state.copyWith(appLanguage: event.lang));
   }
 
   @override

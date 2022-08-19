@@ -1,3 +1,5 @@
+import 'package:collegenius/constants/Constants.dart';
+import 'package:collegenius/repositories/school_events_repository.dart';
 import 'package:collegenius/routes/hero_dialog_route.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
@@ -7,94 +9,107 @@ import 'package:collegenius/logic/cubit/school_events_cubit.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-const Map<String, Color> eventCategoryToColor = {
-  '行政': Color.fromARGB(255, 100, 193, 236),
-  '活動': Color.fromARGB(255, 191, 244, 130),
-  '徵才': Color.fromARGB(255, 236, 130, 255),
-  '演講': Color.fromARGB(255, 244, 189, 108),
-  '施工': Color.fromARGB(255, 255, 152, 186)
-};
+class SchoolEventPageView extends StatefulWidget {
+  @override
+  State<SchoolEventPageView> createState() => _SchoolEventPageViewState();
+}
 
-class SchoolEventPageView extends StatelessWidget {
+class _SchoolEventPageViewState extends State<SchoolEventPageView>
+    with AutomaticKeepAliveClientMixin {
+  late SchoolEventsCubit _schoolEventsCubit;
+  @override
+  void initState() {
+    super.initState();
+    _schoolEventsCubit = SchoolEventsCubit(
+      schoolEventsRepository: context.read<SchoolEventsRepository>(),
+    );
+    _schoolEventsCubit.fetchInitEvents();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Builder(builder: (context) {
-        var _schoolEventsState = context.watch<SchoolEventsCubit>().state;
-        switch (_schoolEventsState.status) {
-          case SchoolEventsStatus.initial:
-            context.read<SchoolEventsCubit>().fetchInitEvents();
-            return Loading(size: 80);
-          case SchoolEventsStatus.loading:
-            return Loading(size: 80);
-          case SchoolEventsStatus.success:
-            return Column(
-              children: [
-                Expanded(
-                    child: RefreshIndicator(
-                  onRefresh: () =>
-                      context.read<SchoolEventsCubit>().fetchInitEvents(),
-                  child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: _schoolEventsState.events.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == _schoolEventsState.events.length) {
-                          context.read<SchoolEventsCubit>().fetchMoreEvents();
-                          return Center(child: Loading(size: 60));
-                        }
-                        var item = _schoolEventsState.events[index];
+    super.build(context);
+    return BlocProvider(
+      create: (context) => _schoolEventsCubit,
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: BlocBuilder<SchoolEventsCubit, SchoolEventsState>(
+            builder: (context, state) {
+          switch (state.status) {
+            case SchoolEventsStatus.initial:
+            case SchoolEventsStatus.loading:
+              return Loading(size: 80);
+            case SchoolEventsStatus.success:
+              return Column(
+                children: [
+                  Expanded(
+                      child: RefreshIndicator(
+                    onRefresh: () =>
+                        context.read<SchoolEventsCubit>().fetchInitEvents(),
+                    child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        itemCount: state.events.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == state.events.length) {
+                            context.read<SchoolEventsCubit>().fetchMoreEvents();
+                            return Center(child: Loading(size: 60));
+                          }
+                          var item = state.events[index];
 
-                        return EventCard(
-                          category: item.category,
-                          group: item.group,
-                          time: item.time,
-                          title: item.title,
-                          url: item.href,
-                        );
-                      }),
-                )),
-              ],
-            );
-          case SchoolEventsStatus.failure:
-            return Center(
-              child: Text('Loading'),
-            );
-          case SchoolEventsStatus.loadedend:
-            return Column(
-              children: [
-                Expanded(
-                    child: RefreshIndicator(
-                  triggerMode: RefreshIndicatorTriggerMode.onEdge,
-                  displacement: 30,
-                  onRefresh: () =>
-                      context.read<SchoolEventsCubit>().fetchInitEvents(),
-                  child: ListView.builder(
-                      physics: ClampingScrollPhysics(),
-                      itemCount: _schoolEventsState.events.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == _schoolEventsState.events.length) {
-                          return SizedBox(
-                              height: 100,
-                              child:
-                                  Center(child: Text('End of school events')));
-                        }
-                        var item = _schoolEventsState.events[index];
-
-                        return EventCard(
+                          return EventCard(
                             category: item.category,
                             group: item.group,
                             time: item.time,
                             title: item.title,
-                            url: item.href);
-                      }),
-                )),
-              ],
-            );
-        }
-      }),
+                            url: item.href,
+                          );
+                        }),
+                  )),
+                ],
+              );
+            case SchoolEventsStatus.failure:
+              return Center(
+                child: Text('Loading'),
+              );
+            case SchoolEventsStatus.loadedend:
+              return Column(
+                children: [
+                  Expanded(
+                      child: RefreshIndicator(
+                    triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                    displacement: 30,
+                    onRefresh: () =>
+                        context.read<SchoolEventsCubit>().fetchInitEvents(),
+                    child: ListView.builder(
+                        physics: ClampingScrollPhysics(),
+                        itemCount: state.events.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == state.events.length) {
+                            return SizedBox(
+                                height: 100,
+                                child: Center(
+                                    child: Text('End of school events')));
+                          }
+                          var item = state.events[index];
+
+                          return EventCard(
+                              category: item.category,
+                              group: item.group,
+                              time: item.time,
+                              title: item.title,
+                              url: item.href);
+                        }),
+                  )),
+                ],
+              );
+          }
+        }),
+      ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class EventCard extends StatelessWidget {
@@ -150,7 +165,8 @@ class EventCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Tag(
-                          color: eventCategoryToColor[category] ?? Colors.grey,
+                          color:
+                              mapEventCategoryToColor[category] ?? Colors.grey,
                           tagText: category ?? '-',
                         ),
                         ConstrainedBox(

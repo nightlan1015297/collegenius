@@ -5,8 +5,13 @@ class AppTheme {
     return ThemeData(
       brightness: Brightness.light,
       fontFamily: 'NotoSans',
-      primaryColor: Colors.grey.shade200,
-      backgroundColor: Colors.grey.shade200,
+      primaryColor: Colors.white,
+      backgroundColor: Colors.grey.shade300,
+      scaffoldBackgroundColor: Colors.grey.shade300,
+      appBarTheme: AppBarTheme(
+        color: Color.fromARGB(255, 248, 239, 185),
+      ),
+      canvasColor: Colors.white,
       cardTheme: CardTheme(
         elevation: 7.0,
         shape:

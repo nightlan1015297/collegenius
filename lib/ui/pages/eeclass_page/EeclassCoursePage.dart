@@ -3,6 +3,8 @@ import 'package:collegenius/logic/bloc/eeclass_course_page_bloc.dart';
 import 'package:collegenius/models/eeclass_model/EeclassBullitinBrief.dart';
 import 'package:collegenius/models/eeclass_model/EeclassCourseInformation.dart';
 import 'package:collegenius/models/error_model/ErrorModel.dart';
+import 'package:collegenius/constants/Constants.dart';
+
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
@@ -49,7 +51,6 @@ class _EeclassCoursePageState extends State<EeclassCoursePage> {
               ),
               elevation: 0,
               iconTheme: _theme.iconTheme,
-              backgroundColor: _theme.scaffoldBackgroundColor,
             ),
             body: Builder(
               builder: (context) {
@@ -442,12 +443,12 @@ class CourseBullitinBoard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
-                      child: Text('最新公告', style: _theme.textTheme.labelLarge),
+                      padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+                      child: Text('最新公告', style: _theme.textTheme.headline6),
                     ),
                     Spacer(),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 16, 16, 16),
+                      padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                       child: Icon(Icons.arrow_forward_ios_rounded),
                     )
                   ],
@@ -487,10 +488,11 @@ class CourseBullitinBoard extends StatelessWidget {
               }
               return Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                child: ListView.builder(
+                child: ListView.separated(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: itemLength,
+                    separatorBuilder: (context, index) => Divider(),
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
@@ -502,18 +504,11 @@ class CourseBullitinBoard extends StatelessWidget {
                           );
                         },
                         child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: Card(
-                            elevation: 5,
-                            color: _theme.focusColor,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                bullitinList[index].title,
-                                overflow: TextOverflow.ellipsis,
-                                style: _theme.textTheme.bodyLarge,
-                              ),
-                            ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            bullitinList[index].title,
+                            overflow: TextOverflow.ellipsis,
+                            style: _theme.textTheme.bodyLarge,
                           ),
                         ),
                       );

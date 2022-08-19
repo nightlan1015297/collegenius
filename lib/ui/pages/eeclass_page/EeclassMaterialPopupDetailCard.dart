@@ -4,6 +4,7 @@ import 'package:collegenius/utilties/ColorfulPrintFunction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:collegenius/constants/Constants.dart';
 
 import 'package:collegenius/logic/cubit/eeclass_material_detail_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';

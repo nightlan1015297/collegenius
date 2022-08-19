@@ -1,6 +1,4 @@
 import 'package:collegenius/logic/bloc/authentication_bloc.dart';
-import 'package:collegenius/repositories/portal_repository.dart';
-import 'package:collegenius/utilties/ColorfulPrintFunction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -46,7 +44,7 @@ class PortalLoginWebView extends StatelessWidget {
                     final cookies = await cookieManager.getCookies(url: url!);
                     context
                         .read<AuthenticationBloc>()
-                        .add(PortalCaptchaAcquiredRequest(cookies:cookies));
+                        .add(PortalCaptchaAcquiredRequest(cookies: cookies));
                     Navigator.of(context).pop();
                   }
                 },

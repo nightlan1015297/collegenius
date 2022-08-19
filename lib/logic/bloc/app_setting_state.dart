@@ -3,12 +3,12 @@ part of 'app_setting_bloc.dart';
 @JsonSerializable()
 class AppSettingState extends Equatable {
   AppSettingState({
-    Locale? locale,
+    Language? appLanguage,
     ThemeMode? themeMode,
   })  : themeMode = themeMode ?? ThemeMode.system,
-        locale = locale ?? Locale('zh', ''),
+        appLanguage = appLanguage ?? Language.zh,
         super();
-  final Locale locale;
+  final Language appLanguage;
   final ThemeMode themeMode;
 
   factory AppSettingState.fromJson(Map<String, dynamic> json) =>
@@ -16,18 +16,18 @@ class AppSettingState extends Equatable {
   Map<String, dynamic> toJson() => _$AppSettingStateToJson(this);
 
   AppSettingState copyWith({
-    Locale? locale,
+    Language? appLanguage,
     ThemeMode? themeMode,
   }) {
     return AppSettingState(
       themeMode: themeMode ?? this.themeMode,
-      locale: locale ?? this.locale,
+      appLanguage: appLanguage ?? this.appLanguage,
     );
   }
 
   @override
   List<Object?> get props => [
         themeMode,
-        locale,
+        appLanguage,
       ];
 }

@@ -1,5 +1,7 @@
 import 'package:collegenius/logic/cubit/eeclass_bullitin_list_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
+import 'package:collegenius/constants/Constants.dart';
+
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';

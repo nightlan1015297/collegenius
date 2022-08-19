@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:collegenius/repositories/course_schedual_repository.dart';
 import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualSuccessView.dart';

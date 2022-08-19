@@ -1,4 +1,8 @@
-Map<String, String> codeToClass = {
+import 'package:flutter/material.dart';
+
+import 'enums.dart';
+
+const Map<String, String> codeToClass = {
   'A': '文學一館',
   'C2': '文學二館',
   'E': '工程一館',
@@ -26,4 +30,27 @@ Map<String, String> codeToClass = {
   'S5': '科學五館',
   'TR': '教學研究綜合大樓暨大禮堂',
   'YH': '依仁堂'
+};
+const Map<Language, Locale> mapAppLanguageToLocal = {
+  Language.zh: Locale('zh', ''),
+  Language.en: Locale('en', ''),
+};
+
+const Map<ThemeMode, String> mapThememodeToDescription = {
+  ThemeMode.system: 'system',
+  ThemeMode.light: 'light',
+  ThemeMode.dark: 'dark',
+};
+
+const Map<Language, String> mapAppLanguageToDescription = {
+  Language.zh: "中文",
+  Language.en: "英文",
+};
+
+const Map<String, Color> mapEventCategoryToColor = {
+  '行政': Color.fromARGB(255, 100, 193, 236),
+  '活動': Color.fromARGB(255, 191, 244, 130),
+  '徵才': Color.fromARGB(255, 243, 209, 249),
+  '演講': Color.fromARGB(255, 244, 189, 108),
+  '施工': Color.fromARGB(255, 255, 152, 186)
 };

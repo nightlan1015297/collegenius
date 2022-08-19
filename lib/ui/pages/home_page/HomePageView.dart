@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:collegenius/ui/pages/home_page/course_status_card.dart';
 import 'package:collegenius/ui/pages/home_page/gallery_widget.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 

@@ -15,10 +15,10 @@ class ChangeThemeRequest extends AppSettingEvent {
   List<Object> get props => [themeMode];
 }
 
-class ChangeLocalizeRequest extends AppSettingEvent {
-  const ChangeLocalizeRequest({required this.locale});
-  final Locale locale;
+class ChangeAppLanguageRequest extends AppSettingEvent {
+  const ChangeAppLanguageRequest({required this.lang});
+  final Language lang;
 
   @override
-  List<Object> get props => [locale];
+  List<Object> get props => [lang];
 }

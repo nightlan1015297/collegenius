@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/models/eeclass_model/EeclassCourseBrief.dart';
 import 'package:collegenius/models/error_model/ErrorModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';

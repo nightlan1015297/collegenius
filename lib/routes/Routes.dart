@@ -9,6 +9,7 @@ import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
 import 'package:collegenius/ui/pages/login_page/LoginPageView.dart';
 import 'package:collegenius/ui/pages/login_page/LoginResultView.dart';
 import 'package:collegenius/ui/pages/login_page/ManualLoginCard.dart';
+import 'package:collegenius/ui/pages/setting_page/SettingPage.dart';
 import 'package:flutter/material.dart';
 
 import 'hero_dialog_route.dart';
@@ -155,6 +156,16 @@ class AppRouter {
             err: args.err,
           ),
         );
+
+      case '/setting/theme':
+        return HeroDialogRoute(
+          builder: (contex) => ThemePopupSettingCard(),
+        );
+      case '/setting/appLang':
+        return HeroDialogRoute(
+          builder: (contex) => AppLanguagePopupSettingCard(),
+        );
+
       default:
         return MaterialPageRoute(
           builder: (contex) => Scaffold(

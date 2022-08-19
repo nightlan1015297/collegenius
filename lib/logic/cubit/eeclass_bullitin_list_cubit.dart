@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:collegenius/constants/Constants.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:collegenius/models/eeclass_model/EeclassBullitinBrief.dart';
