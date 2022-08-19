@@ -7,10 +7,6 @@ abstract class LoginPageEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class InitializeRequest extends LoginPageEvent {
-  const InitializeRequest();
-}
-
 class LoginStudentIdChanged extends LoginPageEvent {
   const LoginStudentIdChanged(this.studentId);
 

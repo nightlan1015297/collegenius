@@ -1,5 +1,6 @@
 part of 'login_page_bloc.dart';
 
+@JsonSerializable()
 class LoginPageState extends Equatable {
   const LoginPageState({
     this.status = FormzStatus.pure,
@@ -8,9 +9,14 @@ class LoginPageState extends Equatable {
   });
 
   final FormzStatus status;
+  @JsonKey(ignore: true)
   final StudentId studentId;
+  @JsonKey(ignore: true)
   final Password password;
+  factory LoginPageState.fromJson(Map<String, dynamic> json) =>
+      _$LoginPageStateFromJson(json);
 
+  Map<String, dynamic> toJson() => _$LoginPageStateToJson(this);
   LoginPageState copyWith({
     FormzStatus? status,
     StudentId? studentId,

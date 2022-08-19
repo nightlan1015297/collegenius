@@ -1,39 +1,27 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:collegenius/logic/bloc/authentication_bloc.dart';
 import 'package:collegenius/models/user_model/user_model.dart';
-import 'package:collegenius/repositories/authtication_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'login_page_event.dart';
 part 'login_page_state.dart';
+part 'login_page_bloc.g.dart';
 
-class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
-  LoginPageBloc(
-      {required AuthenticationRepository authenticationRepository,
-      required AuthenticationBloc authenticationBloc})
-      : authenticationRepository = authenticationRepository,
-        authenticationBloc = authenticationBloc,
+class LoginPageBloc extends HydratedBloc<LoginPageEvent, LoginPageState> {
+  LoginPageBloc({required AuthenticationBloc authenticationBloc})
+      : authenticationBloc = authenticationBloc,
         super(const LoginPageState()) {
     on<LoginStudentIdChanged>(_onStudentIdChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
     on<LogoutRequst>(_onLogoutRequest);
-    on<InitializeRequest>(_onInitializeRequest);
-    authenticateBlocSubscription = authenticationBloc.stream.listen((event) {
-      onAuthenticateStatechanged(event);
-    });
   }
 
-  AuthenticationRepository authenticationRepository;
   final AuthenticationBloc authenticationBloc;
-  late StreamSubscription authenticateBlocSubscription;
-
-  void onAuthenticateStatechanged(event) {
-    add(InitializeRequest());
-  }
 
   void _onStudentIdChanged(
     LoginStudentIdChanged event,
@@ -44,19 +32,6 @@ class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
       studentId: studentId,
       status: Formz.validate([state.password, studentId]),
     ));
-  }
-
-  void _onInitializeRequest(
-    InitializeRequest event,
-    Emitter<LoginPageState> emit,
-  ) {
-    final authState = authenticationBloc.state;
-    if (authState.courseSelectAuthenticated.isAuthed ||
-        authState.eeclassAuthenticated.isAuthed) {
-      emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    } else {
-      emit(state.copyWith(status: FormzStatus.pure));
-    }
   }
 
   void _onPasswordChanged(
@@ -76,24 +51,15 @@ class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
   ) async {
     if (state.status.isValidated) {
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
-      try {
-        var authResult = await authenticationRepository.authFromMultipleServer(
-          id: state.studentId.value,
-          password: state.password.value,
-        );
-        if (authResult[Server.eeclass]!) {
-          authenticationBloc.add(EeclassAuthenticatedRequested(
-              user: User(
-                  id: state.studentId.value, password: state.password.value)));
-        }
-        if (authResult[Server.courseSelect]!) {
-          authenticationBloc.add(CourseSelectAuthenticatedRequested(
-              user: User(
-                  id: state.studentId.value, password: state.password.value)));
-        }
-      } catch (_) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure));
-      }
+      authenticationBloc.add(CourseSelectAuthenticateRequest(
+          user:
+              User(id: state.studentId.value, password: state.password.value)));
+      authenticationBloc.add(EeclassAuthenticateRequest(
+          user:
+              User(id: state.studentId.value, password: state.password.value)));
+      authenticationBloc.add(PortalAuthenticateRequest(
+          user:
+              User(id: state.studentId.value, password: state.password.value)));
     }
   }
 
@@ -101,13 +67,21 @@ class LoginPageBloc extends Bloc<LoginPageEvent, LoginPageState> {
     LogoutRequst event,
     Emitter<LoginPageState> emit,
   ) {
-    this.authenticationRepository = AuthenticationRepository();
     emit(LoginPageState());
   }
 
   @override
   Future<void> close() async {
-    authenticateBlocSubscription.cancel();
     return await super.close();
+  }
+
+  @override
+  LoginPageState? fromJson(Map<String, dynamic> json) {
+    return LoginPageState.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(LoginPageState state) {
+    return state.toJson();
   }
 }
