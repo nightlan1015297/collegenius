@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  flutter_localizations: 
+    sdk: flutter  
   bloc: ^8.1.0
   connectivity_plus: ^2.3.5
   course_select_api:
@@ -42,10 +44,12 @@ dependencies:
   hive_flutter: ^1.1.0
   html: ^0.15.0
   hydrated_bloc: ^8.0.0
-  intl: 0.17.0
+  intl: ^0.17.0
   json_annotation: ^4.4.0
-  path_provider: ^2.0.8
+  path_provider: ^2.0.11
   permission_handler: ^9.2.0
+  portal_api:
+    path: packages/portal_api
   school_events_api:
     path: packages/school_events_api
   test: ">=1.0.0 <2.0.0"
@@ -62,6 +66,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
 flutter:
+  generate: true
   assets:
     - image/
   fonts:
