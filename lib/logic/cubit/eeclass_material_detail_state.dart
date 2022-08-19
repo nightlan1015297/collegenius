@@ -1,11 +1,5 @@
 part of 'eeclass_material_detail_cubit.dart';
 
-enum EeclassMaterialDetailCardStatus {
-  loading,
-  success,
-  failed,
-}
-
 class EeclassMaterialDetailState extends Equatable {
   const EeclassMaterialDetailState({
     EeclassMaterialDetailCardStatus? detailCardStatus,

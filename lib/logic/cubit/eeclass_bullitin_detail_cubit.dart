@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:collegenius/constants/enums.dart';
 import 'package:collegenius/utilties/ColorfulPrintFunction.dart';
 import 'package:equatable/equatable.dart';
 

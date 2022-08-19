@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/models/event_model/SchoolEventModel.dart';
 import 'package:collegenius/repositories/school_events_repository.dart';
 import 'package:equatable/equatable.dart';

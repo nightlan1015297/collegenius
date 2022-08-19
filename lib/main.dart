@@ -30,7 +30,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'logic/bloc/app_setting_bloc.dart';
 import 'logic/cubit/bottomnav_cubit.dart';
-import 'logic/cubit/school_events_cubit.dart';
 import 'repositories/course_schedual_repository.dart';
 import 'repositories/school_events_repository.dart';
 import 'ui/pages/home_page/HomePageView.dart';

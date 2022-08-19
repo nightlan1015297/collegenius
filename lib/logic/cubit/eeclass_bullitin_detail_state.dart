@@ -1,11 +1,5 @@
 part of 'eeclass_bullitin_detail_cubit.dart';
 
-enum EeclassBullitinDetailCardStatus {
-  loading,
-  success,
-  failed,
-}
-
 class EeclassBullitinDetailState extends Equatable {
   const EeclassBullitinDetailState({
     EeclassBullitinDetailCardStatus? detailCardStatus,

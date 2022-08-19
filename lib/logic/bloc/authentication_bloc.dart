@@ -1,3 +1,4 @@
+import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/models/error_model/ErrorModel.dart';
 import 'package:collegenius/models/user_model/user_model.dart';
 import 'package:collegenius/repositories/course_schedual_repository.dart';
