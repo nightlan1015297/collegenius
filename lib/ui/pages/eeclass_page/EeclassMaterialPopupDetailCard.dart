@@ -4,7 +4,6 @@ import 'package:collegenius/utilties/ColorfulPrintFunction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'package:collegenius/logic/cubit/eeclass_material_detail_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
@@ -12,14 +11,15 @@ import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import 'EeclassAttachmentTile.dart';
+import 'EeclassOpenInBrowserTag.dart';
+
 class EeclassMaterialPopupDetailCard extends StatefulWidget {
   const EeclassMaterialPopupDetailCard({
     Key? key,
     required this.materialBrief,
-    required this.heroKey,
   }) : super(key: key);
   final EeclassMaterialBrief materialBrief;
-  final UniqueKey heroKey;
   @override
   State<EeclassMaterialPopupDetailCard> createState() =>
       _EeclassMaterialPopupDetailCardState();
@@ -45,69 +45,57 @@ class _EeclassMaterialPopupDetailCardState
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => eeclassMaterialDetailCubit,
-      child: Hero(
-        tag: widget.heroKey,
-        child:
-            BlocBuilder<EeclassMaterialDetailCubit, EeclassMaterialDetailState>(
-          builder: (context, state) {
-            switch (state.detailCardStatus) {
-              case EeclassMaterialDetailCardStatus.loading:
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Card(
-                      child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints(maxWidth: 450, maxHeight: 600),
-                        child: Loading(),
-                      ),
+      child:
+          BlocBuilder<EeclassMaterialDetailCubit, EeclassMaterialDetailState>(
+        builder: (context, state) {
+          switch (state.detailCardStatus) {
+            case EeclassMaterialDetailCardStatus.loading:
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Card(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(maxWidth: 450, maxHeight: 600),
+                      child: Loading(),
                     ),
                   ),
-                );
-              case EeclassMaterialDetailCardStatus.success:
-                return EeclassMaterialDetailedSuccessCard(
-                  materialBrief: widget.materialBrief,
-                  materialDetail: state.materialCardData!,
-                );
-              case EeclassMaterialDetailCardStatus.failed:
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Card(
-                      child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints(maxWidth: 450, maxHeight: 600),
-                        child: Text("Failed"),
-                      ),
+                ),
+              );
+            case EeclassMaterialDetailCardStatus.success:
+              return EeclassMaterialDetailedSuccessCard(
+                materialBrief: widget.materialBrief,
+                materialDetail: state.materialCardData!,
+              );
+            case EeclassMaterialDetailCardStatus.failed:
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Card(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(maxWidth: 450, maxHeight: 600),
+                      child: Text("Failed"),
                     ),
                   ),
-                );
-            }
-          },
-        ),
+                ),
+              );
+          }
+        },
       ),
     );
   }
 }
 
-class EeclassMaterialDetailedSuccessCard extends StatefulWidget {
+class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
   const EeclassMaterialDetailedSuccessCard(
       {Key? key, required this.materialBrief, required this.materialDetail})
       : super(key: key);
   final EeclassMaterialBrief materialBrief;
   final EeclassMaterial materialDetail;
-
-  @override
-  State<EeclassMaterialDetailedSuccessCard> createState() =>
-      _EeclassMaterialDetailedSuccessCardState();
-}
-
-class _EeclassMaterialDetailedSuccessCardState
-    extends State<EeclassMaterialDetailedSuccessCard> {
   Widget _materialBuilder({
     required EeclassMaterial materialDetail,
-    required String url,
-    required String type,
+    required EeclassMaterialBrief materialBrief,
     required BuildContext context,
   }) {
     final _theme = Theme.of(context);
@@ -122,7 +110,7 @@ class _EeclassMaterialDetailedSuccessCardState
         ],
       ),
     ];
-    switch (type) {
+    switch (materialBrief.type) {
       case "attachment":
         widgetList.add(
           Text(
@@ -130,30 +118,26 @@ class _EeclassMaterialDetailedSuccessCardState
             style: _theme.textTheme.bodyLarge,
           ),
         );
-        for (var element in materialDetail.fileList ?? []) {
-          widgetList.add(
-            DownloadAttachmentTags(element: element, theme: _theme),
-          );
-          if (element != materialDetail.fileList!.last) {
-            widgetList.add(Divider());
-          }
-        }
+        widgetList.add(EeclassAttachmentTile(
+          fileList: materialDetail.fileList ?? [],
+        ));
         break;
       case "pdf":
         widgetList.add(
           DownloadPdfTag(source: materialDetail.source!),
         );
+
         break;
       case "youtube":
         widgetList.add(
           LaunchYoutubeTag(source: materialDetail.source!),
         );
         break;
-      default:
-        widgetList.add(
-          OpenInBrowserTag(url: url),
-        );
     }
+
+    widgetList.add(
+      EeclassOpenInBrowserTag(url: materialBrief.url),
+    );
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -163,7 +147,7 @@ class _EeclassMaterialDetailedSuccessCardState
   }
 
   Column _materialBriefBuilder(
-      {required Map<String, dynamic> jsonMaterialBrief,
+      {required EeclassMaterialBrief materialBrief,
       required BuildContext context}) {
     final _theme = Theme.of(context);
     return Column(
@@ -175,7 +159,7 @@ class _EeclassMaterialDetailedSuccessCardState
               informationTextOverFlow: TextOverflow.visible,
               informationTexttheme: _theme.textTheme.bodyLarge,
               label: "標題",
-              information: jsonMaterialBrief["title"] ?? "-"),
+              information: materialBrief.title),
         ),
         Divider(),
         Padding(
@@ -183,7 +167,7 @@ class _EeclassMaterialDetailedSuccessCardState
           child: TextInformationProvider(
               label: "閱讀次數",
               informationTexttheme: _theme.textTheme.bodyLarge,
-              information: jsonMaterialBrief["readCount"] ?? "-"),
+              information: materialBrief.readCount),
         ),
         Divider(),
         Padding(
@@ -191,7 +175,7 @@ class _EeclassMaterialDetailedSuccessCardState
           child: TextInformationProvider(
               informationTexttheme: _theme.textTheme.bodyLarge,
               label: "作者",
-              information: jsonMaterialBrief["auther"] ?? "-"),
+              information: materialBrief.auther),
         ),
         Divider(),
         Padding(
@@ -199,7 +183,7 @@ class _EeclassMaterialDetailedSuccessCardState
           child: TextInformationProvider(
               informationTexttheme: _theme.textTheme.bodyLarge,
               label: "更新日期",
-              information: jsonMaterialBrief["updateDate"] ?? "-"),
+              information: materialBrief.updateDate),
         ),
       ],
     );
@@ -208,7 +192,6 @@ class _EeclassMaterialDetailedSuccessCardState
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-    final jsonMaterialBrief = widget.materialBrief.toJson();
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -241,28 +224,23 @@ class _EeclassMaterialDetailedSuccessCardState
                     ],
                   ),
                 ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 550),
+                Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ListView.separated(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: 2,
-                      itemBuilder: ((context, index) {
-                        if (index == 0) {
-                          return _materialBriefBuilder(
-                              jsonMaterialBrief: jsonMaterialBrief,
-                              context: context);
-                        } else {
-                          return _materialBuilder(
+                    child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            _materialBriefBuilder(
+                                materialBrief: materialBrief, context: context),
+                            Divider(),
+                            _materialBuilder(
                               context: context,
-                              url: widget.materialBrief.url,
-                              materialDetail: widget.materialDetail,
-                              type: widget.materialBrief.type);
-                        }
-                      }),
-                      separatorBuilder: (context, index) => Divider(),
-                    ),
+                              materialBrief: materialBrief,
+                              materialDetail: materialDetail,
+                            ),
+                          ],
+                        )),
                   ),
                 )
               ],
@@ -270,119 +248,6 @@ class _EeclassMaterialDetailedSuccessCardState
           ),
         ),
       ),
-    );
-  }
-}
-
-class OpenInBrowserTag extends StatelessWidget {
-  const OpenInBrowserTag({
-    Key? key,
-    required this.url,
-  }) : super(key: key);
-  final String url;
-
-  @override
-  Widget build(BuildContext context) {
-    final _theme = Theme.of(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: SizedBox(
-            width: 120,
-            child: ElevatedButton(
-              onPressed: () async {
-                final eeclassRepo = context.read<EeclassRepository>();
-                final cookies = await eeclassRepo.getCookiesListForDownload();
-                CookieManager cookieManager = CookieManager.instance();
-                for (var cookie in cookies) {
-                  cookieManager.setCookie(
-                      url: Uri.parse('https://ncueeclass.ncu.edu.tw'),
-                      name: cookie.name,
-                      value: cookie.value);
-                }
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return InAppWebView(
-                    initialUrlRequest: URLRequest(
-                        url: Uri.parse('https://ncueeclass.ncu.edu.tw' + url)),
-                    initialOptions: InAppWebViewGroupOptions(
-                        crossPlatform: InAppWebViewOptions(
-                          useOnDownloadStart: true,
-                          useShouldOverrideUrlLoading: true,
-                          mediaPlaybackRequiresUserGesture: false,
-                        ),
-                        android: AndroidInAppWebViewOptions(
-                          useHybridComposition: true,
-                        ),
-                        ios: IOSInAppWebViewOptions(
-                          allowsInlineMediaPlayback: true,
-                        )),
-                  );
-                }));
-              },
-              child: Text(
-                "在瀏覽器中開啟",
-                style: _theme.textTheme.headline6,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class DownloadAttachmentTags extends StatelessWidget {
-  const DownloadAttachmentTags({
-    Key? key,
-    required this.element,
-    required ThemeData theme,
-  })  : _theme = theme,
-        super(key: key);
-
-  final List element;
-  final ThemeData _theme;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Spacer(),
-        SizedBox(
-          width: 200,
-          child: Text(
-            element[0] ?? "",
-            style: _theme.textTheme.bodyLarge,
-            overflow: TextOverflow.visible,
-          ),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            final eeclassRepo = context.read<EeclassRepository>();
-            final cookiesString =
-                await eeclassRepo.getCookiesStringForDownload();
-            await FlutterDownloader.enqueue(
-                headers: {
-                  HttpHeaders.connectionHeader: 'keep-alive',
-                  HttpHeaders.cookieHeader: cookiesString,
-                },
-                url: 'https://ncueeclass.ncu.edu.tw' + element[1],
-                savedDir: "/storage/emulated/0/Download/",
-                showNotification: true,
-                openFileFromNotification: true,
-                saveInPublicStorage: true);
-          },
-          child: Text(
-            "下載",
-            style: _theme.textTheme.labelLarge,
-          ),
-        ),
-        Spacer()
-      ],
     );
   }
 }
@@ -414,7 +279,7 @@ class DownloadPdfTag extends StatelessWidget {
                       HttpHeaders.cookieHeader: cookiesString,
                     },
                     url: 'https://ncueeclass.ncu.edu.tw' + source,
-                    savedDir: "/storage/emulated/0/Download/",
+                    savedDir: "/storage/emulated/0/Download/Collegenius",
                     showNotification: true,
                     openFileFromNotification: true,
                     saveInPublicStorage: true);

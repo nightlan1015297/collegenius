@@ -252,8 +252,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 550),
+                Expanded(
                   child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
                     child: Column(
@@ -313,7 +312,7 @@ class DownloadAttachmentTags extends StatelessWidget {
                   HttpHeaders.cookieHeader: cookiesString,
                 },
                 url: 'https://ncueeclass.ncu.edu.tw' + element[1],
-                savedDir: "/storage/emulated/0/Download/",
+                savedDir: "/storage/emulated/0/Download/Collegenius",
                 showNotification: true,
                 openFileFromNotification: true,
                 saveInPublicStorage: true);

@@ -29,6 +29,7 @@ class EeclassUnauthticateView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Text(
               "You have to login first to access Eeclass related service",
+              textAlign: TextAlign.center,
               style: _theme.textTheme.bodyLarge,
             ),
           ),

@@ -88,8 +88,8 @@ class CourseSelectApiClient {
 
   var dio = Dio();
   var cookieJar = CookieJar();
-  late String? id;
-  late String? password;
+  String? id;
+  String? password;
 
   void setAccount({required String id_, required String password_}) {
     id = id_;
@@ -123,6 +123,9 @@ class CourseSelectApiClient {
       id = null;
       password = null;
       throw RequestToServerFailed();
+    }
+    if (!await checkLogInStatus()) {
+      throw LogInFailed();
     }
     return true;
   }

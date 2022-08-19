@@ -1,16 +1,14 @@
-import 'dart:ui';
-
-import 'package:collegenius/logic/bloc/authentication_bloc.dart';
+import 'package:collegenius/logic/bloc/authentication_bloc.dart' as authbloc;
 import 'package:collegenius/logic/bloc/eeclass_course_page_bloc.dart';
 import 'package:collegenius/models/eeclass_model/EeclassBullitinBrief.dart';
 import 'package:collegenius/models/eeclass_model/EeclassCourseInformation.dart';
+import 'package:collegenius/models/error_model/ErrorModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'EeclassBullitinsListView.dart';
 import 'EeclassUnauthticateView.dart';
 import 'QuizInformationCardView.dart';
 
@@ -28,7 +26,7 @@ class _EeclassCoursePageState extends State<EeclassCoursePage> {
   void initState() {
     eeclassCoursePageBloc = EeclassCoursePageBloc(
       courseSerial: widget.courseSerial,
-      authenticateBloc: context.read<AuthenticationBloc>(),
+      authenticateBloc: context.read<authbloc.AuthenticationBloc>(),
       eeclassRepository: context.read<EeclassRepository>(),
     );
     eeclassCoursePageBloc.add(InitializeRequest());
@@ -65,14 +63,82 @@ class _EeclassCoursePageState extends State<EeclassCoursePage> {
                     return EeclassCoursePageSuccessView(
                         courseSerial: widget.courseSerial);
                   case EeclassCoursePageStatus.failed:
-                    return Center(
-                      child: Text("Failed"),
-                    );
+                    return EeclassCoursePageFailedView(err: state.error!);
                 }
               },
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class EeclassCoursePageFailedView extends StatelessWidget {
+  final ErrorModel err;
+  const EeclassCoursePageFailedView({
+    Key? key,
+    required this.err,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Card(
+          child: Column(
+            children: [
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '載入發生錯誤',
+                    style: _theme.textTheme.headline6,
+                  )),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: '例外描述 :',
+                          information: err.exception,
+                          labelTexttheme: _theme.textTheme.headline6,
+                          informationTextOverFlow: TextOverflow.visible,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationPadding: EdgeInsets.all(8.0),
+                        ),
+                      ),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: '錯誤堆疊追蹤 :',
+                          information: err.stackTrace,
+                          informationTextOverFlow: TextOverflow.visible,
+                          labelTexttheme: _theme.textTheme.headline6,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationPadding: EdgeInsets.all(8.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  final eeclassHomePageBloc =
+                      context.read<EeclassCoursePageBloc>();
+                  eeclassHomePageBloc.add(InitializeRequest());
+                },
+                child: Text('重試'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -207,7 +273,7 @@ class EeclassPopUpInformationCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(
-                height: 40,
+                height: 50,
                 child: Stack(
                   children: [
                     Align(
@@ -229,8 +295,7 @@ class EeclassPopUpInformationCard extends StatelessWidget {
                   ],
                 ),
               ),
-              ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: 560),
+              Expanded(
                 child: ListView.separated(
                   physics: BouncingScrollPhysics(),
                   itemCount: 13,
@@ -246,7 +311,7 @@ class EeclassPopUpInformationCard extends StatelessWidget {
                                       .elementAt(index)] ??
                               '-',
                           labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.titleLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
                           informationTextOverFlow: TextOverflow.visible,
                         ),
                       );
@@ -262,7 +327,7 @@ class EeclassPopUpInformationCard extends StatelessWidget {
                                   ?.join("\n") ??
                               '-',
                           labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.titleLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
                           informationTextOverFlow: TextOverflow.visible,
                         ),
                       );
@@ -277,7 +342,7 @@ class EeclassPopUpInformationCard extends StatelessWidget {
                                       .elementAt(index)] ??
                               '-',
                           labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyMedium,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
                           informationTextOverFlow: TextOverflow.visible,
                         ),
                       );
@@ -366,11 +431,10 @@ class CourseBullitinBoard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => EeclassBullitinListView(
-                        courseSerial: courseSerial,
-                      ),
+                  Navigator.of(context).pushNamed(
+                    '/eeclassCourse/bullitins',
+                    arguments: EeclassBullitinsPageArguments(
+                      courseSerial: courseSerial,
                     ),
                   );
                 },
@@ -393,9 +457,25 @@ class CourseBullitinBoard extends StatelessWidget {
             Builder(builder: (context) {
               if (bullitinList.isEmpty) {
                 return SizedBox(
-                  height: 100,
-                  child: Center(
-                    child: Text('沒有資料', style: _theme.textTheme.headline6),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '(=\'X\'=)',
+                                style: _theme.textTheme.displayMedium!
+                                    .copyWith(fontWeight: FontWeight.w900),
+                              )
+                            ]),
+                        Text('沒有資料'),
+                      ],
+                    ),
                   ),
                 );
               }
@@ -412,17 +492,27 @@ class CourseBullitinBoard extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: itemLength,
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: Card(
-                          elevation: 5,
-                          color: _theme.focusColor,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              bullitinList[index].title,
-                              overflow: TextOverflow.ellipsis,
-                              style: _theme.textTheme.bodyLarge,
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                            '/eeclassCourse/bullitins/popup',
+                            arguments: EeclassBulliitinsPopupArguments(
+                              bullitinBrief: bullitinList[index],
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(2),
+                          child: Card(
+                            elevation: 5,
+                            color: _theme.focusColor,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                bullitinList[index].title,
+                                overflow: TextOverflow.ellipsis,
+                                style: _theme.textTheme.bodyLarge,
+                              ),
                             ),
                           ),
                         ),

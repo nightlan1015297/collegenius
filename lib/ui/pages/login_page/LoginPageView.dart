@@ -1,5 +1,4 @@
 import 'package:collegenius/logic/bloc/login_page_bloc.dart';
-import 'package:collegenius/ui/pages/login_page/LoginInprogressView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -15,8 +14,6 @@ class LoginPageView extends StatelessWidget {
     switch (_loginPageBloc.state.status) {
       case FormzStatus.pure:
         return LoginView();
-      case FormzStatus.submissionInProgress:
-        return LoginInprogressView();
       case FormzStatus.submissionSuccess:
         return LoginResultView();
       case FormzStatus.submissionFailure:

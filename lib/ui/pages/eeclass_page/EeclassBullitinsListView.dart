@@ -1,6 +1,7 @@
 import 'package:collegenius/logic/cubit/eeclass_bullitin_list_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
+import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,8 +71,28 @@ class _EeclassBullitinListViewState extends State<EeclassBullitinListView> {
 class EeclassBullitinListViewSuccess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
     return BlocBuilder<EeclassBullitinListCubit, EeclassBullitinListState>(
       builder: (context, state) {
+        if (state.bullitins.isEmpty) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '(=\'X\'=)',
+                      style: _theme.textTheme.displayMedium!
+                          .copyWith(fontWeight: FontWeight.w900),
+                    )
+                  ]),
+              Text('No bullitins'),
+            ],
+          );
+        }
         return Column(
           children: [
             Expanded(
@@ -92,7 +113,7 @@ class EeclassBullitinListViewSuccess extends StatelessWidget {
                         return Card(
                           child: SizedBox(
                             height: 120,
-                            child: Text("End"),
+                            child: Center(child: Text("End of Bullitin")),
                           ),
                         );
                       }
@@ -121,7 +142,14 @@ class EeclassBullitinCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          '/eeclassCourse/bullitins/popup',
+          arguments: EeclassBulliitinsPopupArguments(
+            bullitinBrief: bullitinBrief,
+          ),
+        );
+      },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(

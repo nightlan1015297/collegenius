@@ -11,7 +11,9 @@ class TextInformationProvider extends StatelessWidget {
     this.informationTextOverFlow = TextOverflow.ellipsis,
     this.labelTextOverFlow = TextOverflow.ellipsis,
     this.informationMaxLines,
+    this.informationPadding,
     this.labelMaxLines,
+    this.selectable = false,
   }) : super(key: key);
   final String label;
   final String information;
@@ -20,8 +22,10 @@ class TextInformationProvider extends StatelessWidget {
   final TextStyle? informationTexttheme;
   final TextOverflow informationTextOverFlow;
   final TextOverflow labelTextOverFlow;
+  final EdgeInsets? informationPadding;
   final int? informationMaxLines;
   final int? labelMaxLines;
+  final bool selectable;
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +39,22 @@ class TextInformationProvider extends StatelessWidget {
             maxLines: labelMaxLines,
             overflow: labelTextOverFlow,
             style: labelTexttheme ?? _theme.textTheme.labelLarge),
-        SelectableText(information,
-            maxLines: informationMaxLines,
-            style: informationTexttheme?.copyWith(
-                    overflow: informationTextOverFlow) ??
-                _theme.textTheme.headline6!
-                    .copyWith(overflow: informationTextOverFlow))
+        selectable
+            ? Padding(
+                padding: informationPadding ?? EdgeInsets.zero,
+                child: SelectableText(information,
+                    style: informationTexttheme?.copyWith(
+                            overflow: informationTextOverFlow) ??
+                        _theme.textTheme.headline6!
+                            .copyWith(overflow: informationTextOverFlow)),
+              )
+            : Padding(
+                padding: informationPadding ?? EdgeInsets.zero,
+                child: Text(information,
+                    maxLines: informationMaxLines,
+                    overflow: informationTextOverFlow,
+                    style: informationTexttheme ?? _theme.textTheme.headline6),
+              ),
       ],
     );
   }

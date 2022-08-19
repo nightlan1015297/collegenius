@@ -1,5 +1,6 @@
-import 'package:collegenius/logic/bloc/authentication_bloc.dart';
+import 'package:collegenius/logic/bloc/authentication_bloc.dart' as authbloc;
 import 'package:collegenius/logic/bloc/eeclass_home_page_bloc.dart';
+import 'package:collegenius/models/error_model/ErrorModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
@@ -12,37 +13,46 @@ class EeclassCoursesListView extends StatefulWidget {
   State<EeclassCoursesListView> createState() => _EeclassCoursesListViewState();
 }
 
-class _EeclassCoursesListViewState extends State<EeclassCoursesListView> {
-  late EeclassHomePageBloc eeclassHomePageBloc;
+class _EeclassCoursesListViewState extends State<EeclassCoursesListView>
+    with AutomaticKeepAliveClientMixin {
+  late EeclassCourseListBloc eeclassCourseListBloc;
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
-    eeclassHomePageBloc = EeclassHomePageBloc(
-      authenticateBloc: context.read<AuthenticationBloc>(),
+    eeclassCourseListBloc = EeclassCourseListBloc(
+      authenticateBloc: context.read<authbloc.AuthenticationBloc>(),
       eeclassRepository: context.read<EeclassRepository>(),
     );
-    eeclassHomePageBloc.add(InitializeRequest());
+    eeclassCourseListBloc.add(InitializeRequest());
     return super.initState();
+  }
+
+  @override
+  void dispose() {
+    eeclassCourseListBloc.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => eeclassHomePageBloc,
-      child: Builder(
-        builder: (context) {
-          final state = context.watch<EeclassHomePageBloc>().state;
+      create: (context) => eeclassCourseListBloc,
+      child: BlocBuilder<EeclassCourseListBloc, EeclassCourseListState>(
+        builder: (context, state) {
+          super.build(context);
           switch (state.status) {
-            case EeclassHomePageStatus.unAuthentucated:
+            case EeclassCourseListStatus.unAuthentucated:
               return EeclassUnauthticateView();
-            case EeclassHomePageStatus.initial:
-            case EeclassHomePageStatus.loading:
+            case EeclassCourseListStatus.initial:
+            case EeclassCourseListStatus.loading:
               return Center(child: Loading(size: 120));
-            case EeclassHomePageStatus.success:
-              return EeclassHomePageSuccessView();
-            case EeclassHomePageStatus.failed:
-              return Center(
-                child: Text("failed"),
-              );
+            case EeclassCourseListStatus.success:
+              return EeclassCourseListSuccessView();
+            case EeclassCourseListStatus.failed:
+              return EeclassCourseListFailedView(err: state.error!);
           }
         },
       ),
@@ -50,10 +60,80 @@ class _EeclassCoursesListViewState extends State<EeclassCoursesListView> {
   }
 }
 
-class EeclassHomePageSuccessView extends StatelessWidget {
+class EeclassCourseListFailedView extends StatelessWidget {
+  final ErrorModel err;
+  const EeclassCourseListFailedView({
+    Key? key,
+    required this.err,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EeclassHomePageBloc, EeclassHomePageState>(
+    final _theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Card(
+          child: Column(
+            children: [
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '載入發生錯誤',
+                    style: _theme.textTheme.headline6,
+                  )),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: '例外描述 :',
+                          information: err.exception,
+                          labelTexttheme: _theme.textTheme.headline6,
+                          informationTextOverFlow: TextOverflow.visible,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationPadding: EdgeInsets.all(8.0),
+                        ),
+                      ),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: '錯誤堆疊追蹤 :',
+                          information: err.stackTrace,
+                          informationTextOverFlow: TextOverflow.visible,
+                          labelTexttheme: _theme.textTheme.headline6,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationPadding: EdgeInsets.all(8.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  final eeclassCourseListBloc =
+                      context.read<EeclassCourseListBloc>();
+                  eeclassCourseListBloc.add(InitializeRequest());
+                },
+                child: Text('重試'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EeclassCourseListSuccessView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EeclassCourseListBloc, EeclassCourseListState>(
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +149,7 @@ class EeclassHomePageSuccessView extends StatelessWidget {
                       state.semesterList.indexOf(state.selectedSemester!),
                   itemlist: state.semesterList.map((e) => e.name).toList(),
                   onSelectedItemChanged: (index) => context
-                      .read<EeclassHomePageBloc>()
+                      .read<EeclassCourseListBloc>()
                       .add(ChangeSemesterRequest(
                           semester: state.semesterList[index])),
                 ),

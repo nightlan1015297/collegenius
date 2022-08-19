@@ -2,6 +2,7 @@ import 'package:collegenius/logic/cubit/eeclass_assignment_detail_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
+import 'package:collegenius/ui/pages/eeclass_page/EeclassAttachmentTile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -197,17 +198,20 @@ class EeclassPopUpAssignmentDetailSuccessCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 550),
+                Expanded(
                   child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
                         child: Column(
                           children: [
                             _assignmentInformationWidgetBuilder(
                                 assignInfo: assignmentDetail,
                                 assignBrief: assignmentBrief,
-                                context: context)
+                                context: context),
+                            EeclassAttachmentTile(
+                              fileList: assignmentDetail.fileList ?? [],
+                            ),
                           ],
                         ),
                       )),

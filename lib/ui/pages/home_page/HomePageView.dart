@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collegenius/ui/pages/home_page/course_status_card.dart';
 import 'package:collegenius/ui/pages/home_page/gallery_widget.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
@@ -10,67 +12,32 @@ class HomePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constrains) {
-      final _vpwidth = constrains.maxWidth;
-      if (_vpwidth > 650) {
-        return Column(
-          children: <Widget>[
-            Flexible(
-              flex: 2,
-              child: Gallery(
-                children: [
-                  GalleryPage(),
-                  GalleryPage(),
-                  GalleryPage(),
-                  GalleryPage(),
-                  GalleryPage(),
-                  GalleryPage(),
-                  GalleryPage(),
-                  GalleryPage()
-                ],
-              ),
-            ),
-            Flexible(
-              flex: 6,
-              child: SingleChildScrollView(
-                child: Wrap(
+      var squareSize = min(constrains.maxWidth, constrains.maxHeight);
+      squareSize = squareSize > 600 ? 600 : squareSize;
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: squareSize,
+                height: squareSize,
+                child: Gallery(
                   children: [
-                    SizedBox(width: _vpwidth / 2, child: WeatherCard()),
-                    SizedBox(width: _vpwidth / 2, child: CourseStatusCard()),
+                    GalleryPage(),
+                    GalleryPage(),
+                    GalleryPage(),
+                    GalleryPage(),
+                    GalleryPage(),
+                    GalleryPage(),
+                    GalleryPage(),
+                    GalleryPage()
                   ],
                 ),
               ),
-            )
-          ],
-        );
-      }
-      return Column(
-        children: <Widget>[
-          Flexible(
-            flex: 3,
-            child: Gallery(
-              children: [
-                GalleryPage(),
-                GalleryPage(),
-                GalleryPage(),
-                GalleryPage(),
-                GalleryPage(),
-                GalleryPage(),
-                GalleryPage(),
-                GalleryPage()
-              ],
-            ),
+            ],
           ),
-          Flexible(
-            flex: 6,
-            child: SingleChildScrollView(
-              child: Wrap(
-                children: [
-                  WeatherCard(),
-                  CourseStatusCard(),
-                ],
-              ),
-            ),
-          )
         ],
       );
     });

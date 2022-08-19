@@ -69,168 +69,171 @@ class CourseStatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constrains) {
-      final _backgroundColor;
-      final _iconColor;
-      final _status;
-      final _theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: LayoutBuilder(builder: (context, constrains) {
+        final _backgroundColor;
+        final _iconColor;
+        final _status;
+        final _theme = Theme.of(context);
 
-      if (_state == CourseStatusCardState.processing) {
-        _backgroundColor = Colors.blue.shade100;
-        _iconColor = Colors.blue;
+        if (_state == CourseStatusCardState.processing) {
+          _backgroundColor = Colors.blue.shade100;
+          _iconColor = Colors.blue;
 
-        final _courseName = "普通物理學";
-        final _remainTime = 45 * 60 + 25;
-        final _timeParsed = timeFormatter(_remainTime);
+          final _courseName = "普通物理學";
+          final _remainTime = 45 * 60 + 25;
+          final _timeParsed = timeFormatter(_remainTime);
 
-        _status = Row(
-          children: <Widget>[
-            SizedBox(
-              width: 50,
-              height: 50,
-              child: Stack(
-                children: [
-                  Center(child: DottedNode()),
-                  Center(
-                    child: Icon(
-                      Icons.arrow_forward_outlined,
-                      color: _iconColor,
-                      size: 30,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: 15),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('正在進行',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                    )),
-                SizedBox(
-                  width: constrains.maxWidth - 126,
-                  child: Text(_courseName,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
-                      )),
-                ),
-                timeWidget(_timeParsed, '後結束')
-              ],
-            ),
-          ],
-        );
-      } else if (_state == CourseStatusCardState.complete) {
-        _backgroundColor = Colors.green.shade100;
-        _iconColor = Colors.green;
-        _status = Row(
-          children: <Widget>[
-            Icon(
-              Icons.task_alt_outlined,
-              color: _iconColor,
-              size: 50,
-            ),
-            SizedBox(width: 10),
-            Text('本日課程已完成',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                )),
-          ],
-        );
-      } else if (_state == CourseStatusCardState.warning) {
-        _backgroundColor = Colors.orange.shade200;
-        _iconColor = Colors.orange.shade800;
-        final _courseName = "普通物理學";
-        final _remainTime = 45 * 60 + 25;
-        final _timeParsed = timeFormatter(_remainTime);
-        _status = Row(
-          children: <Widget>[
-            Icon(
-              Icons.warning_amber_outlined,
-              color: _iconColor,
-              size: 50,
-            ),
-            SizedBox(width: 15),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('下一堂',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                    )),
-                SizedBox(
-                  width: constrains.maxWidth - 126,
-                  child: Text(_courseName,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
-                      )),
-                ),
-                timeWidget(_timeParsed, '後開始')
-              ],
-            ),
-          ],
-        );
-      } else {
-        _backgroundColor = Colors.red.shade200;
-        _iconColor = Colors.red;
-        _status = Row(
-          children: <Widget>[
-            Text('Load Error',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                )),
-          ],
-        );
-      }
-
-      return Card(
-        elevation: 5.0,
-        color: _backgroundColor,
-        margin: EdgeInsets.all(10.0),
-        child: SizedBox(
-          height: 165,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  children: <Widget>[
-                    Text('課程狀態',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                        )),
-                    Expanded(child: SizedBox()),
-                    Icon(
-                      Icons.chevron_right_outlined,
-                      color: _theme.iconTheme.color,
+          _status = Row(
+            children: <Widget>[
+              SizedBox(
+                width: 50,
+                height: 50,
+                child: Stack(
+                  children: [
+                    Center(child: DottedNode()),
+                    Center(
+                      child: Icon(
+                        Icons.arrow_forward_outlined,
+                        color: _iconColor,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: _status,
+              SizedBox(width: 15),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('正在進行',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                      )),
+                  SizedBox(
+                    width: constrains.maxWidth - 126,
+                    child: Text(_courseName,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ),
+                  timeWidget(_timeParsed, '後結束')
+                ],
               ),
-            ]),
+            ],
+          );
+        } else if (_state == CourseStatusCardState.complete) {
+          _backgroundColor = Colors.green.shade100;
+          _iconColor = Colors.green;
+          _status = Row(
+            children: <Widget>[
+              Icon(
+                Icons.task_alt_outlined,
+                color: _iconColor,
+                size: 50,
+              ),
+              SizedBox(width: 10),
+              Text('本日課程已完成',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                  )),
+            ],
+          );
+        } else if (_state == CourseStatusCardState.warning) {
+          _backgroundColor = Colors.orange.shade200;
+          _iconColor = Colors.orange.shade800;
+          final _courseName = "普通物理學";
+          final _remainTime = 45 * 60 + 25;
+          final _timeParsed = timeFormatter(_remainTime);
+          _status = Row(
+            children: <Widget>[
+              Icon(
+                Icons.warning_amber_outlined,
+                color: _iconColor,
+                size: 50,
+              ),
+              SizedBox(width: 15),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('下一堂',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                      )),
+                  SizedBox(
+                    width: constrains.maxWidth - 126,
+                    child: Text(_courseName,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ),
+                  timeWidget(_timeParsed, '後開始')
+                ],
+              ),
+            ],
+          );
+        } else {
+          _backgroundColor = Colors.red.shade200;
+          _iconColor = Colors.red;
+          _status = Row(
+            children: <Widget>[
+              Text('Load Error',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                  )),
+            ],
+          );
+        }
+
+        return Card(
+          elevation: 5.0,
+          color: _backgroundColor,
+          margin: EdgeInsets.all(10.0),
+          child: SizedBox(
+            height: 165,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    children: <Widget>[
+                      Text('課程狀態',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                          )),
+                      Expanded(child: SizedBox()),
+                      Icon(
+                        Icons.chevron_right_outlined,
+                        color: _theme.iconTheme.color,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: _status,
+                ),
+              ]),
+            ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 }
 

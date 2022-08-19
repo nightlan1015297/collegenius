@@ -32,6 +32,20 @@ class SettingPageViewState extends State<SettingPageView> {
                   },
                 ),
               ]),
+              SettingSectionWidget(sectionname: "Language", tiles: <Widget>[
+                OptionalSettingTileWidget(
+                  icon: Icons.mode,
+                  currentOption: _themeState.themeMode == ThemeMode.dark
+                      ? "Dark Theme"
+                      : "Light Theme",
+                  title: "Theme",
+                  ontap: () {
+                    _themeState.themeMode == ThemeMode.dark
+                        ? context.read<AppthemeCubit>().changeToLight()
+                        : context.read<AppthemeCubit>().changeToDark();
+                  },
+                ),
+              ]),
               SettingSectionWidget(
                 sectionname: "Example",
                 tiles: <Widget>[

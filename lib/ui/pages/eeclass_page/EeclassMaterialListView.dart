@@ -44,7 +44,23 @@ class EeclassMaterialListView extends StatelessWidget {
             ),
           );
         } else
-          return Center(child: Text("沒有資料"));
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '(=\'X\'=)',
+                      style: _theme.textTheme.displayMedium!
+                          .copyWith(fontWeight: FontWeight.w900),
+                    )
+                  ]),
+              Text('沒有資料'),
+            ],
+          );
       }),
     );
   }
@@ -64,7 +80,6 @@ class EeclassMaterialCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-    final heroKey = UniqueKey();
     return LayoutBuilder(
       builder: (context, constrains) {
         return InkWell(
@@ -74,7 +89,6 @@ class EeclassMaterialCard extends StatelessWidget {
                 builder: (context) {
                   return EeclassMaterialPopupDetailCard(
                     materialBrief: materialInfoBrief,
-                    heroKey: heroKey,
                   );
                 },
               ),
