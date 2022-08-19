@@ -27,9 +27,10 @@ class EeclassMaterialDetailCubit extends Cubit<EeclassMaterialDetailState> {
     } catch (e, stacktrace) {
       print(e);
       printHighlight(stacktrace);
-
-      emit(state.copyWith(
-          detailCardStatus: EeclassMaterialDetailCardStatus.failed));
+      if (!isClosed) {
+        emit(state.copyWith(
+            detailCardStatus: EeclassMaterialDetailCardStatus.failed));
+      }
     }
   }
 }
