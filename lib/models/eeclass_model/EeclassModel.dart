@@ -7,3 +7,4 @@ export 'EeclassMaterial.dart';
 export 'EeclassQuizBrief.dart';
 export 'EeclassQuiz.dart';
 export 'EeclassAssignment.dart';
+export 'EeclassBullitin.dart';
