@@ -13,17 +13,19 @@ extension SchoolEventsStatusX on SchoolEventsStatus {
 class SchoolEventsState extends Equatable {
   SchoolEventsState({
     this.status = SchoolEventsStatus.initial,
-    List<Event>? events,
+    List<SchoolEvent>? events,
     int? loadedPage,
   })  : loadedPage = loadedPage ?? 1,
         events = events ?? [];
 
   final SchoolEventsStatus status;
   final int loadedPage;
-  final List<Event> events;
+  final List<SchoolEvent> events;
 
-  SchoolEventsState copywith(
-      {SchoolEventsStatus? status, int? loadedPage, List<Event>? events}) {
+  SchoolEventsState copyWith(
+      {SchoolEventsStatus? status,
+      int? loadedPage,
+      List<SchoolEvent>? events}) {
     return SchoolEventsState(
         status: status ?? this.status,
         loadedPage: loadedPage ?? this.loadedPage,

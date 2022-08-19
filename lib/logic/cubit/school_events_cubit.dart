@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:collegenius/models/event_model/event_model.dart';
+import 'package:collegenius/models/event_model/SchoolEventModel.dart';
 import 'package:collegenius/repositories/school_events_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,15 +12,15 @@ class SchoolEventsCubit extends Cubit<SchoolEventsState> {
   final SchoolEventsRepository schoolEventsRepository;
 
   Future<void> fetchInitEvents() async {
-    emit(state.copywith(status: SchoolEventsStatus.loading));
+    emit(state.copyWith(status: SchoolEventsStatus.loading));
     try {
       var fetchedList = await schoolEventsRepository.getEvents(1);
-      emit(state.copywith(
+      emit(state.copyWith(
           status: SchoolEventsStatus.success,
-          events: fetchedList.map((e) => Event.fromJson(e)).toList(),
+          events: fetchedList.map((e) => SchoolEvent.fromJson(e)).toList(),
           loadedPage: 1));
     } catch (error) {
-      emit(state.copywith(status: SchoolEventsStatus.failure));
+      emit(state.copyWith(status: SchoolEventsStatus.failure));
     }
   }
 
@@ -28,17 +28,17 @@ class SchoolEventsCubit extends Cubit<SchoolEventsState> {
     try {
       var fetched =
           await schoolEventsRepository.getEvents(state.loadedPage + 1);
-      var fetchedList = fetched.map((e) => Event.fromJson(e)).toList();
+      var fetchedList = fetched.map((e) => SchoolEvent.fromJson(e)).toList();
       if (fetchedList.last == state.events.last) {
-        emit(state.copywith(status: SchoolEventsStatus.loadedend));
+        emit(state.copyWith(status: SchoolEventsStatus.loadedend));
       } else {
-        emit(state.copywith(
+        emit(state.copyWith(
             status: SchoolEventsStatus.success,
             events: state.events + fetchedList,
             loadedPage: state.loadedPage + 1));
       }
     } catch (error) {
-      emit(state.copywith(status: SchoolEventsStatus.failure));
+      emit(state.copyWith(status: SchoolEventsStatus.failure));
     }
   }
 }
