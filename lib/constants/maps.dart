@@ -42,7 +42,7 @@ const Map<String, String> mapClassromCodeToDescription = {
   'YH': '依仁堂'
 };
 
-Map<String, String> mapCourseSectionToTime = {
+const Map<String, String> mapCourseSectionToTime = {
   'one': '8:',
   'two': '9:',
   'three': '10:',
@@ -69,7 +69,7 @@ const Map<String, Color> mapEventCategoryToColor = {
   '施工': Color.fromARGB(255, 255, 152, 186)
 };
 
-Map<int, String> mapIndexToSection = {
+const Map<int, String> mapIndexToSection = {
   0: 'one',
   1: 'two',
   2: 'three',
@@ -88,7 +88,7 @@ Map<int, String> mapIndexToSection = {
   16: 'F'
 };
 
-Map<int, String> mapIndexToWeekday = {
+const Map<int, String> mapIndexToWeekday = {
   0: 'monday',
   1: 'tuesday',
   2: 'wednesday',
