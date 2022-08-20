@@ -78,13 +78,13 @@ class MainScaffold extends StatelessWidget {
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(
-                        Icons.feed,
+                        Icons.event,
                       ),
                       label: "news",
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(
-                        Icons.auto_stories,
+                        Icons.message,
                       ),
                       label: "Courses",
                     ),
@@ -93,7 +93,7 @@ class MainScaffold extends StatelessWidget {
                       label: "asd",
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.school),
+                      icon: Icon(Icons.auto_stories),
                       label: "asd",
                     ),
                     BottomNavigationBarItem(
