@@ -15,7 +15,7 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 300),
+              constraints: BoxConstraints(maxHeight: 150),
               child: Card(
                 child: Column(
                   children: [
@@ -49,14 +49,20 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
                               ChangeAppLanguageRequest(lang: Language.zh),
                             );
                       },
-                      child: Row(
-                        children: [
-                          Text(_locale.traditionalChinese,
-                              style: _theme.textTheme.headline6),
-                          state.appLanguage.isZh
-                              ? Icon(Icons.check, color: Colors.green)
-                              : SizedBox(),
-                        ],
+                      child: SizedBox(
+                        height: 50,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              Text(_locale.traditionalChinese,
+                                  style: _theme.textTheme.headline6),
+                              state.appLanguage.isZh
+                                  ? Icon(Icons.check, color: Colors.green)
+                                  : SizedBox(),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     InkWell(

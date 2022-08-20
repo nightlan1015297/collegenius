@@ -4,14 +4,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class Loading extends StatelessWidget {
   Loading({
     Key? key,
-    this.size = 120,
+    this.size = 80,
   }) : super(key: key);
   final double size;
   @override
   Widget build(BuildContext context) {
     return SpinKitSpinningLines(
       color: Colors.blue,
-      duration: Duration(milliseconds: 1500),
+      duration: Duration(milliseconds: 2000),
       size: size,
     );
   }

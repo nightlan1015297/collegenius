@@ -55,7 +55,7 @@ class _CourseSchedualViewState extends State<CourseSchedualView>
             switch (state.status) {
               case CourseSchedualPageStatus.initial:
               case CourseSchedualPageStatus.loading:
-                return Center(child: Loading(size: 120));
+                return Center(child: Loading());
               case CourseSchedualPageStatus.success:
                 return CourseSchedualSuccessView();
               case CourseSchedualPageStatus.failure:

@@ -51,7 +51,7 @@ class _EeclassCoursesListViewState extends State<EeclassCoursesListView>
               return EeclassUnauthticateView();
             case EeclassCourseListStatus.initial:
             case EeclassCourseListStatus.loading:
-              return Center(child: Loading(size: 120));
+              return Center(child: Loading());
             case EeclassCourseListStatus.success:
               return EeclassCourseListSuccessView();
             case EeclassCourseListStatus.failed:

@@ -113,7 +113,7 @@ class EeclassBullitinListViewSuccess extends StatelessWidget {
                         context
                             .read<EeclassBullitinListCubit>()
                             .fetchMoreBullitin();
-                        return Center(child: Loading(size: 120));
+                        return Center(child: Loading());
                       } else {
                         return Card(
                           child: SizedBox(

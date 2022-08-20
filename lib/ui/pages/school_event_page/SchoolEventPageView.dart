@@ -40,7 +40,7 @@ class _SchoolEventPageViewState extends State<SchoolEventPageView>
           switch (state.status) {
             case SchoolEventsStatus.initial:
             case SchoolEventsStatus.loading:
-              return Loading(size: 80);
+              return Loading();
             case SchoolEventsStatus.success:
               return Column(
                 children: [
