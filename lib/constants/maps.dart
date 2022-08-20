@@ -64,7 +64,7 @@ const Map<String, String> mapCourseSectionToTime = {
 const Map<String, Color> mapEventCategoryToColor = {
   '行政': Color.fromARGB(255, 100, 193, 236),
   '活動': Color.fromARGB(255, 191, 244, 130),
-  '徵才': Color.fromARGB(255, 243, 209, 249),
+  '徵才': Color.fromARGB(255, 241, 184, 251),
   '演講': Color.fromARGB(255, 244, 189, 108),
   '施工': Color.fromARGB(255, 255, 152, 186)
 };
