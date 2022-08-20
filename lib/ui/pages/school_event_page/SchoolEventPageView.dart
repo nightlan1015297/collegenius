@@ -181,7 +181,7 @@ class EventCard extends StatelessWidget {
                               maxWidth: 150,
                             ),
                             child: Tag(
-                              color: Colors.grey,
+                              color: Colors.grey.shade500,
                               tagText: group ?? _locale.parseError,
                             )),
                         Expanded(child: SizedBox()),

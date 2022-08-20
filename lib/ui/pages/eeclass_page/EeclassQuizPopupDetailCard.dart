@@ -133,6 +133,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
         child: TextInformationProvider(
           label: _locale.quizTitle,
           information: quizInfo.quizTitle,
+          informationTexttheme: _theme.textTheme.bodyLarge,
           informationTextOverFlow: TextOverflow.visible,
         ),
       ),

@@ -132,9 +132,9 @@ class EeclassQuizCard extends StatelessWidget {
                               label: _locale.quizDate,
                               information: quizDeadline),
                         ),
-                        VerticalSeperater(),
+                        Spacer(),
                         SizedBox(
-                          width: 40,
+                          width: 50,
                           child: TextInformationProvider(
                               informationTextOverFlow: TextOverflow.ellipsis,
                               label: _locale.score,

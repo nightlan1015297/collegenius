@@ -195,7 +195,7 @@ class EeclassBullitinCard extends StatelessWidget {
                       ),
                       VerticalSeperater(),
                       SizedBox(
-                        width: 70,
+                        width: 100,
                         child: TextInformationProvider(
                             informationTextOverFlow: TextOverflow.ellipsis,
                             label: _locale.readCount,
@@ -203,7 +203,7 @@ class EeclassBullitinCard extends StatelessWidget {
                       ),
                       Spacer(),
                       SizedBox(
-                        width: 100,
+                        width: 80,
                         child: TextInformationProvider(
                             informationTextOverFlow: TextOverflow.ellipsis,
                             label: _locale.publisher,

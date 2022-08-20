@@ -88,7 +88,7 @@ class EeclassAssignmentCard extends StatelessWidget {
         margin: EdgeInsets.zero,
         child: Container(
           padding: EdgeInsets.all(10),
-          height: 120,
+          height: 125,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -137,12 +137,13 @@ class EeclassAssignmentCard extends StatelessWidget {
                   ),
                   VerticalSeperater(),
                   SizedBox(
-                    width: 40,
+                    width: 50,
                     child: TextInformationProvider(
                         informationTextOverFlow: TextOverflow.ellipsis,
                         label: _locale.score,
                         information:
-                            assignmentBrief.score?.round().toString() ?? ""),
+                            assignmentBrief.score?.round().toString() ??
+                                _locale.parseError),
                   ),
                 ]),
               )

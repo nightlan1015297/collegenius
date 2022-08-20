@@ -102,7 +102,7 @@ class EeclassMaterialCard extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(10),
               width: constrains.maxWidth - 20,
-              height: 120,
+              height: 125,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

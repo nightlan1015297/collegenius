@@ -245,11 +245,10 @@ class EeclassCourseCard extends StatelessWidget {
                       ),
                       VerticalSeperater(),
                       SizedBox(
-                        width: 30,
+                        width: 50,
                         child: TextInformationProvider(
                             label: _locale.credit, information: credit),
                       ),
-                      VerticalSeperater(),
                       Spacer(),
                       SizedBox(
                         width: 80,
