@@ -7,13 +7,14 @@ import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'PortalLoginWebView.dart';
 
 class LoginResultView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) {
         return Center(
@@ -22,7 +23,7 @@ class LoginResultView extends StatelessWidget {
             children: [
               Text('COLLEGENIUS', style: _theme.textTheme.displaySmall),
               Text(
-                'The application for students in NCU',
+                _locale.appDescription,
                 style: _theme.textTheme.bodyMedium,
               ),
               SizedBox(
@@ -77,7 +78,7 @@ class LoginResultView extends StatelessWidget {
                   ),
                   SizedBox(
                       width: 200,
-                      child: Text('Course planning',
+                      child: Text(_locale.coursePlanning,
                           style: _theme.textTheme.headline6)),
                 ],
               ),
@@ -131,7 +132,7 @@ class LoginResultView extends StatelessWidget {
                   SizedBox(
                     width: 200,
                     child: Text(
-                      'EEclass',
+                      _locale.eeclass,
                       style: _theme.textTheme.headline6,
                     ),
                   ),
@@ -197,7 +198,7 @@ class LoginResultView extends StatelessWidget {
                   SizedBox(
                     width: 200,
                     child: Text(
-                      'Portal',
+                      _locale.portal,
                       style: _theme.textTheme.headline6,
                     ),
                   ),
@@ -211,7 +212,7 @@ class LoginResultView extends StatelessWidget {
                         .add(AuthenticationLogoutRequest());
                     context.read<LoginPageBloc>().add(LogoutRequst());
                   },
-                  child: Text("Log out"))
+                  child: Text(_locale.logout)),
             ],
           ),
         );
@@ -255,6 +256,7 @@ abstract class LoginFailedMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     final _theme = Theme.of(context);
     return Center(
       child: Padding(
@@ -267,7 +269,7 @@ abstract class LoginFailedMessage extends StatelessWidget {
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      '登入發生錯誤',
+                      _locale.loginError,
                       style: _theme.textTheme.headline6,
                     )),
                 Expanded(
@@ -280,7 +282,7 @@ abstract class LoginFailedMessage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextInformationProvider(
-                            label: '例外描述 :',
+                            label: '${_locale.exceptionDescription} :',
                             information: err.exception,
                             labelTexttheme: _theme.textTheme.headline6,
                             informationTextOverFlow: TextOverflow.visible,
@@ -292,7 +294,7 @@ abstract class LoginFailedMessage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextInformationProvider(
-                            label: '錯誤堆疊追蹤 :',
+                            label: '${_locale.errorStacktrace} :',
                             information: err.stackTrace,
                             informationTextOverFlow: TextOverflow.visible,
                             labelTexttheme: _theme.textTheme.headline6,
@@ -308,7 +310,7 @@ abstract class LoginFailedMessage extends StatelessWidget {
                   onPressed: () {
                     retry(context);
                   },
-                  child: Text('關閉'),
+                  child: Text(_locale.close),
                 ),
               ],
             ),

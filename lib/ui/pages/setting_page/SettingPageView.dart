@@ -2,6 +2,7 @@ import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/logic/bloc/app_setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingPageView extends StatefulWidget {
   @override
@@ -9,9 +10,9 @@ class SettingPageView extends StatefulWidget {
 }
 
 class SettingPageViewState extends State<SettingPageView> {
-  final title = "設定";
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     return Builder(
       builder: (context) {
         return BlocBuilder<AppSettingBloc, AppSettingState>(
@@ -20,29 +21,31 @@ class SettingPageViewState extends State<SettingPageView> {
               child: Column(
                 children: [
                   SettingSectionWidget(
-                      sectionname: "Preference",
+                      sectionname: _locale.settingPreference,
                       tiles: <Widget>[
                         OptionalSettingTileWidget(
                           icon: Icons.dark_mode,
                           currentOption:
                               mapThememodeToDescription[state.themeMode]!,
-                          title: "Theme",
+                          title: _locale.systemTheme,
                           ontap: () {
                             Navigator.of(context).pushNamed("/setting/theme");
                           },
                         ),
                       ]),
-                  SettingSectionWidget(sectionname: "Language", tiles: <Widget>[
-                    OptionalSettingTileWidget(
-                      icon: Icons.language,
-                      currentOption:
-                          mapAppLanguageToDescription[state.appLanguage]!,
-                      title: "Theme",
-                      ontap: () {
-                        Navigator.of(context).pushNamed("/setting/appLang");
-                      },
-                    ),
-                  ]),
+                  SettingSectionWidget(
+                      sectionname: _locale.settingLanguage,
+                      tiles: <Widget>[
+                        OptionalSettingTileWidget(
+                          icon: Icons.language,
+                          currentOption:
+                              mapAppLanguageToDescription[state.appLanguage]!,
+                          title: _locale.systemLanguage,
+                          ontap: () {
+                            Navigator.of(context).pushNamed("/setting/appLang");
+                          },
+                        ),
+                      ]),
                   SettingSectionWidget(
                     sectionname: "Example",
                     tiles: <Widget>[

@@ -83,7 +83,30 @@
   "errorStacktrace":"Error Stacktrace",
   "retry":"Retry",
   "courseCode":"Course code",
-  "credit":"Credit"
+  "credit":"Credit",
+  "appDescription":"An application for students in NCU",
+  "coursePlanning":"Course planning",
+  "portal":"NCU Portal",
+  "logout":"Logout",
+  "loginError":"Login error",
+  "close":"Close",
+  "idTextflieldText": "ID or Username",
+  "passwordTextflieldText": "Password",
+  "idTextErrorText":"Student id or username can not be empty",
+  "passwordTextErrorText":"Password can not be empty",
+  "manualLogin" : "Manual Login",
+  "endOfSchoolEvents":"End of school events",
+  "selectSystemLanguage":"Select system language",
+  "traditionalChinese":"繁體中文",
+  "english":"English",
+  "selectSystemTheme":"Select system theme",
+  "light":"Light",
+  "dark":"Dark",
+  "system":"System default",
+  "settingPreference":"Preference",
+  "settingLanguage":"Language",
+  "systemTheme":"System theme",
+  "systemLanguage":"System language"
 
 } 
 

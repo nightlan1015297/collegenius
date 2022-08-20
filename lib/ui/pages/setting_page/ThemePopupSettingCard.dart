@@ -2,11 +2,13 @@ import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/logic/bloc/app_setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ThemePopupSettingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return BlocBuilder<AppSettingBloc, AppSettingState>(
       builder: (context, state) {
         return Center(
@@ -24,7 +26,7 @@ class ThemePopupSettingCard extends StatelessWidget {
                           Align(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text("選擇主題模式",
+                              child: Text(_locale.selectSystemTheme,
                                   style: _theme.textTheme.titleLarge,
                                   textAlign: TextAlign.start),
                             ),
@@ -49,7 +51,7 @@ class ThemePopupSettingCard extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Text("深色", style: _theme.textTheme.headline6),
+                          Text(_locale.dark, style: _theme.textTheme.headline6),
                           state.themeMode.isDark
                               ? Icon(Icons.check, color: Colors.green)
                               : SizedBox(),
@@ -64,7 +66,8 @@ class ThemePopupSettingCard extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Text("淺色", style: _theme.textTheme.headline6),
+                          Text(_locale.light,
+                              style: _theme.textTheme.headline6),
                           state.themeMode.isLight
                               ? Icon(Icons.check, color: Colors.green)
                               : SizedBox(),
@@ -79,7 +82,8 @@ class ThemePopupSettingCard extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Text("系統", style: _theme.textTheme.headline6),
+                          Text(_locale.system,
+                              style: _theme.textTheme.headline6),
                           state.themeMode.isSystem
                               ? Icon(Icons.check, color: Colors.green)
                               : SizedBox(),

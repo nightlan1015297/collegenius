@@ -1,12 +1,14 @@
 import 'package:collegenius/logic/bloc/login_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:formz/formz.dart';
 
 class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Center(
       child: Padding(
           padding: EdgeInsets.all(15),
@@ -17,7 +19,7 @@ class LoginView extends StatelessWidget {
                 children: [
                   Text('COLLEGENIUS', style: _theme.textTheme.displaySmall),
                   Text(
-                    'The application for college students in NCU',
+                    _locale.appDescription,
                     style: _theme.textTheme.bodyMedium,
                   )
                 ],
@@ -35,10 +37,11 @@ class LoginView extends StatelessWidget {
 class StudentIdInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
+    final _theme = Theme.of(context);
     return BlocBuilder<LoginPageBloc, LoginPageState>(
       buildWhen: (previous, current) => previous.studentId != current.studentId,
       builder: (context, state) {
-        final _theme = Theme.of(context);
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextField(
@@ -46,11 +49,10 @@ class StudentIdInput extends StatelessWidget {
             onChanged: (id) =>
                 context.read<LoginPageBloc>().add(LoginStudentIdChanged(id)),
             decoration: InputDecoration(
-              labelText: 'Student id or username',
+              labelText: _locale.idTextflieldText,
               labelStyle: _theme.textTheme.bodyMedium,
-              errorText: state.studentId.invalid
-                  ? 'Student id or username can not be empty'
-                  : null,
+              errorText:
+                  state.studentId.invalid ? _locale.idTextErrorText : null,
             ),
           ),
         );
@@ -62,10 +64,11 @@ class StudentIdInput extends StatelessWidget {
 class PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
+    final _theme = Theme.of(context);
     return BlocBuilder<LoginPageBloc, LoginPageState>(
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
-        final _theme = Theme.of(context);
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextField(
@@ -75,10 +78,10 @@ class PasswordInput extends StatelessWidget {
                 .add(LoginPasswordChanged(password)),
             obscureText: true,
             decoration: InputDecoration(
-              labelText: 'Password',
+              labelText: _locale.passwordTextflieldText,
               labelStyle: _theme.textTheme.bodyMedium,
               errorText:
-                  state.password.invalid ? 'Password can not be empty' : null,
+                  state.password.invalid ? _locale.passwordTextErrorText : null,
             ),
           ),
         );
@@ -90,10 +93,11 @@ class PasswordInput extends StatelessWidget {
 class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
+    final _theme = Theme.of(context);
     return BlocBuilder<LoginPageBloc, LoginPageState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        final _theme = Theme.of(context);
         return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
             : ElevatedButton(
@@ -104,7 +108,7 @@ class LoginButton extends StatelessWidget {
                 ),
                 key: const Key('loginForm_continue_raisedButton'),
                 child: Text(
-                  'Login',
+                  _locale.login,
                   style: _theme.textTheme.bodyMedium,
                 ),
                 onPressed: state.status.isValidated

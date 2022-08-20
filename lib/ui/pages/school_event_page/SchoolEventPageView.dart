@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:collegenius/logic/cubit/school_events_cubit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -29,6 +30,7 @@ class _SchoolEventPageViewState extends State<SchoolEventPageView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final _locale = AppLocalizations.of(context)!;
     return BlocProvider(
       create: (context) => _schoolEventsCubit,
       child: Padding(
@@ -69,7 +71,7 @@ class _SchoolEventPageViewState extends State<SchoolEventPageView>
               );
             case SchoolEventsStatus.failure:
               return Center(
-                child: Text('Loading'),
+                child: Text(_locale.loading),
               );
             case SchoolEventsStatus.loadedend:
               return Column(
@@ -86,9 +88,11 @@ class _SchoolEventPageViewState extends State<SchoolEventPageView>
                         itemBuilder: (context, index) {
                           if (index == state.events.length) {
                             return SizedBox(
-                                height: 100,
-                                child: Center(
-                                    child: Text('End of school events')));
+                              height: 100,
+                              child: Center(
+                                child: Text(_locale.endOfSchoolEvents),
+                              ),
+                            );
                           }
                           var item = state.events[index];
 
@@ -128,8 +132,8 @@ class EventCard extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var _theme = Theme.of(context);
-
+    final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return InkWell(
         onTap: () {
           Navigator.of(context).push(HeroDialogRoute(
@@ -152,7 +156,7 @@ class EventCard extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Text(title ?? '-',
+                    child: Text(title ?? _locale.parseError,
                         textAlign: TextAlign.left,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -167,7 +171,7 @@ class EventCard extends StatelessWidget {
                         Tag(
                           color:
                               mapEventCategoryToColor[category] ?? Colors.grey,
-                          tagText: category ?? '-',
+                          tagText: category ?? _locale.parseError,
                         ),
                         ConstrainedBox(
                             constraints: BoxConstraints(
@@ -178,13 +182,13 @@ class EventCard extends StatelessWidget {
                             ),
                             child: Tag(
                               color: Colors.grey,
-                              tagText: group ?? '-',
+                              tagText: group ?? _locale.parseError,
                             )),
                         Expanded(child: SizedBox()),
                         TextInformationProvider(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          information: time ?? '-',
-                          label: '發布日期',
+                          information: time ?? _locale.parseError,
+                          label: _locale.publicationDate,
                           informationTexttheme: _theme.textTheme.subtitle2,
                         )
                       ],

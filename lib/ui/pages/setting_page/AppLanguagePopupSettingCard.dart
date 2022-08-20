@@ -2,11 +2,13 @@ import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/logic/bloc/app_setting_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppLanguagePopupSettingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return BlocBuilder<AppSettingBloc, AppSettingState>(
       builder: (context, state) {
         return Center(
@@ -24,7 +26,7 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
                           Align(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text("選擇系統語言",
+                              child: Text(_locale.selectSystemLanguage,
                                   style: _theme.textTheme.titleLarge,
                                   textAlign: TextAlign.start),
                             ),
@@ -49,7 +51,8 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Text("中文", style: _theme.textTheme.headline6),
+                          Text(_locale.traditionalChinese,
+                              style: _theme.textTheme.headline6),
                           state.appLanguage.isZh
                               ? Icon(Icons.check, color: Colors.green)
                               : SizedBox(),
@@ -65,7 +68,8 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                          Text("英文", style: _theme.textTheme.headline6),
+                          Text(_locale.english,
+                              style: _theme.textTheme.headline6),
                           state.appLanguage.isEn
                               ? Icon(Icons.check, color: Colors.green)
                               : SizedBox(),

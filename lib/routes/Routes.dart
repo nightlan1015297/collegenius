@@ -10,6 +10,7 @@ import 'package:collegenius/ui/pages/login_page/LoginPageView.dart';
 import 'package:collegenius/ui/pages/login_page/LoginResultView.dart';
 import 'package:collegenius/ui/pages/login_page/ManualLoginCard.dart';
 import 'package:collegenius/ui/pages/setting_page/SettingPage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import 'hero_dialog_route.dart';
@@ -124,16 +125,27 @@ class AppRouter {
 
       case '/login/manual/courseSelect':
         return HeroDialogRoute(
-          builder: (contex) => CourseSelectManualLoginCard(),
+          builder: (contex) {
+            final _locale = AppLocalizations.of(contex)!;
+            return CourseSelectManualLoginCard(
+              systemname: _locale.coursePlanning,
+            );
+          },
         );
       case '/login/manual/eeclass':
-        return HeroDialogRoute(
-          builder: (contex) => EeclassManualLoginCard(),
-        );
+        return HeroDialogRoute(builder: (contex) {
+          final _locale = AppLocalizations.of(contex)!;
+          return EeclassManualLoginCard(
+            systemname: _locale.eeclass,
+          );
+        });
       case '/login/manual/portal':
-        return HeroDialogRoute(
-          builder: (contex) => PortalManualLoginCard(),
-        );
+        return HeroDialogRoute(builder: (contex) {
+          final _locale = AppLocalizations.of(contex)!;
+          return PortalManualLoginCard(
+            systemname: _locale.portal,
+          );
+        });
 
       case '/login/failedMessage/courseSelect':
         final args = routsettings.arguments as LoginFailedArguments;
