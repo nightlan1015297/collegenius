@@ -15,7 +15,7 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 150),
+              constraints: BoxConstraints(maxHeight: 180),
               child: Card(
                 child: Column(
                   children: [
@@ -52,11 +52,13 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
                       child: SizedBox(
                         height: 50,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 8),
                           child: Row(
                             children: [
                               Text(_locale.traditionalChinese,
                                   style: _theme.textTheme.headline6),
+                              Spacer(),
                               state.appLanguage.isZh
                                   ? Icon(Icons.check, color: Colors.green)
                                   : SizedBox(),
@@ -72,14 +74,19 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
                               ChangeAppLanguageRequest(lang: Language.en),
                             );
                       },
-                      child: Row(
-                        children: [
-                          Text(_locale.english,
-                              style: _theme.textTheme.headline6),
-                          state.appLanguage.isEn
-                              ? Icon(Icons.check, color: Colors.green)
-                              : SizedBox(),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 8),
+                        child: Row(
+                          children: [
+                            Text(_locale.english,
+                                style: _theme.textTheme.headline6),
+                            Spacer(),
+                            state.appLanguage.isEn
+                                ? Icon(Icons.check, color: Colors.green)
+                                : SizedBox(),
+                          ],
+                        ),
                       ),
                     ),
                   ],
