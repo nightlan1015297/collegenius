@@ -16,10 +16,11 @@ import 'package:flutter/material.dart';
 import 'hero_dialog_route.dart';
 
 class AppRouter {
-  Route generateRoute(RouteSettings routsettings) {
+  Route<dynamic> generateRoute(RouteSettings routsettings) {
     switch (routsettings.name) {
       case '/':
         return MaterialPageRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (contex) => MainScaffold(
             title: 'HomePage',
             body: HomePageView(),
@@ -27,6 +28,7 @@ class AppRouter {
         );
       case '/eeclassCourse':
         return MaterialPageRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (contex) {
             final args = routsettings.arguments as EeclassCourseArguments;
             return EeclassCoursePage(
@@ -36,6 +38,7 @@ class AppRouter {
         );
       case '/eeclassCourse/popupInfo':
         return HeroDialogRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (context) {
             final args = routsettings.arguments as EeclassPopupInfoArguments;
             return EeclassPopUpInformationCard(
@@ -45,6 +48,7 @@ class AppRouter {
         );
       case '/eeclassCourse/quizzes':
         return MaterialPageRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (context) {
             final args = routsettings.arguments as EeclassQuizzesPageArguments;
             return EeclassQuizListView(
@@ -54,6 +58,7 @@ class AppRouter {
         );
       case '/eeclassCourse/quizzes/popup':
         return HeroDialogRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (context) {
             final args = routsettings.arguments as EeclassQuizzPopupArguments;
             return EeclassQuizPopupDetailCard(
@@ -63,6 +68,7 @@ class AppRouter {
         );
       case '/eeclassCourse/bullitins':
         return MaterialPageRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (context) {
             final args =
                 routsettings.arguments as EeclassBullitinsPageArguments;
@@ -73,6 +79,7 @@ class AppRouter {
         );
       case '/eeclassCourse/bullitins/popup':
         return HeroDialogRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (context) {
             final args =
                 routsettings.arguments as EeclassBulliitinsPopupArguments;
@@ -83,6 +90,7 @@ class AppRouter {
         );
       case '/eeclassCourse/materials':
         return MaterialPageRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (context) {
             final args =
                 routsettings.arguments as EeclassMaterialsPageArguments;
@@ -93,6 +101,7 @@ class AppRouter {
         );
       case '/eeclassCourse/assignments':
         return MaterialPageRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (context) {
             final args =
                 routsettings.arguments as EeclassAssignmentsPageArguments;
@@ -103,6 +112,7 @@ class AppRouter {
         );
       case '/eeclassCourse/assignments/popup':
         return HeroDialogRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (context) {
             final args =
                 routsettings.arguments as EeclassAssignmentsPopupArguments;
@@ -113,43 +123,47 @@ class AppRouter {
         );
       case '/login':
         return MaterialPageRoute(
-          builder: (contex) => Scaffold(
-            appBar: AppBar(
-              leading: BackButton(
-                onPressed: () => Navigator.pop(contex, false),
-              ),
-            ),
-            body: LoginPageView(),
-          ),
-        );
+            settings: RouteSettings(name: routsettings.name),
+            builder: (contex) {
+              final _theme = Theme.of(contex);
+              final _locale = AppLocalizations.of(contex)!;
+              return Scaffold(
+                appBar: AppBar(
+                  titleTextStyle: _theme.textTheme.headline6,
+                  title: Text(_locale.login),
+                  iconTheme: _theme.iconTheme,
+                  leading: BackButton(
+                    onPressed: () => Navigator.pop(contex, false),
+                  ),
+                ),
+                body: LoginPageView(),
+              );
+            });
 
       case '/login/manual/courseSelect':
         return HeroDialogRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (contex) {
-            final _locale = AppLocalizations.of(contex)!;
-            return CourseSelectManualLoginCard(
-              systemname: _locale.coursePlanning,
-            );
+            return CourseSelectManualLoginCard();
           },
         );
       case '/login/manual/eeclass':
-        return HeroDialogRoute(builder: (contex) {
-          final _locale = AppLocalizations.of(contex)!;
-          return EeclassManualLoginCard(
-            systemname: _locale.eeclass,
-          );
-        });
+        return HeroDialogRoute(
+            settings: RouteSettings(name: routsettings.name),
+            builder: (contex) {
+              return EeclassManualLoginCard();
+            });
       case '/login/manual/portal':
-        return HeroDialogRoute(builder: (contex) {
-          final _locale = AppLocalizations.of(contex)!;
-          return PortalManualLoginCard(
-            systemname: _locale.portal,
-          );
-        });
+        return HeroDialogRoute(
+            settings: RouteSettings(name: routsettings.name),
+            builder: (contex) {
+              return PortalManualLoginCard();
+            });
 
       case '/login/failedMessage/courseSelect':
         final args = routsettings.arguments as LoginFailedArguments;
         return HeroDialogRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (contex) => CourseSchedualLoginFailedMessage(
             err: args.err,
           ),
@@ -157,6 +171,7 @@ class AppRouter {
       case '/login/failedMessage/eeclass':
         final args = routsettings.arguments as LoginFailedArguments;
         return HeroDialogRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (contex) => EeclassLoginFailedMessage(
             err: args.err,
           ),
@@ -164,6 +179,7 @@ class AppRouter {
       case '/login/failedMessage/portal':
         final args = routsettings.arguments as LoginFailedArguments;
         return HeroDialogRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (contex) => PortalLoginFailedMessage(
             err: args.err,
           ),
@@ -171,15 +187,18 @@ class AppRouter {
 
       case '/setting/theme':
         return HeroDialogRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (contex) => ThemePopupSettingCard(),
         );
       case '/setting/appLang':
         return HeroDialogRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (contex) => AppLanguagePopupSettingCard(),
         );
 
       default:
         return MaterialPageRoute(
+          settings: RouteSettings(name: routsettings.name),
           builder: (contex) => Scaffold(
             body: Center(
               child: Text(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:collegenius/logic/cubit/bottomnav_cubit.dart';
-
 //import 'drawer_tile_widget.dart';
 //import 'navigation_drawer_widget.dart';
 

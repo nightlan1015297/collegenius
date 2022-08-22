@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:collegenius/constants/maps.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:collegenius/logic/bloc/authentication_bloc.dart' as authBloc;
 import 'package:collegenius/logic/bloc/login_page_bloc.dart';
@@ -27,7 +28,9 @@ import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
 import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualPage.dart';
 import 'package:collegenius/ui/theme/AppTheme.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
+import 'firebase_options.dart';
 import 'logic/bloc/app_setting_bloc.dart';
 import 'logic/cubit/bottomnav_cubit.dart';
 import 'repositories/course_schedual_repository.dart';
@@ -59,6 +62,10 @@ Future<void> main() async {
   Hive.registerAdapter(CoursePerDayAdapter());
   Hive.registerAdapter(CourseSchedualAdapter());
 
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   /* Using HydratedBloc to storage application state*/
   final storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
@@ -73,6 +80,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
   final AppRouter _appRouter = AppRouter();
   ReceivePort _port = ReceivePort();
 
@@ -170,6 +178,11 @@ class _MyAppState extends State<MyApp> {
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               onGenerateRoute: _appRouter.generateRoute,
+              navigatorObservers: [
+                FirebaseAnalyticsObserver(
+                    analytics: _analytics,
+                    nameExtractor: (route) => route.name),
+              ],
               home: IconTheme(
                 data: _theme.iconTheme,
                 child: Builder(builder: (context) {

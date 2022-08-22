@@ -8,8 +8,17 @@ const Map<Language, String> mapAppLanguageToDescription = {
 };
 
 const Map<Language, Locale> mapAppLanguageToLocal = {
-  Language.zh: Locale('zh', ''),
+  Language.zh: Locale('zh', 'TW'),
   Language.en: Locale('en', ''),
+};
+
+const Map<int, String> mapBottomNavIndexToScreenName = {
+  0: 'home',
+  1: 'courseSchedual',
+  2: 'schoolEvents',
+  3: 'schoolTour',
+  4: 'eeclass',
+  5: 'setting',
 };
 
 const Map<String, String> mapClassromCodeToDescription = {

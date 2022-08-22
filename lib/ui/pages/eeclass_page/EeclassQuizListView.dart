@@ -102,7 +102,7 @@ class EeclassQuizCard extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(10),
               child: SizedBox(
-                height: 100,
+                height: 110,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
