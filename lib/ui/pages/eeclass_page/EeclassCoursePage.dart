@@ -247,28 +247,13 @@ class EeclassCoursePageSuccessView extends StatelessWidget {
 
 class EeclassPopUpInformationCard extends StatelessWidget {
   final EeclassCourseInformation courseInformation;
-  //TODO: implement localization
-  static Map<String, String> mappInformationKeyToChinese = {
-    'classCode': '課程代碼',
-    'name': '課程名稱',
-    'credit': '學分',
-    'semester': '學期',
-    'division': '單位',
-    'classes': '班級',
-    'members': '修課人數',
-    'instroctors': '老師',
-    'assistants': '助教',
-    'description': '課程簡介',
-    'syllabus': '課程大綱',
-    'textbooks': '教科書',
-    'gradingDescription': '成績說明'
-  };
 
   const EeclassPopUpInformationCard({Key? key, required this.courseInformation})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Center(
       child: Card(
         child: ConstrainedBox(
@@ -300,61 +285,147 @@ class EeclassPopUpInformationCard extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ListView.separated(
+                child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
-                  itemCount: 13,
-                  itemBuilder: ((context, index) {
-                    if (index < 7) {
-                      return Padding(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextInformationProvider(
-                          label: mappInformationKeyToChinese.values
-                              .elementAt(index),
-                          information: courseInformation.toJson()[
-                                  mappInformationKeyToChinese.keys
-                                      .elementAt(index)] ??
-                              '-',
+                          label: _locale.classCode,
+                          information: courseInformation.classCode ?? '-',
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationTextOverFlow: TextOverflow.visible,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: _locale.className,
+                          information: courseInformation.name ?? '-',
                           labelTexttheme: _theme.textTheme.labelLarge,
                           informationTexttheme: _theme.textTheme.bodyLarge,
                           informationTextOverFlow: TextOverflow.visible,
                         ),
-                      );
-                    } else if (index > 6 && index < 9) {
-                      return Padding(
+                      ),
+                      Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextInformationProvider(
-                          label: mappInformationKeyToChinese.values
-                              .elementAt(index),
-                          information: courseInformation
-                                  .toJson()[mappInformationKeyToChinese.keys
-                                      .elementAt(index)]
-                                  ?.join("\n") ??
-                              '-',
+                          label: _locale.credit,
+                          information: courseInformation.credit ?? '-',
                           labelTexttheme: _theme.textTheme.labelLarge,
                           informationTexttheme: _theme.textTheme.bodyLarge,
                           informationTextOverFlow: TextOverflow.visible,
                         ),
-                      );
-                    } else {
-                      return Padding(
+                      ),
+                      Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextInformationProvider(
-                          label: mappInformationKeyToChinese.values
-                              .elementAt(index),
-                          information: courseInformation.toJson()[
-                                  mappInformationKeyToChinese.keys
-                                      .elementAt(index)] ??
-                              '-',
+                          label: _locale.semester,
+                          information: courseInformation.semester ?? '-',
                           labelTexttheme: _theme.textTheme.labelLarge,
                           informationTexttheme: _theme.textTheme.bodyLarge,
                           informationTextOverFlow: TextOverflow.visible,
                         ),
-                      );
-                    }
-                  }),
-                  separatorBuilder: (context, index) => Divider(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: _locale.division,
+                          information: courseInformation.division ?? '-',
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationTextOverFlow: TextOverflow.visible,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: _locale.classes,
+                          information: courseInformation.classes ?? '-',
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationTextOverFlow: TextOverflow.visible,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: _locale.members,
+                          information: courseInformation.members ?? '-',
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationTextOverFlow: TextOverflow.visible,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: _locale.instroctors,
+                          information:
+                              courseInformation.instroctors?.join('\n') ?? '-',
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationTextOverFlow: TextOverflow.visible,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: _locale.assistants,
+                          information:
+                              courseInformation.assistants?.join('\n') ?? '-',
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationTextOverFlow: TextOverflow.visible,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: _locale.description,
+                          information: courseInformation.description ?? '-',
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationTextOverFlow: TextOverflow.visible,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: _locale.syllabus,
+                          information: courseInformation.syllabus ?? '-',
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationTextOverFlow: TextOverflow.visible,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: _locale.textbooks,
+                          information: courseInformation.textbooks ?? '-',
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationTextOverFlow: TextOverflow.visible,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextInformationProvider(
+                          label: _locale.gradingDescription,
+                          information:
+                              courseInformation.gradingDescription ?? '-',
+                          labelTexttheme: _theme.textTheme.labelLarge,
+                          informationTexttheme: _theme.textTheme.bodyLarge,
+                          informationTextOverFlow: TextOverflow.visible,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
