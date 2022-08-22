@@ -185,7 +185,8 @@ class AuthenticationBloc
   ) async {
     eeclassRepository.logout();
     courseSchedualRepository.logout();
-    portalRepository.logout();
+    //! Portal related code
+    // portalRepository.logout();
     return emit(AuthenticationState());
   }
 
