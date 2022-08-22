@@ -89,7 +89,7 @@ class MainScaffold extends StatelessWidget {
                       label: _locale.courses,
                     ),
                     BottomNavigationBarItem(
-                      icon: Icon(Icons.business),
+                      icon: Icon(Icons.info_outline_rounded),
                       label: _locale.schoolTour,
                     ),
                     BottomNavigationBarItem(
