@@ -15,7 +15,7 @@ class ThemePopupSettingCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 300),
+              constraints: BoxConstraints(maxHeight: 230),
               child: Card(
                 child: Column(
                   children: [
@@ -49,13 +49,19 @@ class ThemePopupSettingCard extends StatelessWidget {
                             .read<AppSettingBloc>()
                             .add(ChangeThemeRequest(themeMode: ThemeMode.dark));
                       },
-                      child: Row(
-                        children: [
-                          Text(_locale.dark, style: _theme.textTheme.headline6),
-                          state.themeMode.isDark
-                              ? Icon(Icons.check, color: Colors.green)
-                              : SizedBox(),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 8),
+                        child: Row(
+                          children: [
+                            Text(_locale.dark,
+                                style: _theme.textTheme.headline6),
+                            Spacer(),
+                            state.themeMode.isDark
+                                ? Icon(Icons.check, color: Colors.green)
+                                : SizedBox(),
+                          ],
+                        ),
                       ),
                     ),
                     InkWell(
@@ -64,14 +70,19 @@ class ThemePopupSettingCard extends StatelessWidget {
                             ChangeThemeRequest(themeMode: ThemeMode.light));
                         Navigator.of(context).pop();
                       },
-                      child: Row(
-                        children: [
-                          Text(_locale.light,
-                              style: _theme.textTheme.headline6),
-                          state.themeMode.isLight
-                              ? Icon(Icons.check, color: Colors.green)
-                              : SizedBox(),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 8),
+                        child: Row(
+                          children: [
+                            Text(_locale.light,
+                                style: _theme.textTheme.headline6),
+                            Spacer(),
+                            state.themeMode.isLight
+                                ? Icon(Icons.check, color: Colors.green)
+                                : SizedBox(),
+                          ],
+                        ),
                       ),
                     ),
                     InkWell(
@@ -80,14 +91,19 @@ class ThemePopupSettingCard extends StatelessWidget {
                         context.read<AppSettingBloc>().add(
                             ChangeThemeRequest(themeMode: ThemeMode.system));
                       },
-                      child: Row(
-                        children: [
-                          Text(_locale.system,
-                              style: _theme.textTheme.headline6),
-                          state.themeMode.isSystem
-                              ? Icon(Icons.check, color: Colors.green)
-                              : SizedBox(),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 8),
+                        child: Row(
+                          children: [
+                            Text(_locale.system,
+                                style: _theme.textTheme.headline6),
+                            Spacer(),
+                            state.themeMode.isSystem
+                                ? Icon(Icons.check, color: Colors.green)
+                                : SizedBox(),
+                          ],
+                        ),
                       ),
                     ),
                   ],
