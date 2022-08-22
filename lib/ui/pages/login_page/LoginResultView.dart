@@ -39,7 +39,7 @@ class LoginResultView extends StatelessWidget {
                         if (state.courseSelectAuthStatus.isAuthed) {
                           return Icon(
                             Icons.check_circle,
-                            color: Color.fromARGB(255, 113, 225, 116),
+                            color: Color.fromARGB(255, 49, 200, 54),
                           );
                         } else if (state.courseSelectAuthStatus.isLoading) {
                           return Loading(size: 20);
@@ -92,7 +92,7 @@ class LoginResultView extends StatelessWidget {
                         if (state.eeclassAuthStatus.isAuthed) {
                           return Icon(
                             Icons.check_circle,
-                            color: Color.fromARGB(255, 113, 225, 116),
+                            color: Color.fromARGB(255, 49, 200, 54),
                           );
                         } else if (state.eeclassAuthStatus.isLoading) {
                           return Loading(size: 20);
@@ -148,7 +148,7 @@ class LoginResultView extends StatelessWidget {
                         if (state.portalAuthStatus.isAuthed) {
                           return Icon(
                             Icons.check_circle,
-                            color: Color.fromARGB(255, 113, 225, 116),
+                            color: Color.fromARGB(255, 49, 200, 54),
                           );
                         } else if (state.portalAuthStatus.isLoading) {
                           return Loading(size: 20);
@@ -179,7 +179,7 @@ class LoginResultView extends StatelessWidget {
                                   Navigator.of(context).pushNamed(
                                       '/login/failedMessage/portal',
                                       arguments: LoginFailedArguments(
-                                          err: state.courseSelectError!));
+                                          err: state.portalError!));
                                 },
                                 child: Icon(
                                   Icons.cancel,
