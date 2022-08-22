@@ -57,9 +57,10 @@ class LoginPageBloc extends HydratedBloc<LoginPageEvent, LoginPageState> {
       authenticationBloc.add(EeclassAuthenticateRequest(
           user:
               User(id: state.studentId.value, password: state.password.value)));
-      authenticationBloc.add(PortalAuthenticateRequest(
-          user:
-              User(id: state.studentId.value, password: state.password.value)));
+      //! Portal related Service
+      // authenticationBloc.add(PortalAuthenticateRequest(
+      //     user:
+      //         User(id: state.studentId.value, password: state.password.value)));
     }
   }
 

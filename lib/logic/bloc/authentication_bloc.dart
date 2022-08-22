@@ -45,9 +45,10 @@ class AuthenticationBloc
     if (state.eeclassAuthStatus.isAuthed) {
       add(EeclassAuthenticateRequest(user: state.eeclassUserData));
     }
-    if (state.portalAuthStatus.isAuthed) {
-      add(PortalAuthenticateRequest(user: state.portalUserData));
-    }
+    //! Portal related Service
+    // if (state.portalAuthStatus.isAuthed) {
+    //   add(PortalAuthenticateRequest(user: state.portalUserData));
+    // }
   }
 
   void _onPortalCaptchaAcquiredRequest(
