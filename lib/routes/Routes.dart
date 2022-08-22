@@ -12,6 +12,7 @@ import 'package:collegenius/ui/pages/login_page/ManualLoginCard.dart';
 import 'package:collegenius/ui/pages/setting_page/SettingPage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 import 'hero_dialog_route.dart';
 
@@ -121,6 +122,7 @@ class AppRouter {
             );
           },
         );
+
       case '/login':
         return MaterialPageRoute(
             settings: RouteSettings(name: routsettings.name),
@@ -139,7 +141,6 @@ class AppRouter {
                 body: LoginPageView(),
               );
             });
-
       case '/login/manual/courseSelect':
         return HeroDialogRoute(
           settings: RouteSettings(name: routsettings.name),
@@ -196,6 +197,46 @@ class AppRouter {
           builder: (contex) => AppLanguagePopupSettingCard(),
         );
 
+      case '/tour/buildingMap':
+        return MaterialPageRoute(
+            settings: RouteSettings(name: routsettings.name),
+            builder: (contex) {
+              final _theme = Theme.of(contex);
+              final _locale = AppLocalizations.of(contex)!;
+              return Scaffold(
+                appBar: AppBar(
+                  titleTextStyle: _theme.textTheme.headline6,
+                  title: Text(_locale.schoolBuildingsMap),
+                  iconTheme: _theme.iconTheme,
+                  leading: BackButton(
+                    onPressed: () => Navigator.pop(contex, false),
+                  ),
+                ),
+                body: PhotoView(
+                  imageProvider: AssetImage('images/schoolBuildingMap.jpg'),
+                ),
+              );
+            });
+      case '/tour/tourmap':
+        return MaterialPageRoute(
+            settings: RouteSettings(name: routsettings.name),
+            builder: (contex) {
+              final _theme = Theme.of(contex);
+              final _locale = AppLocalizations.of(contex)!;
+              return Scaffold(
+                appBar: AppBar(
+                  titleTextStyle: _theme.textTheme.headline6,
+                  title: Text(_locale.schoolTourMap),
+                  iconTheme: _theme.iconTheme,
+                  leading: BackButton(
+                    onPressed: () => Navigator.pop(contex, false),
+                  ),
+                ),
+                body: PhotoView(
+                  imageProvider: AssetImage('images/schoolTour.jpg'),
+                ),
+              );
+            });
       default:
         return MaterialPageRoute(
           settings: RouteSettings(name: routsettings.name),
