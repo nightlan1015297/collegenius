@@ -108,5 +108,19 @@
   "settingLanguage":"語言設定",
   "systemTheme":"系統主題",
   "systemLanguage":"系統語言",
-  "schoolTour":"校園導覽"
+  "schoolTour":"校園導覽",
+  "schoolBuildingsMap":"校園建築地圖",
+  "schoolTourMap":"校園導覽地圖",
+  "classCode": "課程代碼",
+  "className": "課程名稱",
+  "semester": "學期",
+  "division": "單位",
+  "classes": "班級",
+  "members": "修課人數",
+  "instroctors": "老師",
+  "assistants": "助教",
+  "description": "課程簡介",
+  "syllabus": "課程大綱",
+  "textbooks": "教科書",
+  "gradingDescription": "成績說明"
 }

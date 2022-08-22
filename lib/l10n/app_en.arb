@@ -107,6 +107,20 @@
   "settingLanguage":"Language",
   "systemTheme":"System theme",
   "systemLanguage":"System language",
-  "schoolTour":"School tour"
+  "schoolTour":"School tour",
+  "schoolBuildingsMap":"School buildings map",
+  "schoolTourMap":"School tour map",
+  "classCode": "Class code",
+  "className": "Class name",
+  "semester": "Semester",
+  "division": "Division",
+  "classes": "Classes",
+  "members": "Members",
+  "instroctors": "Instroctors",
+  "assistants": "Assistants",
+  "description": "Description",
+  "syllabus": "Syllabus",
+  "textbooks": "Textbooks",
+  "gradingDescription": "Grading description"
 } 
 
