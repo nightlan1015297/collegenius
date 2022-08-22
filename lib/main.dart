@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:collegenius/constants/maps.dart';
+import 'package:collegenius/ui/pages/school_tour_page/SchoolTourPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:collegenius/logic/bloc/authentication_bloc.dart' as authBloc;
@@ -208,8 +209,8 @@ class _MyAppState extends State<MyApp> {
                       );
                     case 3:
                       return MainScaffold(
-                        title: _locale.schoolEvents,
-                        body: SizedBox(),
+                        title: _locale.schoolTour,
+                        body: SchoolTourPage(),
                       );
                     case 4:
                       return MainScaffold(
