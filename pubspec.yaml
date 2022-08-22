@@ -50,6 +50,7 @@ dependencies:
   json_annotation: ^4.4.0
   path_provider: ^2.0.11
   permission_handler: ^9.2.0
+  photo_view: ^0.14.0
   portal_api:
     path: packages/portal_api
   school_events_api:
@@ -70,7 +71,7 @@ dev_dependencies:
 flutter:
   generate: true
   assets:
-    - image/
+    - images/
   fonts:
     - family: NotoSans
       fonts:
