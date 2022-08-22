@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:collegenius/logic/cubit/bottomnav_cubit.dart';
 //import 'drawer_tile_widget.dart';
 //import 'navigation_drawer_widget.dart';
@@ -17,6 +17,7 @@ class MainScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
+    final _locale = AppLocalizations.of(context)!;
     return Scaffold(
         extendBody: true,
         appBar: AppBar(
@@ -69,35 +70,35 @@ class MainScaffold extends StatelessWidget {
                   onTap: (index) {
                     context.read<BottomnavCubit>().changeIndex(index);
                   },
-                  items: const <BottomNavigationBarItem>[
+                  items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                       icon: Icon(Icons.home),
                       activeIcon: Icon(Icons.home),
-                      label: "Home",
+                      label: _locale.home,
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(
                         Icons.event,
                       ),
-                      label: "news",
+                      label: _locale.schoolEvents,
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(
                         Icons.message,
                       ),
-                      label: "Courses",
+                      label: _locale.courses,
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.business),
-                      label: "asd",
+                      label: _locale.schoolTour,
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.auto_stories),
-                      label: "asd",
+                      label: _locale.eeclass,
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.settings),
-                      label: "asd",
+                      label: _locale.setting,
                     ),
                   ],
                 ),
