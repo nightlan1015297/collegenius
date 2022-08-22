@@ -77,7 +77,7 @@ class LoginResultView extends StatelessWidget {
                     width: 10,
                   ),
                   SizedBox(
-                      width: 200,
+                      width: 150,
                       child: Text(_locale.coursePlanning,
                           style: _theme.textTheme.headline6)),
                 ],
@@ -130,7 +130,7 @@ class LoginResultView extends StatelessWidget {
                     width: 10,
                   ),
                   SizedBox(
-                    width: 200,
+                    width: 150,
                     child: Text(
                       _locale.eeclass,
                       style: _theme.textTheme.headline6,
@@ -138,72 +138,73 @@ class LoginResultView extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 50,
-                    child: Builder(
-                      builder: (context) {
-                        if (state.portalAuthStatus.isAuthed) {
-                          return Icon(
-                            Icons.check_circle,
-                            color: Color.fromARGB(255, 49, 200, 54),
-                          );
-                        } else if (state.portalAuthStatus.isLoading) {
-                          return Loading(size: 20);
-                        } else if (state.portalAuthStatus.isNeedCaptcha) {
-                          return Row(
-                            children: [
-                              PortalLoginWebView(),
-                              Icon(
-                                Icons.warning,
-                                color: Colors.orange,
-                              ),
-                            ],
-                          );
-                        } else {
-                          return Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed('/login/manual/portal');
-                                },
-                                child: Icon(
-                                  Icons.manage_accounts,
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(
-                                      '/login/failedMessage/portal',
-                                      arguments: LoginFailedArguments(
-                                          err: state.portalError!));
-                                },
-                                child: Icon(
-                                  Icons.cancel,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  SizedBox(
-                    width: 200,
-                    child: Text(
-                      _locale.portal,
-                      style: _theme.textTheme.headline6,
-                    ),
-                  ),
-                ],
-              ),
+              //! Portal related Service
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     SizedBox(
+              //       width: 50,
+              //       child: Builder(
+              //         builder: (context) {
+              //           if (state.portalAuthStatus.isAuthed) {
+              //             return Icon(
+              //               Icons.check_circle,
+              //               color: Color.fromARGB(255, 49, 200, 54),
+              //             );
+              //           } else if (state.portalAuthStatus.isLoading) {
+              //             return Loading(size: 20);
+              //           } else if (state.portalAuthStatus.isNeedCaptcha) {
+              //             return Row(
+              //               children: [
+              //                 PortalLoginWebView(),
+              //                 Icon(
+              //                   Icons.warning,
+              //                   color: Colors.orange,
+              //                 ),
+              //               ],
+              //             );
+              //           } else {
+              //             return Row(
+              //               children: [
+              //                 InkWell(
+              //                   onTap: () {
+              //                     Navigator.of(context)
+              //                         .pushNamed('/login/manual/portal');
+              //                   },
+              //                   child: Icon(
+              //                     Icons.manage_accounts,
+              //                   ),
+              //                 ),
+              //                 InkWell(
+              //                   onTap: () {
+              //                     Navigator.of(context).pushNamed(
+              //                         '/login/failedMessage/portal',
+              //                         arguments: LoginFailedArguments(
+              //                             err: state.portalError!));
+              //                   },
+              //                   child: Icon(
+              //                     Icons.cancel,
+              //                     color: Colors.red,
+              //                   ),
+              //                 ),
+              //               ],
+              //             );
+              //           }
+              //         },
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 10,
+              //     ),
+              //     SizedBox(
+              //       width: 200,
+              //       child: Text(
+              //         _locale.portal,
+              //         style: _theme.textTheme.headline6,
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(height: 20),
               ElevatedButton(
                   onPressed: () {
