@@ -17,14 +17,18 @@ class EeclassBullitinDetailCubit extends Cubit<EeclassBullitinDetailState> {
   Future<void> onOpenPopupBullitinCardRequest({
     required String bullitinUrl,
   }) async {
-    emit(state.copyWith(
-        detailCardStatus: EeclassBullitinDetailCardStatus.loading));
+    if (!isClosed) {
+      emit(state.copyWith(
+          detailCardStatus: EeclassBullitinDetailCardStatus.loading));
+    }
     try {
       final bullitinInfo =
           await eeclassRepository.getBullitin(url: bullitinUrl);
-      emit(state.copyWith(
-          detailCardStatus: EeclassBullitinDetailCardStatus.success,
-          bullitinCardData: bullitinInfo));
+      if (!isClosed) {
+        emit(state.copyWith(
+            detailCardStatus: EeclassBullitinDetailCardStatus.success,
+            bullitinCardData: bullitinInfo));
+      }
     } catch (e, stacktrace) {
       print(e);
       printHighlight(stacktrace);

@@ -13,13 +13,17 @@ class SchoolEventsCubit extends Cubit<SchoolEventsState> {
   final SchoolEventsRepository schoolEventsRepository;
 
   Future<void> fetchInitEvents() async {
-    emit(state.copyWith(status: SchoolEventsStatus.loading));
+    if (!isClosed) {
+      emit(state.copyWith(status: SchoolEventsStatus.loading));
+    }
     try {
       var fetchedList = await schoolEventsRepository.getEvents(1);
-      emit(state.copyWith(
-          status: SchoolEventsStatus.success,
-          events: fetchedList.map((e) => SchoolEvent.fromJson(e)).toList(),
-          loadedPage: 1));
+      if (!isClosed) {
+        emit(state.copyWith(
+            status: SchoolEventsStatus.success,
+            events: fetchedList.map((e) => SchoolEvent.fromJson(e)).toList(),
+            loadedPage: 1));
+      }
     } catch (error) {
       if (!isClosed) {
         emit(state.copyWith(status: SchoolEventsStatus.failure));
@@ -33,15 +37,21 @@ class SchoolEventsCubit extends Cubit<SchoolEventsState> {
           await schoolEventsRepository.getEvents(state.loadedPage + 1);
       var fetchedList = fetched.map((e) => SchoolEvent.fromJson(e)).toList();
       if (fetchedList.last == state.events.last) {
-        emit(state.copyWith(status: SchoolEventsStatus.loadedend));
+        if (!isClosed) {
+          emit(state.copyWith(status: SchoolEventsStatus.loadedend));
+        }
       } else {
-        emit(state.copyWith(
-            status: SchoolEventsStatus.success,
-            events: state.events + fetchedList,
-            loadedPage: state.loadedPage + 1));
+        if (!isClosed) {
+          emit(state.copyWith(
+              status: SchoolEventsStatus.success,
+              events: state.events + fetchedList,
+              loadedPage: state.loadedPage + 1));
+        }
       }
     } catch (error) {
-      emit(state.copyWith(status: SchoolEventsStatus.failure));
+      if (!isClosed) {
+        emit(state.copyWith(status: SchoolEventsStatus.failure));
+      }
     }
   }
 }

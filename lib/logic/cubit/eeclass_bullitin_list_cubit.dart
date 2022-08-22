@@ -17,18 +17,22 @@ class EeclassBullitinListCubit extends Cubit<EeclassBullitinListState> {
   final EeclassRepository eeclassRepository;
 
   Future<void> fetchInitBullitin() async {
-    emit(state.copyWith(status: EeclassBullitinListStatus.loading));
+    if (!isClosed) {
+      emit(state.copyWith(status: EeclassBullitinListStatus.loading));
+    }
     try {
       var fetchedList = await eeclassRepository.getCourseBulletin(
         courseSerial: courseSerial,
         page: 1,
       );
-      emit(
-        state.copyWith(
-            status: EeclassBullitinListStatus.success,
-            bullitins: fetchedList,
-            loadedPage: 1),
-      );
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+              status: EeclassBullitinListStatus.success,
+              bullitins: fetchedList,
+              loadedPage: 1),
+        );
+      }
     } catch (error) {
       if (!isClosed) {
         emit(state.copyWith(status: EeclassBullitinListStatus.failure));
@@ -43,15 +47,21 @@ class EeclassBullitinListCubit extends Cubit<EeclassBullitinListState> {
         page: state.loadedPage + 1,
       );
       if (newFetched.isEmpty) {
-        emit(state.copyWith(isLoadedEnd: true));
+        if (!isClosed) {
+          emit(state.copyWith(isLoadedEnd: true));
+        }
       } else {
-        emit(state.copyWith(
-            status: EeclassBullitinListStatus.success,
-            bullitins: state.bullitins + newFetched,
-            loadedPage: state.loadedPage + 1));
+        if (!isClosed) {
+          emit(state.copyWith(
+              status: EeclassBullitinListStatus.success,
+              bullitins: state.bullitins + newFetched,
+              loadedPage: state.loadedPage + 1));
+        }
       }
     } catch (error, stacktrace) {
-      emit(state.copyWith(status: EeclassBullitinListStatus.failure));
+      if (!isClosed) {
+        emit(state.copyWith(status: EeclassBullitinListStatus.failure));
+      }
     }
   }
 }

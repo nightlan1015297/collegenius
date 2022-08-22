@@ -15,14 +15,18 @@ class EeclassAssignmentDetailCubit extends Cubit<EeclassAssignmentDetailState> {
   Future<void> onOpenPopupAssignmentCardRequest({
     required String assignmentUrl,
   }) async {
-    emit(state.copyWith(
-        detailCardStatus: EeclassAssignmentDetailCardStatus.loading));
+    if (!isClosed) {
+      emit(state.copyWith(
+          detailCardStatus: EeclassAssignmentDetailCardStatus.loading));
+    }
     try {
       final assignmentInfo =
           await eeclassRepository.getAssignment(url: assignmentUrl);
-      emit(state.copyWith(
-          detailCardStatus: EeclassAssignmentDetailCardStatus.success,
-          assignmentCardData: assignmentInfo));
+      if (!isClosed) {
+        emit(state.copyWith(
+            detailCardStatus: EeclassAssignmentDetailCardStatus.success,
+            assignmentCardData: assignmentInfo));
+      }
     } catch (e, stacktrace) {
       print(e);
       printHighlight(stacktrace);

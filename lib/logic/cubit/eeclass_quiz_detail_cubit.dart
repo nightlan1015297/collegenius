@@ -13,12 +13,16 @@ class EeclassQuizDetailCubit extends Cubit<EeclassQuizDetailState> {
   final EeclassRepository eeclassRepository;
 
   Future<void> onOpenPopupQuizCardRequest({required String quizUrl}) async {
-    emit(state.copyWith(quizCardStatus: EeclassQuizDetailCardStatus.loading));
+    if (!isClosed) {
+      emit(state.copyWith(quizCardStatus: EeclassQuizDetailCardStatus.loading));
+    }
     try {
       final quizInfo = await eeclassRepository.getQuiz(url: quizUrl);
-      emit(state.copyWith(
-          quizCardStatus: EeclassQuizDetailCardStatus.success,
-          quizCardData: quizInfo));
+      if (!isClosed) {
+        emit(state.copyWith(
+            quizCardStatus: EeclassQuizDetailCardStatus.success,
+            quizCardData: quizInfo));
+      }
     } catch (e, stacktrace) {
       printHighlight(e);
       printHighlight(stacktrace);

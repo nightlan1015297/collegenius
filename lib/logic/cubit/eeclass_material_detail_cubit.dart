@@ -17,14 +17,18 @@ class EeclassMaterialDetailCubit extends Cubit<EeclassMaterialDetailState> {
     required String type,
     required String materialUrl,
   }) async {
-    emit(state.copyWith(
-        detailCardStatus: EeclassMaterialDetailCardStatus.loading));
+    if (!isClosed) {
+      emit(state.copyWith(
+          detailCardStatus: EeclassMaterialDetailCardStatus.loading));
+    }
     try {
       final materialInfo =
           await eeclassRepository.getMaterial(type: type, url: materialUrl);
-      emit(state.copyWith(
-          detailCardStatus: EeclassMaterialDetailCardStatus.success,
-          materialCardData: materialInfo));
+      if (!isClosed) {
+        emit(state.copyWith(
+            detailCardStatus: EeclassMaterialDetailCardStatus.success,
+            materialCardData: materialInfo));
+      }
     } catch (e, stacktrace) {
       print(e);
       printHighlight(stacktrace);
