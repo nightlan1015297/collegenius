@@ -15,7 +15,6 @@ dependencies:
   html: ^0.15.0
   path_provider: ^2.0.11
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
