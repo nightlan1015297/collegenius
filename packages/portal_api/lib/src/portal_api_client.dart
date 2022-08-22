@@ -70,7 +70,6 @@ class PortalApiClient {
   late CookieManager _cookieManager;
 
   var dio = Dio(options);
-
   var isDioInitialize = false;
   var isAccountInitialize = false;
   String? id;
@@ -118,11 +117,11 @@ class PortalApiClient {
       throw DioInstanceNotInitialize('Dio instance not initialize');
     }
     await fetchCookie();
-    var res = await dio.get('');
+    var res = await dio.get('/login');
     if (res.isRedirect == null) {
       return false;
     } else {
-      return !res.isRedirect!;
+      return res.isRedirect!;
     }
   }
 
@@ -216,11 +215,28 @@ class PortalApiClient {
     return true;
   }
 
+  Future<void> readyToFetch() async {
+    if (!await checkLoginStatus()) {
+      await login();
+    }
+    return;
+  }
+
+  Future<String> getToken() async {
+    final response = await dio.get('');
+    final data = response.data.toString();
+    final RegExp exp = RegExp(r'var token = "(.*?)";');
+    final result = exp.firstMatch(data);
+    return result![1]!;
+  }
+
   Future<bool> logout() async {
     if (!isDioInitialize) {
       throw DioInstanceNotInitialize('Dio instance not initialize');
     }
-    final response = await dio.get('/logout');
+    if (isAccountInitialize) {
+      final response = await dio.get('/logout');
+    }
     if (await checkLoginStatus()) {
       return false;
     } else {
