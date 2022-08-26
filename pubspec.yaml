@@ -22,6 +22,7 @@ environment:
 
 dependencies:
   bloc: ^8.1.0
+  charts_flutter: ^0.12.0
   connectivity_plus: ^2.3.5
   course_select_api:
     path: packages/course_select_api
@@ -33,6 +34,8 @@ dependencies:
   equatable: ^2.0.3
   firebase_analytics: ^9.3.2
   firebase_core: ^1.21.0
+  firebase_crashlytics: ^2.8.8
+  fl_chart: ^0.55.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.0
@@ -60,11 +63,16 @@ dependencies:
   webview_flutter: ^3.0.4
 dev_dependencies:
   build_runner: ^2.1.7
+  flutter_launcher_icons: ^0.10.0
   flutter_test:
     sdk: flutter
   hive_generator: ^1.1.2
   json_serializable: ^6.1.4
 
+flutter_icons:
+  android: true
+  adaptive_icon_background: "images/collegenius_back.png"
+  adaptive_icon_foreground: "images/collegenius_fore.png"
 # For events on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
