@@ -64,7 +64,10 @@ class CourseSchedualRepository {
     return _courseSchedual;
   }
 
-  Future<String?> getCurrentSemester() async {
+  Future<String> getCurrentSemester({required bool fromLocal}) async {
+    if (fromLocal) {
+      return "1111";
+    }
     final currentSemester = await courseSelectApiClient.getCurrentSemester();
     return currentSemester;
   }

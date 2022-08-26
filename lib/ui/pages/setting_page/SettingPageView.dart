@@ -1,5 +1,7 @@
 import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/logic/bloc/app_setting_bloc.dart';
+import 'package:collegenius/routes/hero_dialog_route.dart';
+import 'package:collegenius/ui/pages/setting_page/AboutCollegeniusPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -47,39 +49,31 @@ class SettingPageViewState extends State<SettingPageView> {
                         ),
                       ]),
                   SettingSectionWidget(
-                    sectionname: "Example",
+                    sectionname: _locale.aboutCollegenius,
                     tiles: <Widget>[
-                      OptionalSettingTileWidget(
-                          icon: Icons.accessible_sharp,
-                          title: "Test",
-                          currentOption: "Test",
-                          ontap: () {}),
-                      OptionalSettingTileWidget(
-                          icon: Icons.language,
-                          title: "Language",
-                          currentOption: "language",
-                          ontap: () {}),
-                      OptionalSettingTileWidget(
-                          icon: Icons.dark_mode,
-                          title: "Theme",
-                          currentOption: "theme",
-                          ontap: () {}),
-                      IoSettingTileWidget(
-                          icon: Icons.mode,
-                          title: "Mode",
-                          value: true,
-                          ontap: (bool) {}),
-                      IoSettingTileWidget(
-                          icon: Icons.accessible_sharp,
-                          title: "Test",
-                          value: true,
-                          ontap: (bool) {}),
                       BasicSettingTileWidget(
-                          icon: Icons.language,
-                          title: "Language",
-                          ontap: () {}),
+                        icon: Icons.library_books,
+                        title: _locale.license,
+                        ontap: () {
+                          showLicensePage(
+                              context: context,
+                              applicationName: "Collegenius",
+                              applicationIcon: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.asset('images/collegenius.png')),
+                              applicationVersion: "0.0.1");
+                        },
+                      ),
                       BasicSettingTileWidget(
-                          icon: Icons.dark_mode, title: "Theme", ontap: () {}),
+                        icon: Icons.info,
+                        title: _locale.aboutCollegenius,
+                        ontap: () {
+                          Navigator.of(context)
+                              .push(HeroDialogRoute(builder: (context) {
+                            return AboutCollegeniusPage();
+                          }));
+                        },
+                      ),
                     ],
                   ),
                   const SizedBox(height: 10.0),
@@ -175,7 +169,7 @@ class BasicSettingTileWidget extends StatelessWidget {
       ),
       title: Text(title,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
-      trailing: Icon(Icons.keyboard_arrow_right),
+      trailing: Icon(Icons.keyboard_arrow_right, color: _theme.iconTheme.color),
       onTap: ontap,
     );
   }

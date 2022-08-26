@@ -1,3 +1,4 @@
+import 'package:collegenius/routes/hero_dialog_route.dart';
 import 'package:flutter/material.dart';
 
 class Gallery extends StatefulWidget {
@@ -33,6 +34,7 @@ class _GalleryState extends State<Gallery> {
         child: Stack(
           children: [
             PageView(
+              physics: BouncingScrollPhysics(),
               controller: _pageController,
               children: widget.children,
             ),
@@ -51,7 +53,7 @@ class _GalleryState extends State<Gallery> {
                       scrollposition: _pageController.page ?? 0.0,
                       dotFillcolor: Colors.grey.shade400,
                       dotOutlineColor: Colors.grey.shade600,
-                      indicatorColor: Colors.black,
+                      indicatorColor: Colors.lightBlue,
                       outlineThickness: 1,
                     ),
                   );
@@ -71,11 +73,95 @@ class _GalleryState extends State<Gallery> {
   }
 }
 
-class GalleryPage extends StatelessWidget {
+class GalleryCard extends StatelessWidget {
+  const GalleryCard(
+      {Key? key,
+      required this.assets,
+      required this.title,
+      required this.content})
+      : super(key: key);
+  final String assets;
+  final String title;
+  final String content;
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            HeroDialogRoute(
+              builder: (context) {
+                return GalleryPopupView(
+                  assets: assets,
+                  title: title,
+                  content: content,
+                );
+              },
+            ),
+          );
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16.0),
+          child: Image(
+            image: AssetImage(assets),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class GalleryPopupView extends StatelessWidget {
+  const GalleryPopupView({
+    Key? key,
+    required this.assets,
+    required this.title,
+    required this.content,
+  }) : super(key: key);
+  final String assets;
+  final String title;
+  final String content;
+  @override
+  Widget build(BuildContext context) {
+    final _theme = Theme.of(context);
+    return Scaffold(
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              child: Row(
+                children: [
+                  Spacer(),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16.0),
+                    child: Image(
+                      width: 250,
+                      height: 250,
+                      image: AssetImage(assets),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Spacer()
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(title, style: _theme.textTheme.headline6),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(content),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

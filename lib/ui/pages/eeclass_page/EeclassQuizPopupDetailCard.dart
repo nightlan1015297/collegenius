@@ -1,15 +1,17 @@
 import 'dart:io';
 
-import 'package:collegenius/logic/cubit/eeclass_quiz_detail_cubit.dart';
-import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
-import 'package:collegenius/repositories/eeclass_repository.dart';
-import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
-import 'package:collegenius/constants/Constants.dart';
-
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:collegenius/constants/Constants.dart';
+import 'package:collegenius/logic/cubit/eeclass_quiz_detail_cubit.dart';
+import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
+import 'package:collegenius/repositories/eeclass_repository.dart';
+import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 
 class EeclassQuizPopupDetailCard extends StatefulWidget {
   const EeclassQuizPopupDetailCard({
@@ -79,11 +81,90 @@ class _EeclassQuizPopupDetailCardState
   }
 }
 
+class ScoreDistributionBarData {
+  final String interval;
+  final int score;
+  ScoreDistributionBarData(this.interval, this.score);
+}
+
+class ScoreDistributionChart extends StatelessWidget {
+  ScoreDistributionChart({
+    Key? key,
+    required this.distributionList,
+    required this.fullMarks,
+    required this.animate,
+  }) : super(key: key);
+
+  final List<int> distributionList;
+  final int fullMarks;
+  late List<charts.Series<dynamic, String>> seriesList;
+  final bool animate;
+
+  @override
+  Widget build(BuildContext context) {
+    seriesList = generateData(distributionList, fullMarks);
+    return SizedBox(
+      height: 200,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: charts.BarChart(
+          seriesList,
+          vertical: false,
+          animate: animate,
+          domainAxis: charts.OrdinalAxisSpec(
+            renderSpec: charts.SmallTickRendererSpec(
+              labelStyle: charts.TextStyleSpec(
+                fontSize: 10,
+                color: charts.MaterialPalette.white,
+              ),
+            ),
+          ),
+          defaultRenderer: charts.BarRendererConfig(
+              // By default, bar renderer will draw rounded bars with a constant
+              // radius of 100.
+              // To not have any rounded corners, use [NoCornerStrategy]
+              // To change the radius of the bars, use [ConstCornerStrategy]
+              cornerStrategy: const charts.ConstCornerStrategy(30)),
+        ),
+      ),
+    );
+  }
+
+  static List<charts.Series<ScoreDistributionBarData, String>> generateData(
+      List<int> scoreDis, int fullmarks) {
+    List<ScoreDistributionBarData> data = [];
+    for (var i = 0; i < scoreDis.length; i++) {
+      if (i == scoreDis.length - 1) {
+        data.add(ScoreDistributionBarData('${i * 10}-$fullmarks', scoreDis[i]));
+        break;
+      }
+      data.add(ScoreDistributionBarData(
+          '${i * 10}-${(i + 1) * 10 - 1}', scoreDis[i]));
+    }
+    return [
+      charts.Series<ScoreDistributionBarData, String>(
+        id: 'ScoreDistribution',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (ScoreDistributionBarData data, _) => data.interval,
+        measureFn: (ScoreDistributionBarData data, _) => data.score,
+        data: data,
+      )
+    ];
+  }
+}
+
 class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
   const EeclassPopUpQuizDetailSuccessCard(
       {Key? key, required this.quizInformation})
       : super(key: key);
   final EeclassQuiz quizInformation;
+  Widget _distributionChartBuilder(List<int> distribution, int fullMarks) {
+    return ScoreDistributionChart(
+      distributionList: distribution,
+      fullMarks: fullMarks,
+      animate: true,
+    );
+  }
 
   Widget _attachmentWidgetBuilder(
     List attachments,
@@ -268,6 +349,17 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
+                        Builder(
+                          builder: (context) {
+                            if (quizInformation.scoreDistribution != null &&
+                                quizInformation.fullMarks?.toInt() != null) {
+                              return _distributionChartBuilder(
+                                  quizInformation.scoreDistribution!,
+                                  quizInformation.fullMarks!.toInt());
+                            }
+                            return SizedBox();
+                          },
+                        ),
                         _quizInformationWidgetBuilder(quizInformation, context),
                         _attachmentWidgetBuilder(
                             jsonQuizInformation['attachments'], context),
@@ -323,7 +415,7 @@ class DownloadAttachmentTags extends StatelessWidget {
                   HttpHeaders.cookieHeader: cookiesString,
                 },
                 url: 'https://ncueeclass.ncu.edu.tw' + element[1],
-                savedDir: "/storage/emulated/0/Download/Collegenius",
+                savedDir: "/storage/emulated/0/Download",
                 showNotification: true,
                 openFileFromNotification: true,
                 saveInPublicStorage: true);

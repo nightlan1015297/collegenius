@@ -57,8 +57,7 @@ class EeclassOpenInBrowserTag extends StatelessWidget {
                         onDownloadStartRequest: (controller, url) async {
                           await FlutterDownloader.enqueue(
                               url: url.url.toString(),
-                              savedDir:
-                                  "/storage/emulated/0/Download/Collegenius",
+                              savedDir: "/storage/emulated/0/Download",
                               showNotification: true,
                               openFileFromNotification: true,
                               saveInPublicStorage: true);
