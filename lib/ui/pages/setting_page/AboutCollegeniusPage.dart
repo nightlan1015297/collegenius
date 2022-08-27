@@ -8,7 +8,9 @@ class AboutCollegeniusPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        iconTheme: _theme.iconTheme,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -21,7 +23,7 @@ class AboutCollegeniusPage extends StatelessWidget {
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(16.0),
                           child: Text(
                             'About Collegenius',
                             style: _theme.textTheme.headline6,
@@ -34,7 +36,9 @@ class AboutCollegeniusPage extends StatelessWidget {
                       child: RichText(
                         text: TextSpan(
                           children: [
-                            TextSpan(text: 'This Project is inspired by '),
+                            TextSpan(
+                                text: 'This Project is inspired by ',
+                                style: _theme.textTheme.bodyLarge),
                             TextSpan(
                               style: TextStyle(
                                 color: Colors.blue,
@@ -51,7 +55,9 @@ class AboutCollegeniusPage extends StatelessWidget {
                                   }
                                 },
                             ),
-                            TextSpan(text: ' and it extension project.'),
+                            TextSpan(
+                                text: ' and it extension project.',
+                                style: _theme.textTheme.bodyLarge),
                           ],
                         ),
                       ),
@@ -62,7 +68,9 @@ class AboutCollegeniusPage extends StatelessWidget {
                       child: RichText(
                         text: TextSpan(
                           children: [
-                            TextSpan(text: 'The repository of Collegenius: '),
+                            TextSpan(
+                                text: 'The repository of Collegenius: ',
+                                style: _theme.textTheme.bodyLarge),
                             TextSpan(
                               style: TextStyle(
                                 color: Colors.blue,
@@ -96,7 +104,7 @@ class AboutCollegeniusPage extends StatelessWidget {
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(16.0),
                           child: Text(
                             'Opensource disclaimer',
                             style: _theme.textTheme.headline6,
@@ -107,7 +115,7 @@ class AboutCollegeniusPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        '''Copyright 2022 © Dim
+                        '''Copyright 2021-2022 © Dim
       
       Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
       
