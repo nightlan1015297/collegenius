@@ -4,6 +4,7 @@ import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:collegenius/ui/pages/eeclass_page/EeclassAttachmentTile.dart';
+import 'package:collegenius/ui/scaffolds/HeroDialogScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -184,64 +185,58 @@ class EeclassPopUpAssignmentDetailSuccessCard extends StatelessWidget {
     final _theme = Theme.of(context);
     final _locale = AppLocalizations.of(context)!;
 
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop();
-      },
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Card(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 50,
-                      child: Stack(
-                        children: [
-                          Align(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(_locale.assignmentInformation,
-                                  style: _theme.textTheme.titleLarge,
-                                  textAlign: TextAlign.start),
-                            ),
-                            alignment: Alignment.center,
+    return HeroDialogScaffold(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Card(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 50,
+                    child: Stack(
+                      children: [
+                        Align(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(_locale.assignmentInformation,
+                                style: _theme.textTheme.titleLarge,
+                                textAlign: TextAlign.start),
                           ),
-                          Align(
-                            child: IconButton(
-                              icon: Icon(Icons.close, size: 30),
-                              onPressed: () => Navigator.of(context).pop(),
-                            ),
-                            alignment: Alignment.centerRight,
+                          alignment: Alignment.center,
+                        ),
+                        Align(
+                          child: IconButton(
+                            icon: Icon(Icons.close, size: 30),
+                            onPressed: () => Navigator.of(context).pop(),
                           ),
-                        ],
-                      ),
+                          alignment: Alignment.centerRight,
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SingleChildScrollView(
-                            physics: BouncingScrollPhysics(),
-                            child: Column(
-                              children: [
-                                _assignmentInformationWidgetBuilder(
-                                    assignInfo: assignmentDetail,
-                                    assignBrief: assignmentBrief,
-                                    context: context),
-                                EeclassAttachmentTile(
-                                  fileList: assignmentDetail.fileList ?? [],
-                                ),
-                              ],
-                            ),
-                          )),
-                    )
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Column(
+                            children: [
+                              _assignmentInformationWidgetBuilder(
+                                  assignInfo: assignmentDetail,
+                                  assignBrief: assignmentBrief,
+                                  context: context),
+                              EeclassAttachmentTile(
+                                fileList: assignmentDetail.fileList ?? [],
+                              ),
+                            ],
+                          ),
+                        )),
+                  )
+                ],
               ),
             ),
           ),

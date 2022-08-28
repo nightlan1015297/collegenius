@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:collegenius/ui/pages/eeclass_page/DownloadAttachmentTags.dart';
+import 'package:collegenius/ui/scaffolds/HeroDialogScaffold.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -311,72 +312,65 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     final _locale = AppLocalizations.of(context)!;
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pop();
-      },
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Card(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 50,
-                      child: Stack(
-                        children: [
-                          Align(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(_locale.quizInformation,
-                                  style: _theme.textTheme.titleLarge,
-                                  textAlign: TextAlign.start),
-                            ),
-                            alignment: Alignment.center,
+    return HeroDialogScaffold(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Card(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 50,
+                    child: Stack(
+                      children: [
+                        Align(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(_locale.quizInformation,
+                                style: _theme.textTheme.titleLarge,
+                                textAlign: TextAlign.start),
                           ),
-                          Align(
-                            child: IconButton(
-                              icon: Icon(Icons.close, size: 30),
-                              onPressed: () => Navigator.of(context).pop(),
-                            ),
-                            alignment: Alignment.centerRight,
+                          alignment: Alignment.center,
+                        ),
+                        Align(
+                          child: IconButton(
+                            icon: Icon(Icons.close, size: 30),
+                            onPressed: () => Navigator.of(context).pop(),
                           ),
+                          alignment: Alignment.centerRight,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Builder(
+                            builder: (context) {
+                              if (quizInformation.scoreDistribution != null &&
+                                  quizInformation.fullMarks?.toInt() != null) {
+                                return _distributionChartBuilder(
+                                    quizInformation.scoreDistribution!,
+                                    quizInformation.fullMarks!.toInt());
+                              }
+                              return SizedBox();
+                            },
+                          ),
+                          _quizInformationWidgetBuilder(
+                              quizInformation, context),
+                          _attachmentWidgetBuilder(
+                              quizInformation.attachments, context),
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Builder(
-                              builder: (context) {
-                                if (quizInformation.scoreDistribution != null &&
-                                    quizInformation.fullMarks?.toInt() !=
-                                        null) {
-                                  return _distributionChartBuilder(
-                                      quizInformation.scoreDistribution!,
-                                      quizInformation.fullMarks!.toInt());
-                                }
-                                return SizedBox();
-                              },
-                            ),
-                            _quizInformationWidgetBuilder(
-                                quizInformation, context),
-                            _attachmentWidgetBuilder(
-                                quizInformation.attachments, context),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
           ),
