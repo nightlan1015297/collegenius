@@ -50,7 +50,7 @@ class _EeclassCoursePageState extends State<EeclassCoursePage> {
                 "Course dashboard",
                 style: _theme.textTheme.titleLarge,
               ),
-              elevation: 0,
+              elevation: 5,
               iconTheme: _theme.iconTheme,
             ),
             body: Builder(
@@ -366,7 +366,8 @@ class EeclassPopUpInformationCard extends StatelessWidget {
                           child: TextInformationProvider(
                             label: _locale.instroctors,
                             information:
-                                courseInformation.instroctors?.join('\n') ?? '-',
+                                courseInformation.instroctors?.join('\n') ??
+                                    '-',
                             labelTexttheme: _theme.textTheme.labelLarge,
                             informationTexttheme: _theme.textTheme.bodyLarge,
                             informationTextOverFlow: TextOverflow.visible,
@@ -442,50 +443,48 @@ class CourseInformationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EeclassCoursePageBloc, EeclassCoursePageState>(
       builder: (context, state) {
-        return LayoutBuilder(
-          builder: (context,constraints) {
-            return Row(
-              children: [
-                Card(
-                    child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-                  child: SizedBox(
-                      height: 60,
-                      child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: constraints.maxWidth-125,
-                          ),
-                          child: TextInformationProvider(
-                              label: "課程名稱",
-                              information: state.courseInformation.name ?? "-"))),
-                )),
-                Spacer(),
-                Card(
+        return LayoutBuilder(builder: (context, constraints) {
+          return Row(
+            children: [
+              Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: SizedBox(
-                      height: 60,
-                      child: Center(
-                        child: IconButton(
-                          icon: Icon(Icons.info_outline),
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(
-                              '/eeclassCourse/popupInfo',
-                              arguments: EeclassPopupInfoArguments(
-                                courseInfo: state.courseInformation,
-                              ),
-                            );
-                          },
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+                child: SizedBox(
+                    height: 60,
+                    child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: constraints.maxWidth - 125,
                         ),
+                        child: TextInformationProvider(
+                            label: "課程名稱",
+                            information: state.courseInformation.name ?? "-"))),
+              )),
+              Spacer(),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SizedBox(
+                    height: 60,
+                    child: Center(
+                      child: IconButton(
+                        icon: Icon(Icons.info_outline),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(
+                            '/eeclassCourse/popupInfo',
+                            arguments: EeclassPopupInfoArguments(
+                              courseInfo: state.courseInformation,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
                 ),
-              ],
-            );
-          }
-        );
+              ),
+            ],
+          );
+        });
       },
     );
   }

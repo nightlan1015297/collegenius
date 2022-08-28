@@ -23,7 +23,7 @@ class EeclassMaterialListView extends StatelessWidget {
           "Material overview",
           style: _theme.textTheme.titleLarge,
         ),
-        elevation: 0,
+        elevation: 5,
         iconTheme: _theme.iconTheme,
         backgroundColor: _theme.scaffoldBackgroundColor,
       ),

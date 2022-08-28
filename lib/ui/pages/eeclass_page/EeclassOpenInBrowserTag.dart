@@ -38,10 +38,14 @@ class EeclassOpenInBrowserTag extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) {
                       return Scaffold(
-                        appBar: AppBar(iconTheme: _theme.iconTheme,),
+                        appBar: AppBar(
+                          elevation: 5,
+                          iconTheme: _theme.iconTheme,
+                        ),
                         body: InAppWebView(
                           initialUrlRequest: URLRequest(
-                            url: Uri.parse('https://ncueeclass.ncu.edu.tw' + url),
+                            url: Uri.parse(
+                                'https://ncueeclass.ncu.edu.tw' + url),
                           ),
                           initialOptions: InAppWebViewGroupOptions(
                             crossPlatform: InAppWebViewOptions(

@@ -129,7 +129,10 @@ class GalleryPopupView extends StatelessWidget {
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        iconTheme: _theme.iconTheme,
+        elevation: 5,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

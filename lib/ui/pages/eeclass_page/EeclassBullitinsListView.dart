@@ -46,7 +46,7 @@ class _EeclassBullitinListViewState extends State<EeclassBullitinListView> {
             "Course bullitins",
             style: _theme.textTheme.titleLarge,
           ),
-          elevation: 0,
+          elevation: 5,
           iconTheme: _theme.iconTheme,
           backgroundColor: _theme.scaffoldBackgroundColor,
         ),
