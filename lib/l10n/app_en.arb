@@ -49,6 +49,8 @@
   "handInStatus":"status",
 
   "attachments":"Attachments",
+  "materials":"Materials",
+  "assignments":"Assignments",
   "download":"Download",
   
   "bullitinTitle":"Bulletin title",
@@ -82,6 +84,7 @@
   "quizInformation":"Quiz information",
   "eeclassNotLoginMessage":"You have to login first to access Eeclass related service",
   "latestScore":"Latest score",
+  "latestBullitin":"Latest bullitins",
   "noQuiz":"No Quiz",
   "parseError":"-",
   "loading":"Loading",

@@ -11,6 +11,7 @@ import 'package:collegenius/routes/route_arguments.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'EeclassUnauthticateView.dart';
 import 'QuizInformationCardView.dart';
@@ -153,6 +154,7 @@ class EeclassCoursePageSuccessView extends StatelessWidget {
   final String courseSerial;
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     return BlocBuilder<EeclassCoursePageBloc, EeclassCoursePageState>(
       builder: (context, state) {
         return SingleChildScrollView(
@@ -196,7 +198,7 @@ class EeclassCoursePageSuccessView extends StatelessWidget {
                                   Icons.folder,
                                   size: 50,
                                 ),
-                                Text("課程講義"),
+                                Text(_locale.materials),
                                 Spacer(),
                               ],
                             ),
@@ -224,7 +226,7 @@ class EeclassCoursePageSuccessView extends StatelessWidget {
                                   Icons.assignment,
                                   size: 50,
                                 ),
-                                Text("課程作業"),
+                                Text(_locale.assignments),
                                 Spacer(),
                               ],
                             ),
@@ -268,7 +270,7 @@ class EeclassPopUpInformationCard extends StatelessWidget {
                       Align(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("課程資訊",
+                          child: Text(_locale.courseInformation,
                               style: _theme.textTheme.titleLarge,
                               textAlign: TextAlign.start),
                         ),
@@ -439,6 +441,7 @@ class EeclassPopUpInformationCard extends StatelessWidget {
 class CourseInformationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     return BlocBuilder<EeclassCoursePageBloc, EeclassCoursePageState>(
       builder: (context, state) {
         return LayoutBuilder(builder: (context, constraints) {
@@ -455,7 +458,7 @@ class CourseInformationCard extends StatelessWidget {
                           maxWidth: constraints.maxWidth - 125,
                         ),
                         child: TextInformationProvider(
-                            label: "課程名稱",
+                            label: _locale.courseName,
                             information: state.courseInformation.name ?? "-"))),
               )),
               Spacer(),
@@ -500,7 +503,7 @@ class CourseBullitinBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-
+    final _locale = AppLocalizations.of(context)!;
     return Card(
       child: SizedBox(
         child: Column(
@@ -522,7 +525,8 @@ class CourseBullitinBoard extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
-                      child: Text('最新公告', style: _theme.textTheme.headline6),
+                      child: Text(_locale.latestBullitin,
+                          style: _theme.textTheme.headline6),
                     ),
                     Spacer(),
                     Padding(
