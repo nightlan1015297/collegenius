@@ -53,15 +53,17 @@ Future<void> main() async {
   await Permission.storage.request();
   await Permission.notification.request();
   await FlutterDownloader.initialize(
-      debug:
-          true, // optional: set to false to disable printing logs to console (default: true)
+
+      /// optional: set to false to disable printing logs to console (default: true)
+      debug: true,
       ignoreSsl:
           true // option: set to false to disable working with http links (default: false)
       );
 
-  /// Using Hive to storage user data 
+  /// Using Hive to storage user data
   final hiveDir = await _pathGen.getHiveDatabaseDirectory();
   Hive.init(hiveDir.path);
+
   /// These Adapter ia all for Course Schedual
   Hive.registerAdapter(SemesterAdapter());
   Hive.registerAdapter(CourseAdapter());
@@ -79,13 +81,16 @@ Future<void> main() async {
     if (kReleaseMode) exit(1);
   };
 
-  /// Using HydratedBloc to storage application state 
+  /// Using HydratedBloc to storage application state
   /// Hydrated bloc storage application configuration and auth data.
   final storage = await HydratedStorage.build(
     storageDirectory: await PathGenerator().getHydratedBlocDirectory(),
   );
-  HydratedBlocOverrides.runZoned(() => runApp(Collegenius()),
-      storage: storage, blocObserver: AppBlocObserver(),);
+  HydratedBlocOverrides.runZoned(
+    () => runApp(Collegenius()),
+    storage: storage,
+    blocObserver: AppBlocObserver(),
+  );
 }
 
 class Collegenius extends StatefulWidget {
