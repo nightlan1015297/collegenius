@@ -1,3 +1,4 @@
+import 'package:collegenius/utilties/PathGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -37,31 +38,43 @@ class EeclassOpenInBrowserTag extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return InAppWebView(
-                        initialUrlRequest: URLRequest(
-                          url: Uri.parse('https://ncueeclass.ncu.edu.tw' + url),
+                      return Scaffold(
+                        appBar: AppBar(),
+                        body: InAppWebView(
+                          initialUrlRequest: URLRequest(
+                            url: Uri.parse(
+                                'https://ncueeclass.ncu.edu.tw' + url),
+                          ),
+                          initialOptions: InAppWebViewGroupOptions(
+                            crossPlatform: InAppWebViewOptions(
+                              useOnDownloadStart: true,
+                              useShouldOverrideUrlLoading: true,
+                              mediaPlaybackRequiresUserGesture: false,
+                            ),
+                            android: AndroidInAppWebViewOptions(
+                              useHybridComposition: true,
+                            ),
+                            ios: IOSInAppWebViewOptions(
+                              allowsInlineMediaPlayback: true,
+                            ),
+                          ),
+                          onDownloadStartRequest: (controller, url) async {
+                            const snackBar = SnackBar(
+                              content: Text('Download started!'),
+                              duration: Duration(milliseconds: 500),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                            final path =
+                                await PathGenerator().getDownloadPath();
+                            await FlutterDownloader.enqueue(
+                                url: url.url.toString(),
+                                savedDir: path,
+                                showNotification: true,
+                                openFileFromNotification: true,
+                                saveInPublicStorage: true);
+                          },
                         ),
-                        initialOptions: InAppWebViewGroupOptions(
-                          crossPlatform: InAppWebViewOptions(
-                            useOnDownloadStart: true,
-                            useShouldOverrideUrlLoading: true,
-                            mediaPlaybackRequiresUserGesture: false,
-                          ),
-                          android: AndroidInAppWebViewOptions(
-                            useHybridComposition: true,
-                          ),
-                          ios: IOSInAppWebViewOptions(
-                            allowsInlineMediaPlayback: true,
-                          ),
-                        ),
-                        onDownloadStartRequest: (controller, url) async {
-                          await FlutterDownloader.enqueue(
-                              url: url.url.toString(),
-                              savedDir: "/storage/emulated/0/Download",
-                              showNotification: true,
-                              openFileFromNotification: true,
-                              saveInPublicStorage: true);
-                        },
                       );
                     },
                   ),

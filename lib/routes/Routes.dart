@@ -5,11 +5,12 @@ import 'package:collegenius/ui/pages/eeclass_page/EeclassBullitinsListView.dart'
 import 'package:collegenius/ui/pages/eeclass_page/EeclassPage.dart';
 import 'package:collegenius/ui/pages/eeclass_page/EeclassQuizPopupDetailCard.dart';
 import 'package:collegenius/ui/pages/home_page/HomePageView.dart';
-import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
 import 'package:collegenius/ui/pages/login_page/LoginPageView.dart';
 import 'package:collegenius/ui/pages/login_page/LoginResultView.dart';
 import 'package:collegenius/ui/pages/login_page/ManualLoginCard.dart';
+import 'package:collegenius/ui/pages/setting_page/LicencePage.dart';
 import 'package:collegenius/ui/pages/setting_page/SettingPage.dart';
+import 'package:collegenius/ui/scaffolds/MainScaffold.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -21,12 +22,14 @@ class AppRouter {
     switch (routsettings.name) {
       case '/':
         return MaterialPageRoute(
-          settings: RouteSettings(name: routsettings.name),
-          builder: (contex) => MainScaffold(
-            title: 'HomePage',
-            body: HomePageView(),
-          ),
-        );
+            settings: RouteSettings(name: routsettings.name),
+            builder: (contex) {
+              final _locale = AppLocalizations.of(contex)!;
+              return MainScaffold(
+                title: _locale.home,
+                body: HomePageView(),
+              );
+            });
       case '/eeclassCourse':
         return MaterialPageRoute(
           settings: RouteSettings(name: routsettings.name),
@@ -127,13 +130,10 @@ class AppRouter {
         return MaterialPageRoute(
             settings: RouteSettings(name: routsettings.name),
             builder: (contex) {
-              final _theme = Theme.of(contex);
               final _locale = AppLocalizations.of(contex)!;
               return Scaffold(
                 appBar: AppBar(
-                  titleTextStyle: _theme.textTheme.headline6,
                   title: Text(_locale.login),
-                  iconTheme: _theme.iconTheme,
                   leading: BackButton(
                     onPressed: () => Navigator.pop(contex, false),
                   ),
@@ -196,6 +196,10 @@ class AppRouter {
           settings: RouteSettings(name: routsettings.name),
           builder: (contex) => AppLanguagePopupSettingCard(),
         );
+      case 'setting/licences':
+        return MaterialPageRoute(builder: (context) {
+          return LicencePage();
+        });
 
       case '/tour/buildingMap':
         return MaterialPageRoute(
@@ -205,9 +209,7 @@ class AppRouter {
               final _locale = AppLocalizations.of(contex)!;
               return Scaffold(
                 appBar: AppBar(
-                  titleTextStyle: _theme.textTheme.headline6,
                   title: Text(_locale.schoolBuildingsMap),
-                  iconTheme: _theme.iconTheme,
                   leading: BackButton(
                     onPressed: () => Navigator.pop(contex, false),
                   ),
@@ -225,9 +227,7 @@ class AppRouter {
               final _locale = AppLocalizations.of(contex)!;
               return Scaffold(
                 appBar: AppBar(
-                  titleTextStyle: _theme.textTheme.headline6,
                   title: Text(_locale.schoolTourMap),
-                  iconTheme: _theme.iconTheme,
                   leading: BackButton(
                     onPressed: () => Navigator.pop(contex, false),
                   ),

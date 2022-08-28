@@ -3,8 +3,8 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:collegenius/constants/maps.dart';
 import 'package:collegenius/ui/pages/school_tour_page/SchoolTourPage.dart';
+import 'package:collegenius/utilties/PathGenerator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -25,14 +25,14 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 
-import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
+import 'package:collegenius/ui/scaffolds/MainScaffold.dart';
 import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualPage.dart';
 import 'package:collegenius/ui/theme/AppTheme.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
+import 'constants/Constants.dart';
 import 'firebase_options.dart';
 import 'logic/bloc/app_setting_bloc.dart';
 import 'logic/cubit/bottomnav_cubit.dart';
@@ -43,6 +43,7 @@ import 'ui/pages/setting_page/SettingPageView.dart';
 import 'routes/Routes.dart';
 
 Future<void> main() async {
+  final _pathGen = PathGenerator();
   /* ensureInitialized to prevent unpredictable error*/
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isAndroid) {
@@ -51,15 +52,18 @@ Future<void> main() async {
   await Permission.storage.request();
   await Permission.notification.request();
   await FlutterDownloader.initialize(
-      debug:
-          true, // optional: set to false to disable printing logs to console (default: true)
+
+      /// optional: set to false to disable printing logs to console (default: true)
+      debug: true,
       ignoreSsl:
           true // option: set to false to disable working with http links (default: false)
       );
 
-  /* Using Hive to storage application data*/
+  /// Using Hive to storage user data
+  final hiveDir = await _pathGen.getHiveDatabaseDirectory();
+  Hive.init(hiveDir.path);
 
-  await Hive.initFlutter('hive_database');
+  /// These Adapter ia all for Course Schedual
   Hive.registerAdapter(SemesterAdapter());
   Hive.registerAdapter(CourseAdapter());
   Hive.registerAdapter(CoursePerDayAdapter());
@@ -69,54 +73,45 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  /* Using HydratedBloc to storage application state*/
-  final storage = await HydratedStorage.build(
-    storageDirectory: await getApplicationDocumentsDirectory(),
-  );
+  /// Capture the unhandled crash
+  /// The crash will show on crashlytics.
   FlutterError.onError = (detail) {
     FirebaseCrashlytics.instance.recordFlutterError(detail);
     if (kReleaseMode) exit(1);
   };
-  HydratedBlocOverrides.runZoned(() => runApp(MyApp()),
-      storage: storage, blocObserver: AppBlocObserver());
+
+  /// Using HydratedBloc to storage application state
+  /// Hydrated bloc storage application configuration and auth data.
+  final storage = await HydratedStorage.build(
+    storageDirectory: await PathGenerator().getHydratedBlocDirectory(),
+  );
+  HydratedBlocOverrides.runZoned(
+    () => runApp(Collegenius()),
+    storage: storage,
+    blocObserver: AppBlocObserver(),
+  );
 }
 
-class MyApp extends StatefulWidget {
+class Collegenius extends StatefulWidget {
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<Collegenius> createState() => _CollegeniusState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _CollegeniusState extends State<Collegenius> {
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
   final AppRouter _appRouter = AppRouter();
-  ReceivePort _port = ReceivePort();
-
-  @override
-  void initState() {
-    super.initState();
-    IsolateNameServer.registerPortWithName(
-        _port.sendPort, 'downloader_send_port');
-    _port.listen((dynamic data) {
-      // String id = data[0];
-      // DownloadTaskStatus status = data[1];
-      // int progress = data[2];
-      setState(() {});
-    });
-
-    FlutterDownloader.registerCallback(downloadCallback);
-  }
-
-  @override
-  void dispose() {
-    IsolateNameServer.removePortNameMapping('downloader_send_port');
-    super.dispose();
-  }
 
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
         IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    FlutterDownloader.registerCallback(downloadCallback);
   }
 
   @override
@@ -181,6 +176,7 @@ class _MyAppState extends State<MyApp> {
               theme: AppTheme.light,
               darkTheme: AppTheme.dark,
               themeMode: _appSetting.themeMode,
+              scaffoldMessengerKey: snackbarKey,
               locale: mapAppLanguageToLocal[_appSetting.appLanguage],
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,

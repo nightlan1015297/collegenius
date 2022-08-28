@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'enums.dart';
 
-const Map<Language, String> mapAppLanguageToDescription = {
-  Language.zh: "中文",
-  Language.en: "英文",
-};
-
 const Map<Language, Locale> mapAppLanguageToLocal = {
   Language.zh: Locale('zh', 'TW'),
   Language.en: Locale('en', ''),
@@ -105,10 +100,4 @@ const Map<int, String> mapIndexToWeekday = {
   4: 'friday',
   5: 'saturday',
   6: 'sunday',
-};
-
-const Map<ThemeMode, String> mapThememodeToDescription = {
-  ThemeMode.system: 'system',
-  ThemeMode.light: 'light',
-  ThemeMode.dark: 'dark',
 };

@@ -76,7 +76,7 @@ class PortalApiClient {
   String? password;
 
   Future<PersistCookieJar> get cookieJar async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
+    Directory appDocDir = await getApplicationSupportDirectory();
     String appDocPath = appDocDir.path;
     _cookieJar = PersistCookieJar(storage: FileStorage('$appDocPath/cookie'));
     return _cookieJar;

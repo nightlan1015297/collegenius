@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:collegenius/ui/scaffolds/HeroDialogScaffold.dart';
 import 'package:collegenius/utilties/ColorfulPrintFunction.dart';
+import 'package:collegenius/utilties/PathGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -128,7 +130,8 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
         break;
       case "pdf":
         widgetList.add(
-          DownloadPdfTag(source: materialDetail.source!),
+          DownloadPdfTag(
+              fileName: materialBrief.title, source: materialDetail.source!),
         );
 
         break;
@@ -200,58 +203,61 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
     final _theme = Theme.of(context);
     final _locale = AppLocalizations.of(context)!;
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Card(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                  child: Stack(
-                    children: [
-                      Align(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(_locale.materialInformation,
-                              style: _theme.textTheme.titleLarge,
-                              textAlign: TextAlign.start),
+    return HeroDialogScaffold(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Card(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 50,
+                    child: Stack(
+                      children: [
+                        Align(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(_locale.materialInformation,
+                                style: _theme.textTheme.titleLarge,
+                                textAlign: TextAlign.start),
+                          ),
+                          alignment: Alignment.center,
                         ),
-                        alignment: Alignment.center,
-                      ),
-                      Align(
-                        child: IconButton(
-                          icon: Icon(Icons.close, size: 30),
-                          onPressed: () => Navigator.of(context).pop(),
+                        Align(
+                          child: IconButton(
+                            icon: Icon(Icons.close, size: 30),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                          alignment: Alignment.centerRight,
                         ),
-                        alignment: Alignment.centerRight,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
-                        child: Column(
-                          children: [
-                            _materialBriefBuilder(
-                                materialBrief: materialBrief, context: context),
-                            Divider(),
-                            _materialBuilder(
-                              context: context,
-                              materialBrief: materialBrief,
-                              materialDetail: materialDetail,
-                            ),
-                          ],
-                        )),
-                  ),
-                )
-              ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          child: Column(
+                            children: [
+                              _materialBriefBuilder(
+                                  materialBrief: materialBrief,
+                                  context: context),
+                              Divider(),
+                              _materialBuilder(
+                                context: context,
+                                materialBrief: materialBrief,
+                                materialDetail: materialDetail,
+                              ),
+                            ],
+                          )),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -264,8 +270,10 @@ class DownloadPdfTag extends StatelessWidget {
   const DownloadPdfTag({
     Key? key,
     required this.source,
+    required this.fileName,
   }) : super(key: key);
   final String source;
+  final String fileName;
 
   @override
   Widget build(BuildContext context) {
@@ -279,16 +287,23 @@ class DownloadPdfTag extends StatelessWidget {
             width: 120,
             child: ElevatedButton(
               onPressed: () async {
+                const snackBar = SnackBar(
+                  duration: Duration(milliseconds: 500),
+                  content: Text('Download started!'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 final eeclassRepo = context.read<EeclassRepository>();
                 final cookiesString =
                     await eeclassRepo.getCookiesStringForDownload();
+                final path = await PathGenerator().getDownloadPath();
                 await FlutterDownloader.enqueue(
                     headers: {
                       HttpHeaders.connectionHeader: 'keep-alive',
                       HttpHeaders.cookieHeader: cookiesString,
                     },
                     url: 'https://ncueeclass.ncu.edu.tw' + source,
-                    savedDir: "/storage/emulated/0/Download",
+                    fileName: fileName + '.pdf',
+                    savedDir: path,
                     showNotification: true,
                     openFileFromNotification: true,
                     saveInPublicStorage: true);

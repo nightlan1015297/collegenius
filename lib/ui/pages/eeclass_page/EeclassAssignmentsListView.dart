@@ -21,9 +21,6 @@ class EeclassAssignmentsListView extends StatelessWidget {
           _locale.assignmentOverview,
           style: _theme.textTheme.titleLarge,
         ),
-        elevation: 0,
-        iconTheme: _theme.iconTheme,
-        backgroundColor: _theme.scaffoldBackgroundColor,
       ),
       body: Builder(builder: (context) {
         if (assignmentList.isNotEmpty) {
