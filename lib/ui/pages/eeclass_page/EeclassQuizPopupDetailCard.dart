@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:collegenius/ui/pages/eeclass_page/DownloadAttachmentTags.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -372,61 +373,6 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class DownloadAttachmentTags extends StatelessWidget {
-  const DownloadAttachmentTags({
-    Key? key,
-    required this.element,
-    required ThemeData theme,
-  })  : _theme = theme,
-        super(key: key);
-
-  final List element;
-  final ThemeData _theme;
-
-  @override
-  Widget build(BuildContext context) {
-    final _locale = AppLocalizations.of(context)!;
-    return Row(
-      children: [
-        Spacer(),
-        SizedBox(
-          width: 200,
-          child: Text(
-            element[0] ?? "",
-            style: _theme.textTheme.bodyLarge,
-            overflow: TextOverflow.visible,
-          ),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            final eeclassRepo = context.read<EeclassRepository>();
-            final cookiesString =
-                await eeclassRepo.getCookiesStringForDownload();
-            await FlutterDownloader.enqueue(
-                headers: {
-                  HttpHeaders.connectionHeader: 'keep-alive',
-                  HttpHeaders.cookieHeader: cookiesString,
-                },
-                url: 'https://ncueeclass.ncu.edu.tw' + element[1],
-                savedDir: "/storage/emulated/0/Download",
-                showNotification: true,
-                openFileFromNotification: true,
-                saveInPublicStorage: true);
-          },
-          child: Text(
-            _locale.download,
-            style: _theme.textTheme.labelLarge,
-          ),
-        ),
-        Spacer()
-      ],
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:collegenius/utilties/ColorfulPrintFunction.dart';
+import 'package:collegenius/utilties/PathGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -200,58 +201,67 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
     final _theme = Theme.of(context);
     final _locale = AppLocalizations.of(context)!;
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Card(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                  child: Stack(
-                    children: [
-                      Align(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(_locale.materialInformation,
-                              style: _theme.textTheme.titleLarge,
-                              textAlign: TextAlign.start),
-                        ),
-                        alignment: Alignment.center,
-                      ),
-                      Align(
-                        child: IconButton(
-                          icon: Icon(Icons.close, size: 30),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                        alignment: Alignment.centerRight,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
-                        child: Column(
-                          children: [
-                            _materialBriefBuilder(
-                                materialBrief: materialBrief, context: context),
-                            Divider(),
-                            _materialBuilder(
-                              context: context,
-                              materialBrief: materialBrief,
-                              materialDetail: materialDetail,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Card(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 50,
+                      child: Stack(
+                        children: [
+                          Align(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(_locale.materialInformation,
+                                  style: _theme.textTheme.titleLarge,
+                                  textAlign: TextAlign.start),
                             ),
-                          ],
-                        )),
-                  ),
-                )
-              ],
+                            alignment: Alignment.center,
+                          ),
+                          Align(
+                            child: IconButton(
+                              icon: Icon(Icons.close, size: 30),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                            alignment: Alignment.centerRight,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SingleChildScrollView(
+                            physics: BouncingScrollPhysics(),
+                            child: Column(
+                              children: [
+                                _materialBriefBuilder(
+                                    materialBrief: materialBrief,
+                                    context: context),
+                                Divider(),
+                                _materialBuilder(
+                                  context: context,
+                                  materialBrief: materialBrief,
+                                  materialDetail: materialDetail,
+                                ),
+                              ],
+                            )),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -282,13 +292,14 @@ class DownloadPdfTag extends StatelessWidget {
                 final eeclassRepo = context.read<EeclassRepository>();
                 final cookiesString =
                     await eeclassRepo.getCookiesStringForDownload();
+                final path = await PathGenerator().getDownloadPath();
                 await FlutterDownloader.enqueue(
                     headers: {
                       HttpHeaders.connectionHeader: 'keep-alive',
                       HttpHeaders.cookieHeader: cookiesString,
                     },
                     url: 'https://ncueeclass.ncu.edu.tw' + source,
-                    savedDir: "/storage/emulated/0/Download",
+                    savedDir: path,
                     showNotification: true,
                     openFileFromNotification: true,
                     saveInPublicStorage: true);

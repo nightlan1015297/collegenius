@@ -2,6 +2,7 @@ import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/repositories/school_events_repository.dart';
 import 'package:collegenius/routes/hero_dialog_route.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
+import 'package:collegenius/utilties/PathGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -269,9 +270,10 @@ class _PopupWebViewCardState extends State<PopupWebViewCard> {
                                 """);
                     },
                     onDownloadStartRequest: (controller, url) async {
+                      final path = await PathGenerator().getDownloadPath();
                       await FlutterDownloader.enqueue(
                           url: url.url.toString(),
-                          savedDir: "/storage/emulated/0/Download",
+                          savedDir: path,
                           showNotification: true,
                           openFileFromNotification: true,
                           saveInPublicStorage: true);
