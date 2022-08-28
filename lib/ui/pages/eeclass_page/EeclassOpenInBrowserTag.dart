@@ -1,3 +1,4 @@
+import 'package:collegenius/utilties/PathGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -61,9 +62,11 @@ class EeclassOpenInBrowserTag extends StatelessWidget {
                             ),
                           ),
                           onDownloadStartRequest: (controller, url) async {
+                            final path =
+                                await PathGenerator().getDownloadPath();
                             await FlutterDownloader.enqueue(
                                 url: url.url.toString(),
-                                savedDir: "/storage/emulated/0/Download",
+                                savedDir: path,
                                 showNotification: true,
                                 openFileFromNotification: true,
                                 saveInPublicStorage: true);
