@@ -61,6 +61,7 @@ class EeclassOpenInBrowserTag extends StatelessWidget {
                           onDownloadStartRequest: (controller, url) async {
                             const snackBar = SnackBar(
                               content: Text('Download started!'),
+                              duration: Duration(milliseconds: 500),
                             );
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);

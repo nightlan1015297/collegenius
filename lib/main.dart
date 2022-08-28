@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:collegenius/constants/maps.dart';
 import 'package:collegenius/ui/pages/school_tour_page/SchoolTourPage.dart';
 import 'package:collegenius/utilties/PathGenerator.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,9 +25,8 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 
-import 'package:collegenius/ui/main_scaffold/MainScaffold.dart';
+import 'package:collegenius/ui/scaffolds/MainScaffold.dart';
 import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualPage.dart';
 import 'package:collegenius/ui/theme/AppTheme.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -102,41 +100,18 @@ class Collegenius extends StatefulWidget {
 class _CollegeniusState extends State<Collegenius> {
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
   final AppRouter _appRouter = AppRouter();
-  ReceivePort _port = ReceivePort();
-
-  @override
-  void initState() {
-    super.initState();
-    IsolateNameServer.registerPortWithName(
-        _port.sendPort, 'downloader_send_port');
-    _port.listen((dynamic data) {
-      // String id = data[0];
-      // DownloadTaskStatus status = data[1];
-      // int progress = data[2];
-      setState(() {});
-    });
-
-    FlutterDownloader.registerCallback(downloadCallback);
-  }
-
-  @override
-  void dispose() {
-    IsolateNameServer.removePortNameMapping('downloader_send_port');
-    super.dispose();
-  }
 
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
         IsolateNameServer.lookupPortByName('downloader_send_port')!;
-    if (status == DownloadTaskStatus.complete) {
-      const snackBar = SnackBar(
-        content: Text('Download complete.'),
-        duration: Duration(milliseconds: 500),
-      );
-      snackbarKey.currentState?.showSnackBar(snackBar);
-    }
     send.send([id, status, progress]);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    FlutterDownloader.registerCallback(downloadCallback);
   }
 
   @override
