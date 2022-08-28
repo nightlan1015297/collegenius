@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:collegenius/repositories/eeclass_repository.dart';
+import 'package:collegenius/utilties/PathGenerator.dart';
 import 'package:flutter/Material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -81,14 +82,15 @@ class DownloadAttachmentTags extends StatelessWidget {
                 final eeclassRepo = context.read<EeclassRepository>();
                 final cookiesString =
                     await eeclassRepo.getCookiesStringForDownload();
+                final path = await PathGenerator().getDownloadPath();
                 await FlutterDownloader.enqueue(
                     headers: {
                       HttpHeaders.connectionHeader: 'keep-alive',
                       HttpHeaders.cookieHeader: cookiesString,
                     },
                     url: 'https://ncueeclass.ncu.edu.tw' + element[1],
-                    savedDir: "/storage/emulated/0/Download/",
-                    showNotification: true,
+                    savedDir: path,
+                    showNotification: false,
                     openFileFromNotification: true,
                     saveInPublicStorage: true);
               },

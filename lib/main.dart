@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:collegenius/constants/maps.dart';
 import 'package:collegenius/ui/pages/school_tour_page/SchoolTourPage.dart';
+import 'package:collegenius/utilties/PathGenerator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -43,6 +44,7 @@ import 'ui/pages/setting_page/SettingPageView.dart';
 import 'routes/Routes.dart';
 
 Future<void> main() async {
+  final _pathGen = PathGenerator();
   /* ensureInitialized to prevent unpredictable error*/
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isAndroid) {
@@ -58,7 +60,8 @@ Future<void> main() async {
       );
 
   /// Using Hive to storage user data 
-  await Hive.initFlutter('hive_database');
+  final hiveDir = await _pathGen.getHiveDatabaseDirectory();
+  Hive.init(hiveDir.path);
   /// These Adapter ia all for Course Schedual
   Hive.registerAdapter(SemesterAdapter());
   Hive.registerAdapter(CourseAdapter());
@@ -69,17 +72,18 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  /// Using HydratedBloc to storage application state 
-  /// Hydrated bloc storage application configuration and auth data.
-  final storage = await HydratedStorage.build(
-    storageDirectory: await getApplicationDocumentsDirectory(),
-  );
   /// Capture the unhandled crash
   /// The crash will show on crashlytics.
   FlutterError.onError = (detail) {
     FirebaseCrashlytics.instance.recordFlutterError(detail);
     if (kReleaseMode) exit(1);
   };
+
+  /// Using HydratedBloc to storage application state 
+  /// Hydrated bloc storage application configuration and auth data.
+  final storage = await HydratedStorage.build(
+    storageDirectory: await PathGenerator().getHydratedBlocDirectory(),
+  );
   HydratedBlocOverrides.runZoned(() => runApp(Collegenius()),
       storage: storage, blocObserver: AppBlocObserver(),);
 }
