@@ -60,43 +60,47 @@ class DownloadAttachmentTags extends StatelessWidget {
   Widget build(BuildContext context) {
     final _locale = AppLocalizations.of(context)!;
 
-    return Row(
-      children: [
-        Spacer(),
-        SizedBox(
-          width: 200,
-          child: Text(
-            element[0] ?? "",
-            style: _theme.textTheme.bodyLarge,
-            overflow: TextOverflow.visible,
-          ),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            final eeclassRepo = context.read<EeclassRepository>();
-            final cookiesString =
-                await eeclassRepo.getCookiesStringForDownload();
-            await FlutterDownloader.enqueue(
-                headers: {
-                  HttpHeaders.connectionHeader: 'keep-alive',
-                  HttpHeaders.cookieHeader: cookiesString,
-                },
-                url: 'https://ncueeclass.ncu.edu.tw' + element[1],
-                savedDir: "/storage/emulated/0/Download/",
-                showNotification: true,
-                openFileFromNotification: true,
-                saveInPublicStorage: true);
-          },
-          child: Text(
-            _locale.download,
-            style: _theme.textTheme.labelLarge,
-          ),
-        ),
-        Spacer()
-      ],
+    return LayoutBuilder(
+      builder: (context,constraints) {
+        return Row(
+          children: [
+            Spacer(),
+            SizedBox(
+                width: constraints.maxWidth-125,
+                child: Text(
+                  element[0] ?? "",
+                  style: _theme.textTheme.bodyLarge,
+                  overflow: TextOverflow.visible,
+                ),
+              ),
+            SizedBox(
+              width: 20,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final eeclassRepo = context.read<EeclassRepository>();
+                final cookiesString =
+                    await eeclassRepo.getCookiesStringForDownload();
+                await FlutterDownloader.enqueue(
+                    headers: {
+                      HttpHeaders.connectionHeader: 'keep-alive',
+                      HttpHeaders.cookieHeader: cookiesString,
+                    },
+                    url: 'https://ncueeclass.ncu.edu.tw' + element[1],
+                    savedDir: "/storage/emulated/0/Download/",
+                    showNotification: true,
+                    openFileFromNotification: true,
+                    saveInPublicStorage: true);
+              },
+              child: Text(
+                _locale.download,
+                style: _theme.textTheme.labelLarge,
+              ),
+            ),
+            Spacer()
+          ],
+        );
+      }
     );
   }
 }
