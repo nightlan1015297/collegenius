@@ -57,9 +57,9 @@ Future<void> main() async {
           true // option: set to false to disable working with http links (default: false)
       );
 
-  /* Using Hive to storage application data*/
-
+  /// Using Hive to storage user data 
   await Hive.initFlutter('hive_database');
+  /// These Adapter ia all for Course Schedual
   Hive.registerAdapter(SemesterAdapter());
   Hive.registerAdapter(CourseAdapter());
   Hive.registerAdapter(CoursePerDayAdapter());
@@ -69,24 +69,27 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  /* Using HydratedBloc to storage application state*/
+  /// Using HydratedBloc to storage application state 
+  /// Hydrated bloc storage application configuration and auth data.
   final storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
+  /// Capture the unhandled crash
+  /// The crash will show on crashlytics.
   FlutterError.onError = (detail) {
     FirebaseCrashlytics.instance.recordFlutterError(detail);
     if (kReleaseMode) exit(1);
   };
-  HydratedBlocOverrides.runZoned(() => runApp(MyApp()),
-      storage: storage, blocObserver: AppBlocObserver());
+  HydratedBlocOverrides.runZoned(() => runApp(Collegenius()),
+      storage: storage, blocObserver: AppBlocObserver(),);
 }
 
-class MyApp extends StatefulWidget {
+class Collegenius extends StatefulWidget {
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<Collegenius> createState() => _CollegeniusState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _CollegeniusState extends State<Collegenius> {
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
   final AppRouter _appRouter = AppRouter();
   ReceivePort _port = ReceivePort();
