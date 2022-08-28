@@ -41,13 +41,14 @@ class DownloadAttachmentTags extends StatelessWidget {
             onPressed: () async {
               const snackBar = SnackBar(
                 content: Text('Download started!'),
+                duration: Duration(milliseconds: 500),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
               final eeclassRepo = context.read<EeclassRepository>();
               final cookiesString =
                   await eeclassRepo.getCookiesStringForDownload();
               final path = await PathGenerator().getDownloadPath();
-              await FlutterDownloader.enqueue(
+              final taskId = await FlutterDownloader.enqueue(
                   headers: {
                     HttpHeaders.connectionHeader: 'keep-alive',
                     HttpHeaders.cookieHeader: cookiesString,

@@ -8,10 +8,7 @@ class AboutCollegeniusPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 5,
-        iconTheme: _theme.iconTheme,
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -39,10 +39,7 @@ class EeclassOpenInBrowserTag extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) {
                       return Scaffold(
-                        appBar: AppBar(
-                          elevation: 5,
-                          iconTheme: _theme.iconTheme,
-                        ),
+                        appBar: AppBar(),
                         body: InAppWebView(
                           initialUrlRequest: URLRequest(
                             url: Uri.parse(

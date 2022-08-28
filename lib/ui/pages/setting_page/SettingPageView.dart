@@ -55,13 +55,7 @@ class SettingPageViewState extends State<SettingPageView> {
                         icon: Icons.library_books,
                         title: _locale.license,
                         ontap: () {
-                          showLicensePage(
-                              context: context,
-                              applicationName: "Collegenius",
-                              applicationIcon: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.asset('images/collegenius.png')),
-                              applicationVersion: "0.0.1");
+                          Navigator.of(context).pushNamed('setting/licences');
                         },
                       ),
                       BasicSettingTileWidget(

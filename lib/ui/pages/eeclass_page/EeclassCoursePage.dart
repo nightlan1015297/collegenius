@@ -50,8 +50,6 @@ class _EeclassCoursePageState extends State<EeclassCoursePage> {
                 "Course dashboard",
                 style: _theme.textTheme.titleLarge,
               ),
-              elevation: 5,
-              iconTheme: _theme.iconTheme,
             ),
             body: Builder(
               builder: (context) {

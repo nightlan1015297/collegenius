@@ -21,20 +21,19 @@ class MainScaffold extends StatelessWidget {
     return Scaffold(
         extendBody: true,
         appBar: AppBar(
-            title: Text(
-              title,
-              style: _theme.textTheme.titleLarge,
-            ),
-            elevation: 5,
-            iconTheme: _theme.iconTheme,
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.person,
-                ),
-                onPressed: () => Navigator.pushNamed(context, '/login'),
-              )
-            ]),
+          title: Text(
+            title,
+            style: _theme.textTheme.titleLarge,
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.person,
+              ),
+              onPressed: () => Navigator.pushNamed(context, '/login'),
+            )
+          ],
+        ),
         body: body,
         bottomNavigationBar: Builder(
           builder: (context) {
