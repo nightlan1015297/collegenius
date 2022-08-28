@@ -19,7 +19,7 @@ class CourseSchedualSuccessView extends StatelessWidget {
         Row(
           children: [
             SizedBox(width: 10),
-            SizedBox(width: 200, child: WeekDayPicker()),
+            SizedBox(width: 220, child: WeekDayPicker()),
             SizedBox(width: 130, child: SemesterPicker()),
           ],
         ),
@@ -27,13 +27,9 @@ class CourseSchedualSuccessView extends StatelessWidget {
             builder: (context, state) {
           switch (state.renderStatus) {
             case CourseSchedualPageRenderStatus.noData:
-              return Center(
-                child: Text(_locale.noData),
-              );
+              return NoDataCard();
             case CourseSchedualPageRenderStatus.noCourse:
-              return Center(
-                child: Text(_locale.courseSchedualNoCourse),
-              );
+              return NoCoursesCard();
             case CourseSchedualPageRenderStatus.normal:
               final selectedDaysKey = mapIndexToWeekday[state.selectedDays];
               return NormalCourseSchedual(
@@ -55,10 +51,84 @@ class CourseSchedualSuccessView extends StatelessWidget {
   }
 }
 
+class NoDataCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
+    final _theme = Theme.of(context);
+    return Expanded(
+      child: Center(
+        child: SizedBox(
+            height: 200,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Spacer(),
+                          Icon(Icons.warning, size: 50, color: Colors.orange),
+                          Spacer(),
+                          Text(
+                            _locale.noData,
+                            style: _theme.textTheme.headline6,
+                          ),
+                          Spacer(),
+                        ],
+                      ))),
+            )),
+      ),
+    );
+  }
+}
+
+class NoCoursesCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
+    final _theme = Theme.of(context);
+    return Expanded(
+      child: Center(
+        child: SizedBox(
+            height: 200,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Spacer(),
+                          Icon(Icons.check_circle,
+                              size: 50, color: Colors.green),
+                          Spacer(),
+                          Text(
+                            _locale.courseSchedualNoCourse,
+                            style: _theme.textTheme.headline6,
+                          ),
+                          Spacer(),
+                        ],
+                      ))),
+            )),
+      ),
+    );
+  }
+}
+
 class WeekDayPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _locale = AppLocalizations.of(context)!;
+    final dayList = [
+      _locale.monday,
+      _locale.tuesday,
+      _locale.wednesday,
+      _locale.thursday,
+      _locale.friday,
+      _locale.saturday,
+      _locale.sunday
+    ];
     return BlocBuilder<CourseSchedualPageBloc, CourseSchedualPageState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
@@ -74,7 +144,7 @@ class WeekDayPicker extends StatelessWidget {
               },
               title: _locale.daysPicker,
               currentItem: state.selectedDays,
-              itemlist: weekDayList,
+              itemlist: dayList,
             ));
       },
     );

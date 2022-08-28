@@ -15,9 +15,9 @@ const Map<Language, Locale> mapAppLanguageToLocal = {
 const Map<int, String> mapBottomNavIndexToScreenName = {
   0: 'home',
   1: 'courseSchedual',
-  2: 'schoolEvents',
-  3: 'schoolTour',
-  4: 'eeclass',
+  2: 'eeclass',
+  3: 'schoolEvents',
+  4: 'schoolTour',
   5: 'setting',
 };
 

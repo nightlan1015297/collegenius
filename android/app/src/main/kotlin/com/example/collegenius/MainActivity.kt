@@ -1,4 +1,4 @@
-package com.example.collegenius
+package com.dimlee.collegenius
 
 import io.flutter.embedding.android.FlutterActivity
 

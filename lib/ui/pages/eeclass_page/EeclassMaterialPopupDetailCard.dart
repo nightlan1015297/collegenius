@@ -288,7 +288,7 @@ class DownloadPdfTag extends StatelessWidget {
                       HttpHeaders.cookieHeader: cookiesString,
                     },
                     url: 'https://ncueeclass.ncu.edu.tw' + source,
-                    savedDir: "/storage/emulated/0/Download/Collegenius",
+                    savedDir: "/storage/emulated/0/Download",
                     showNotification: true,
                     openFileFromNotification: true,
                     saveInPublicStorage: true);

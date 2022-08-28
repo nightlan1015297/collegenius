@@ -43,7 +43,19 @@ class _EeclassAssignmentPopupDetailCardState
         builder: (context, state) {
           switch (state.detailCardStatus) {
             case EeclassAssignmentDetailCardStatus.loading:
-              return Loading();
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Card(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(maxWidth: 450, maxHeight: 600),
+                      child: Loading(),
+                    ),
+                  ),
+                ),
+              );
+
             case EeclassAssignmentDetailCardStatus.success:
               return EeclassPopUpAssignmentDetailSuccessCard(
                 assignmentBrief: widget.assignmentBrief,

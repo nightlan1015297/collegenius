@@ -7,6 +7,7 @@ import 'package:collegenius/repositories/course_schedual_repository.dart';
 import 'package:collegenius/utilties/ticker.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import '../../models/course_schedual_model/course_schedual_models.dart';
 import 'authentication_bloc.dart';
@@ -117,8 +118,8 @@ class CourseSchedualPageBloc
     try {
       final result = await courseSchedualRepository.getSemesterList(
           fromLocal: state.fetchFromLocal);
-      final currentSemester =
-          await courseSchedualRepository.getCurrentSemester();
+      final currentSemester = await courseSchedualRepository.getCurrentSemester(
+          fromLocal: state.fetchFromLocal);
       emit(state.copyWith(
         currentSemester: currentSemester,
         selectedSemester: currentSemester,
@@ -133,9 +134,13 @@ class CourseSchedualPageBloc
       ));
       add(UpdateRenderInfoRequest());
       emit(state.copyWith(status: CourseSchedualPageStatus.success));
-    } catch (e, stack) {
-      print(e);
-      print(stack);
+    } catch (e, stacktrace) {
+      final connectivityResult = await (Connectivity().checkConnectivity());
+      final _crashInstance = FirebaseCrashlytics.instance;
+      _crashInstance.setCustomKey("Error on", "Course_schedual_page");
+      _crashInstance.setCustomKey("Catch on", "Fetching data");
+      _crashInstance.setCustomKey("Connection type", connectivityResult.name);
+      _crashInstance.recordError(e, stacktrace);
       emit(state.copyWith(status: CourseSchedualPageStatus.failure));
     }
   }

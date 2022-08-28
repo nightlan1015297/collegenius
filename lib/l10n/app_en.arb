@@ -22,6 +22,13 @@
 	"noData":"No Data Founded",
 	"courseSchedualNoCourse":"No Courses Today",
 	"daysPicker":"Days",
+  "monday":"Monday",
+  "tuesday":"Tuesday",
+  "wednesday":"Wednesday",
+  "thursday":"Thursday",
+  "friday":"Friday",
+  "saturday":"Saturday",
+  "sunday":"Sunday",
 	"semesterPicker":"Semester",
 	"classroom":"Classroom",
 	"time":"Time",
@@ -121,6 +128,12 @@
   "description": "Description",
   "syllabus": "Syllabus",
   "textbooks": "Textbooks",
-  "gradingDescription": "Grading description"
+  "gradingDescription": "Grading description",
+  "aboutCollegenius": "About Collegenius",
+  "license": "License",
+  "greeting":"Welcome to Collegenius v0.0.1",
+  "v001Info":"Collegenius is an application that helps you to manage your stuff in NCU.\nWe combined serveral services to make it easier for you to access.\nFrom now, the services are \n  - Eeclass\n  - Course planning system\nWe are planning to add more services in the future.\n Happy to see you here, enjoy the application.",
+  "helpWanted":"We need you!",
+  "helpWantedContent":"Collegenius is an open source project that release with MIT licance.\n If you are interested in contributing to this project, please visit our Github page (You can find it in setting -> about Collegenius)."
 } 
 

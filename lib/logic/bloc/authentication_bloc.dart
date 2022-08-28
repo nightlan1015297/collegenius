@@ -39,10 +39,10 @@ class AuthenticationBloc
     /// if they are, then we will try to validate the account again
     /// to see whether the account is still valid since the user may have
     /// changed their password or whatever.
-    if (state.courseSelectAuthStatus.isAuthed) {
+    if (!state.courseSelectAuthStatus.isUnauth) {
       add(CourseSelectAuthenticateRequest(user: state.courseSelectUserData));
     }
-    if (state.eeclassAuthStatus.isAuthed) {
+    if (!state.eeclassAuthStatus.isUnauth) {
       add(EeclassAuthenticateRequest(user: state.eeclassUserData));
     }
     //! Portal related Service
