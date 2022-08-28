@@ -43,20 +43,21 @@ class EeclassCourseListBloc
     ChangeSemesterRequest event,
     Emitter<EeclassCourseListState> emit,
   ) async {
-    emit(
-      state.copyWith(
-        status: EeclassCourseListStatus.loading,
-      ),
-    );
-    final courseList =
-        await eeclassRepository.getCourses(semester: event.semester.value);
-
-    emit(
-      state.copyWith(
-          status: EeclassCourseListStatus.success,
-          selectedSemester: event.semester,
-          courseList: courseList),
-    );
+    if (event.semester != state.selectedSemester) {
+      emit(
+        state.copyWith(
+          status: EeclassCourseListStatus.loading,
+        ),
+      );
+      final courseList =
+          await eeclassRepository.getCourses(semester: event.semester.value);
+      emit(
+        state.copyWith(
+            status: EeclassCourseListStatus.success,
+            selectedSemester: event.semester,
+            courseList: courseList),
+      );
+    }
   }
 
   void _onInitializeRequest(
