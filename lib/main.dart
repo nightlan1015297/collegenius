@@ -70,6 +70,7 @@ Future<void> main() async {
   Hive.registerAdapter(CourseSchedualAdapter());
 
   await Firebase.initializeApp(
+    name: "dev project",
     options: DefaultFirebaseOptions.currentPlatform,
   );
 

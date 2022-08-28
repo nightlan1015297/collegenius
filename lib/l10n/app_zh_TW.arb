@@ -50,6 +50,8 @@
 
   
   "attachments":"附件",
+  "materials":"課程講義",
+  "assignments":"課程作業",
   "download":"下載",
   
   "bullitinTitle":"公告標題",
@@ -62,7 +64,6 @@
   "noBullitins":"沒有公告",
   "endOfBullitin":"公告結尾",
   "publisher":"發佈者",
-
   "materialOverview":"教材概覽",
   "uploadDate":"上傳日期",
   "updateDate":"更新日期",
@@ -83,6 +84,7 @@
   "quizInformation":"測驗資訊",
   "eeclassNotLoginMessage":"你必須先登入才能查看EEclass相關服務",
   "latestScore":"最新成績",
+  "latestBullitin":"最新公告",
   "noQuiz":"沒有測驗",
   "parseError":"-",
   "loading":"載入中",
