@@ -61,39 +61,43 @@ class QuizInformationNoQuizCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     final _locale = AppLocalizations.of(context)!;
-    return Card(
-        clipBehavior: Clip.antiAlias,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(left: BorderSide(color: Colors.green, width: 10)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Spacer(),
-                SizedBox(
-                    width: 220,
-                    height: 130,
-                    child: Center(
-                      child: TextInformationProvider(
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          label: _locale.latestScore,
-                          informationTexttheme: _theme.textTheme.headline6,
-                          informationMaxLines: 2,
-                          information: '-'),
-                    )),
-                Spacer(),
-                AnimatedPercentageIndicator(
-                  mainColor: Colors.green,
-                  sideColor: Colors.green[100]!,
-                  percentage: 1,
-                  child: Text(_locale.noQuiz),
-                )
-              ],
-            ),
-          ),
-        ));
+    return LayoutBuilder(
+      builder: (context,constraints) {
+        return Card(
+            clipBehavior: Clip.antiAlias,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(left: BorderSide(color: Colors.green, width: 10)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    SizedBox(
+                        width: constraints.maxWidth - 160,
+                        height: 130,
+                        child: Center(
+                          child: TextInformationProvider(
+                              labelTexttheme: _theme.textTheme.labelLarge,
+                              label: _locale.latestScore,
+                              informationTexttheme: _theme.textTheme.headline6,
+                              informationMaxLines: 2,
+                              information: '-'),
+                        )),
+                    Spacer(),
+                    AnimatedPercentageIndicator(
+                      mainColor: Colors.green,
+                      sideColor: Colors.green[100]!,
+                      percentage: 1,
+                      child: Text(_locale.noQuiz),
+                    )
+                  ],
+                ),
+              ),
+            ));
+      }
+    );
   }
 }
 
@@ -124,7 +128,7 @@ class QuizInformationParseErrorCard extends StatelessWidget {
                 Spacer(),
                 SizedBox(
                     width: 200,
-                    height: 120,
+                    height: 130,
                     child: Center(
                       child: TextInformationProvider(
                           labelTexttheme: _theme.textTheme.labelLarge,
@@ -170,6 +174,7 @@ class QuizInformationLoadingCard extends StatelessWidget {
                 Spacer(),
                 SizedBox(
                     width: 220,
+                    height: 130,
                     child: Center(
                       child: TextInformationProvider(
                           labelTexttheme: _theme.textTheme.labelLarge,
