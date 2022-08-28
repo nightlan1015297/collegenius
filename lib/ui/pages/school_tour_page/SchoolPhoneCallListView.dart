@@ -9,6 +9,7 @@ class SchoolPhoneCallListView extends StatelessWidget {
     final _locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
+        elevation: 5,
         titleTextStyle: _theme.textTheme.headline6,
         title: Text(_locale.schoolTourMap),
         iconTheme: _theme.iconTheme,

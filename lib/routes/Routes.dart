@@ -131,6 +131,7 @@ class AppRouter {
               final _locale = AppLocalizations.of(contex)!;
               return Scaffold(
                 appBar: AppBar(
+                  elevation: 5,
                   titleTextStyle: _theme.textTheme.headline6,
                   title: Text(_locale.login),
                   iconTheme: _theme.iconTheme,
@@ -205,6 +206,7 @@ class AppRouter {
               final _locale = AppLocalizations.of(contex)!;
               return Scaffold(
                 appBar: AppBar(
+                  elevation: 5,
                   titleTextStyle: _theme.textTheme.headline6,
                   title: Text(_locale.schoolBuildingsMap),
                   iconTheme: _theme.iconTheme,
@@ -225,6 +227,7 @@ class AppRouter {
               final _locale = AppLocalizations.of(contex)!;
               return Scaffold(
                 appBar: AppBar(
+                  elevation: 5,
                   titleTextStyle: _theme.textTheme.headline6,
                   title: Text(_locale.schoolTourMap),
                   iconTheme: _theme.iconTheme,

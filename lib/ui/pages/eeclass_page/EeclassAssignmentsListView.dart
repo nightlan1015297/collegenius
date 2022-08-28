@@ -21,7 +21,7 @@ class EeclassAssignmentsListView extends StatelessWidget {
           _locale.assignmentOverview,
           style: _theme.textTheme.titleLarge,
         ),
-        elevation: 0,
+        elevation: 5,
         iconTheme: _theme.iconTheme,
         backgroundColor: _theme.scaffoldBackgroundColor,
       ),
