@@ -40,7 +40,7 @@ class DownloadAttachmentTags extends StatelessWidget {
           ElevatedButton(
             onPressed: () async {
               const snackBar = SnackBar(
-                content: Text('Start download !'),
+                content: Text('Download started!'),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
               final eeclassRepo = context.read<EeclassRepository>();

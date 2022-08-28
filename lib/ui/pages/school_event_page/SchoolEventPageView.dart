@@ -270,6 +270,10 @@ class _PopupWebViewCardState extends State<PopupWebViewCard> {
                                 """);
                     },
                     onDownloadStartRequest: (controller, url) async {
+                      const snackBar = SnackBar(
+                        content: Text('Download started!'),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       final path = await PathGenerator().getDownloadPath();
                       await FlutterDownloader.enqueue(
                           url: url.url.toString(),
