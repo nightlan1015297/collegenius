@@ -37,31 +37,34 @@ class EeclassOpenInBrowserTag extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return InAppWebView(
-                        initialUrlRequest: URLRequest(
-                          url: Uri.parse('https://ncueeclass.ncu.edu.tw' + url),
+                      return Scaffold(
+                        appBar: AppBar(iconTheme: _theme.iconTheme,),
+                        body: InAppWebView(
+                          initialUrlRequest: URLRequest(
+                            url: Uri.parse('https://ncueeclass.ncu.edu.tw' + url),
+                          ),
+                          initialOptions: InAppWebViewGroupOptions(
+                            crossPlatform: InAppWebViewOptions(
+                              useOnDownloadStart: true,
+                              useShouldOverrideUrlLoading: true,
+                              mediaPlaybackRequiresUserGesture: false,
+                            ),
+                            android: AndroidInAppWebViewOptions(
+                              useHybridComposition: true,
+                            ),
+                            ios: IOSInAppWebViewOptions(
+                              allowsInlineMediaPlayback: true,
+                            ),
+                          ),
+                          onDownloadStartRequest: (controller, url) async {
+                            await FlutterDownloader.enqueue(
+                                url: url.url.toString(),
+                                savedDir: "/storage/emulated/0/Download",
+                                showNotification: true,
+                                openFileFromNotification: true,
+                                saveInPublicStorage: true);
+                          },
                         ),
-                        initialOptions: InAppWebViewGroupOptions(
-                          crossPlatform: InAppWebViewOptions(
-                            useOnDownloadStart: true,
-                            useShouldOverrideUrlLoading: true,
-                            mediaPlaybackRequiresUserGesture: false,
-                          ),
-                          android: AndroidInAppWebViewOptions(
-                            useHybridComposition: true,
-                          ),
-                          ios: IOSInAppWebViewOptions(
-                            allowsInlineMediaPlayback: true,
-                          ),
-                        ),
-                        onDownloadStartRequest: (controller, url) async {
-                          await FlutterDownloader.enqueue(
-                              url: url.url.toString(),
-                              savedDir: "/storage/emulated/0/Download",
-                              showNotification: true,
-                              openFileFromNotification: true,
-                              saveInPublicStorage: true);
-                        },
                       );
                     },
                   ),
