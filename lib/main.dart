@@ -6,6 +6,8 @@ import 'dart:ui';
 import 'package:collegenius/constants/maps.dart';
 import 'package:collegenius/ui/pages/school_tour_page/SchoolTourPage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:collegenius/logic/bloc/authentication_bloc.dart' as authBloc;
 import 'package:collegenius/logic/bloc/login_page_bloc.dart';
@@ -71,6 +73,10 @@ Future<void> main() async {
   final storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
+  FlutterError.onError = (detail) {
+    FirebaseCrashlytics.instance.recordFlutterError(detail);
+    if (kReleaseMode) exit(1);
+  };
   HydratedBlocOverrides.runZoned(() => runApp(MyApp()),
       storage: storage, blocObserver: AppBlocObserver());
 }
@@ -204,18 +210,18 @@ class _MyAppState extends State<MyApp> {
                       );
                     case 2:
                       return MainScaffold(
-                        title: _locale.schoolEvents,
-                        body: SchoolEventPageView(),
+                        title: _locale.eeclass,
+                        body: EeclassCoursesListView(),
                       );
                     case 3:
                       return MainScaffold(
-                        title: _locale.schoolTour,
-                        body: SchoolTourPage(),
+                        title: _locale.schoolEvents,
+                        body: SchoolEventPageView(),
                       );
                     case 4:
                       return MainScaffold(
-                        title: _locale.eeclass,
-                        body: EeclassCoursesListView(),
+                        title: _locale.schoolTour,
+                        body: SchoolTourPage(),
                       );
                     case 5:
                       return MainScaffold(

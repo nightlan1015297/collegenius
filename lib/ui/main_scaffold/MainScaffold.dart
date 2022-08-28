@@ -83,6 +83,10 @@ class MainScaffold extends StatelessWidget {
                       label: _locale.schoolEvents,
                     ),
                     BottomNavigationBarItem(
+                      icon: Icon(Icons.auto_stories),
+                      label: _locale.eeclass,
+                    ),
+                    BottomNavigationBarItem(
                       icon: Icon(
                         Icons.message,
                       ),
@@ -91,10 +95,6 @@ class MainScaffold extends StatelessWidget {
                     BottomNavigationBarItem(
                       icon: Icon(Icons.info_outline_rounded),
                       label: _locale.schoolTour,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.auto_stories),
-                      label: _locale.eeclass,
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.settings),

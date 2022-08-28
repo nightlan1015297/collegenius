@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:collegenius/ui/pages/home_page/gallery_widget.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class HomePageView extends StatelessWidget {
@@ -10,9 +10,10 @@ class HomePageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _locale = AppLocalizations.of(context)!;
     return LayoutBuilder(builder: (context, constrains) {
       var squareSize = min(constrains.maxWidth, constrains.maxHeight);
-      squareSize = squareSize > 600 ? 600 : squareSize;
+      squareSize = squareSize > 300 ? 300 : squareSize;
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -24,14 +25,15 @@ class HomePageView extends StatelessWidget {
                 height: squareSize,
                 child: Gallery(
                   children: [
-                    GalleryPage(),
-                    GalleryPage(),
-                    GalleryPage(),
-                    GalleryPage(),
-                    GalleryPage(),
-                    GalleryPage(),
-                    GalleryPage(),
-                    GalleryPage()
+                    GalleryCard(
+                      assets: 'images/collegenius.png',
+                      title: _locale.greeting,
+                      content: _locale.v001Info,
+                    ),
+                    GalleryCard(
+                        assets: 'images/coding.png',
+                        title: _locale.helpWanted,
+                        content: _locale.helpWantedContent),
                   ],
                 ),
               ),

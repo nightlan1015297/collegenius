@@ -1,10 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.collegenius">
+    package="com.dimlee.collegenius">
    <application
         android:name="${applicationName}"
         android:label="collegenius"
         android:icon="@mipmap/ic_launcher">
         <activity
+            android:exported="true"
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"

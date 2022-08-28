@@ -9,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 /// ***************************************************************************
 ///         COURSESCHEDUALREPOSITORY HANDELS ALL COURSE SCHEDUAL DATA.        *
 /// THE DATA CAN BE FETCH FROM SERVER (COURSE SELECT API) OR READ FROM LOCAL. *
-///            IT ALSO HANDELS FAKE DATA FOR TESTING PERPOSE TOO.             *
 ///****************************************************************************
 
 class CourseSchedualRepository {
@@ -43,11 +42,6 @@ class CourseSchedualRepository {
     this.courseSelectApiClient = new CourseSelectApiClient();
   }
 
-  /// ! Function [getCourseSchedual] need to rewrite
-  /// Since in condition(fetchFromLocal == true) will read data in CourseScheduals HiveBox
-  /// without any authtication check, this may cause new Authenticated user
-  /// reads old user's data.
-
   Future<CourseSchedual?> getCourseSchedual(
       {required bool fromLocal, required String semester}) async {
     final _courseSchedual;
@@ -64,7 +58,10 @@ class CourseSchedualRepository {
     return _courseSchedual;
   }
 
-  Future<String?> getCurrentSemester() async {
+  Future<String> getCurrentSemester({required bool fromLocal}) async {
+    if (fromLocal) {
+      return "1111";
+    }
     final currentSemester = await courseSelectApiClient.getCurrentSemester();
     return currentSemester;
   }
