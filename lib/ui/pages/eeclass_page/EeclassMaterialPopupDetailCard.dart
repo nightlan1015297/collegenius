@@ -130,7 +130,8 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
         break;
       case "pdf":
         widgetList.add(
-          DownloadPdfTag(source: materialDetail.source!),
+          DownloadPdfTag(
+              fileName: materialBrief.title, source: materialDetail.source!),
         );
 
         break;
@@ -269,8 +270,10 @@ class DownloadPdfTag extends StatelessWidget {
   const DownloadPdfTag({
     Key? key,
     required this.source,
+    required this.fileName,
   }) : super(key: key);
   final String source;
+  final String fileName;
 
   @override
   Widget build(BuildContext context) {
@@ -299,6 +302,7 @@ class DownloadPdfTag extends StatelessWidget {
                       HttpHeaders.cookieHeader: cookiesString,
                     },
                     url: 'https://ncueeclass.ncu.edu.tw' + source,
+                    fileName: fileName + '.pdf',
                     savedDir: path,
                     showNotification: true,
                     openFileFromNotification: true,

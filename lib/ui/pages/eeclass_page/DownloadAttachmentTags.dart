@@ -21,6 +21,7 @@ class DownloadAttachmentTags extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _locale = AppLocalizations.of(context)!;
+    final filename = element[0].replaceAll(RegExp(r'\((.*?)\)'), '').trim();
 
     return LayoutBuilder(builder: (context, constraints) {
       return Row(
@@ -53,6 +54,7 @@ class DownloadAttachmentTags extends StatelessWidget {
                     HttpHeaders.connectionHeader: 'keep-alive',
                     HttpHeaders.cookieHeader: cookiesString,
                   },
+                  fileName: filename,
                   url: 'https://ncueeclass.ncu.edu.tw' + element[1],
                   savedDir: path,
                   showNotification: true,
