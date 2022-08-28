@@ -22,12 +22,14 @@ class AppRouter {
     switch (routsettings.name) {
       case '/':
         return MaterialPageRoute(
-          settings: RouteSettings(name: routsettings.name),
-          builder: (contex) => MainScaffold(
-            title: 'HomePage',
-            body: HomePageView(),
-          ),
-        );
+            settings: RouteSettings(name: routsettings.name),
+            builder: (contex) {
+              final _locale = AppLocalizations.of(contex)!;
+              return MainScaffold(
+                title: _locale.home,
+                body: HomePageView(),
+              );
+            });
       case '/eeclassCourse':
         return MaterialPageRoute(
           settings: RouteSettings(name: routsettings.name),
@@ -128,7 +130,6 @@ class AppRouter {
         return MaterialPageRoute(
             settings: RouteSettings(name: routsettings.name),
             builder: (contex) {
-              final _theme = Theme.of(contex);
               final _locale = AppLocalizations.of(contex)!;
               return Scaffold(
                 appBar: AppBar(
