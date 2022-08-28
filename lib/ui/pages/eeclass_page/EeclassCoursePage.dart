@@ -255,178 +255,181 @@ class EeclassPopUpInformationCard extends StatelessWidget {
     final _theme = Theme.of(context);
     final _locale = AppLocalizations.of(context)!;
     return Center(
-      child: Card(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 400, maxHeight: 600),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: 50,
-                child: Stack(
-                  children: [
-                    Align(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("課程資訊",
-                            style: _theme.textTheme.titleLarge,
-                            textAlign: TextAlign.start),
-                      ),
-                      alignment: Alignment.center,
-                    ),
-                    Align(
-                      child: IconButton(
-                        icon: Icon(Icons.close, size: 30),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      alignment: Alignment.centerRight,
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 400, maxHeight: 600),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 50,
+                  child: Stack(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.classCode,
-                          information: courseInformation.classCode ?? '-',
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
+                      Align(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("課程資訊",
+                              style: _theme.textTheme.titleLarge,
+                              textAlign: TextAlign.start),
                         ),
+                        alignment: Alignment.center,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.className,
-                          information: courseInformation.name ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
+                      Align(
+                        child: IconButton(
+                          icon: Icon(Icons.close, size: 30),
+                          onPressed: () => Navigator.of(context).pop(),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.credit,
-                          information: courseInformation.credit ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.semester,
-                          information: courseInformation.semester ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.division,
-                          information: courseInformation.division ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.classes,
-                          information: courseInformation.classes ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.members,
-                          information: courseInformation.members ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.instroctors,
-                          information:
-                              courseInformation.instroctors?.join('\n') ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.assistants,
-                          information:
-                              courseInformation.assistants?.join('\n') ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.description,
-                          information: courseInformation.description ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.syllabus,
-                          information: courseInformation.syllabus ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.textbooks,
-                          information: courseInformation.textbooks ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextInformationProvider(
-                          label: _locale.gradingDescription,
-                          information:
-                              courseInformation.gradingDescription ?? '-',
-                          labelTexttheme: _theme.textTheme.labelLarge,
-                          informationTexttheme: _theme.textTheme.bodyLarge,
-                          informationTextOverFlow: TextOverflow.visible,
-                        ),
+                        alignment: Alignment.centerRight,
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.classCode,
+                            information: courseInformation.classCode ?? '-',
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.className,
+                            information: courseInformation.name ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.credit,
+                            information: courseInformation.credit ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.semester,
+                            information: courseInformation.semester ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.division,
+                            information: courseInformation.division ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.classes,
+                            information: courseInformation.classes ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.members,
+                            information: courseInformation.members ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.instroctors,
+                            information:
+                                courseInformation.instroctors?.join('\n') ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.assistants,
+                            information:
+                                courseInformation.assistants?.join('\n') ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.description,
+                            information: courseInformation.description ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.syllabus,
+                            information: courseInformation.syllabus ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.textbooks,
+                            information: courseInformation.textbooks ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextInformationProvider(
+                            label: _locale.gradingDescription,
+                            information:
+                                courseInformation.gradingDescription ?? '-',
+                            labelTexttheme: _theme.textTheme.labelLarge,
+                            informationTexttheme: _theme.textTheme.bodyLarge,
+                            informationTextOverFlow: TextOverflow.visible,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -439,45 +442,49 @@ class CourseInformationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EeclassCoursePageBloc, EeclassCoursePageState>(
       builder: (context, state) {
-        return Row(
-          children: [
-            Card(
-                child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-              child: SizedBox(
-                  height: 60,
-                  child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: 250,
-                      ),
-                      child: TextInformationProvider(
-                          label: "課程名稱",
-                          information: state.courseInformation.name ?? "-"))),
-            )),
-            Spacer(),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SizedBox(
-                  height: 60,
-                  child: Center(
-                    child: IconButton(
-                      icon: Icon(Icons.info_outline),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(
-                          '/eeclassCourse/popupInfo',
-                          arguments: EeclassPopupInfoArguments(
-                            courseInfo: state.courseInformation,
+        return LayoutBuilder(
+          builder: (context,constraints) {
+            return Row(
+              children: [
+                Card(
+                    child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+                  child: SizedBox(
+                      height: 60,
+                      child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: constraints.maxWidth-125,
                           ),
-                        );
-                      },
+                          child: TextInformationProvider(
+                              label: "課程名稱",
+                              information: state.courseInformation.name ?? "-"))),
+                )),
+                Spacer(),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      height: 60,
+                      child: Center(
+                        child: IconButton(
+                          icon: Icon(Icons.info_outline),
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(
+                              '/eeclassCourse/popupInfo',
+                              arguments: EeclassPopupInfoArguments(
+                                courseInfo: state.courseInformation,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          }
         );
       },
     );
