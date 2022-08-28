@@ -34,6 +34,7 @@ import 'package:collegenius/ui/theme/AppTheme.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
+import 'constants/Constants.dart';
 import 'firebase_options.dart';
 import 'logic/bloc/app_setting_bloc.dart';
 import 'logic/cubit/bottomnav_cubit.dart';
@@ -128,6 +129,13 @@ class _CollegeniusState extends State<Collegenius> {
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
         IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    if (status == DownloadTaskStatus.complete) {
+      const snackBar = SnackBar(
+        content: Text('Download complete.'),
+        duration: Duration(milliseconds: 500),
+      );
+      snackbarKey.currentState?.showSnackBar(snackBar);
+    }
     send.send([id, status, progress]);
   }
 
@@ -193,6 +201,7 @@ class _CollegeniusState extends State<Collegenius> {
               theme: AppTheme.light,
               darkTheme: AppTheme.dark,
               themeMode: _appSetting.themeMode,
+              scaffoldMessengerKey: snackbarKey,
               locale: mapAppLanguageToLocal[_appSetting.appLanguage],
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,

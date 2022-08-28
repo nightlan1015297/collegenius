@@ -168,10 +168,10 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
   }
 
   Widget _attachmentWidgetBuilder(
-    List attachments,
+    List? attachments,
     BuildContext context,
   ) {
-    if (attachments.isEmpty) {
+    if (attachments?.isEmpty ?? true) {
       return SizedBox();
     }
     final _theme = Theme.of(context);
@@ -186,7 +186,7 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
       ),
     ];
 
-    for (var element in attachments) {
+    for (var element in attachments!) {
       widgetList.add(
         DownloadAttachmentTags(element: element, theme: _theme),
       );
@@ -311,64 +311,73 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     final _locale = AppLocalizations.of(context)!;
-    final jsonQuizInformation = quizInformation.toJson();
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Card(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                  child: Stack(
-                    children: [
-                      Align(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(_locale.quizInformation,
-                              style: _theme.textTheme.titleLarge,
-                              textAlign: TextAlign.start),
-                        ),
-                        alignment: Alignment.center,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Card(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 50,
+                      child: Stack(
+                        children: [
+                          Align(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(_locale.quizInformation,
+                                  style: _theme.textTheme.titleLarge,
+                                  textAlign: TextAlign.start),
+                            ),
+                            alignment: Alignment.center,
+                          ),
+                          Align(
+                            child: IconButton(
+                              icon: Icon(Icons.close, size: 30),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                            alignment: Alignment.centerRight,
+                          ),
+                        ],
                       ),
-                      Align(
-                        child: IconButton(
-                          icon: Icon(Icons.close, size: 30),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                        alignment: Alignment.centerRight,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Builder(
-                          builder: (context) {
-                            if (quizInformation.scoreDistribution != null &&
-                                quizInformation.fullMarks?.toInt() != null) {
-                              return _distributionChartBuilder(
-                                  quizInformation.scoreDistribution!,
-                                  quizInformation.fullMarks!.toInt());
-                            }
-                            return SizedBox();
-                          },
-                        ),
-                        _quizInformationWidgetBuilder(quizInformation, context),
-                        _attachmentWidgetBuilder(
-                            jsonQuizInformation['attachments'], context),
-                      ],
                     ),
-                  ),
-                )
-              ],
+                    Expanded(
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Builder(
+                              builder: (context) {
+                                if (quizInformation.scoreDistribution != null &&
+                                    quizInformation.fullMarks?.toInt() !=
+                                        null) {
+                                  return _distributionChartBuilder(
+                                      quizInformation.scoreDistribution!,
+                                      quizInformation.fullMarks!.toInt());
+                                }
+                                return SizedBox();
+                              },
+                            ),
+                            _quizInformationWidgetBuilder(
+                                quizInformation, context),
+                            _attachmentWidgetBuilder(
+                                quizInformation.attachments, context),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         ),
