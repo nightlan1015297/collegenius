@@ -15,6 +15,15 @@ class SettingPageViewState extends State<SettingPageView> {
   @override
   Widget build(BuildContext context) {
     final _locale = AppLocalizations.of(context)!;
+    final Map<Language, String> mapAppLanguageToDescription = {
+      Language.zh: _locale.traditionalChinese,
+      Language.en: _locale.english,
+    };
+    final Map<ThemeMode, String> mapThememodeToDescription = {
+      ThemeMode.system: _locale.system,
+      ThemeMode.light: _locale.light,
+      ThemeMode.dark: _locale.dark,
+    };
     return Builder(
       builder: (context) {
         return BlocBuilder<AppSettingBloc, AppSettingState>(
@@ -55,13 +64,7 @@ class SettingPageViewState extends State<SettingPageView> {
                         icon: Icons.library_books,
                         title: _locale.license,
                         ontap: () {
-                          showLicensePage(
-                              context: context,
-                              applicationName: "Collegenius",
-                              applicationIcon: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.asset('images/collegenius.png')),
-                              applicationVersion: "0.0.1");
+                          Navigator.of(context).pushNamed('setting/licences');
                         },
                       ),
                       BasicSettingTileWidget(

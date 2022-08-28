@@ -17,15 +17,7 @@ class EeclassQuizListView extends StatelessWidget {
     final _theme = Theme.of(context);
     final _locale = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _locale.quizOverview,
-          style: _theme.textTheme.titleLarge,
-        ),
-        elevation: 0,
-        iconTheme: _theme.iconTheme,
-        backgroundColor: _theme.scaffoldBackgroundColor,
-      ),
+      appBar: AppBar(title: Text(_locale.quizOverview)),
       body: Builder(builder: (context) {
         if (quizList.isNotEmpty) {
           return Padding(

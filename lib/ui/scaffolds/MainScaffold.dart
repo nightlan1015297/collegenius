@@ -1,11 +1,15 @@
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:collegenius/logic/cubit/bottomnav_cubit.dart';
 //import 'drawer_tile_widget.dart';
 //import 'navigation_drawer_widget.dart';
 
-class MainScaffold extends StatelessWidget {
+class MainScaffold extends StatefulWidget {
   final String title;
   final Widget body;
 
@@ -15,27 +19,61 @@ class MainScaffold extends StatelessWidget {
   });
 
   @override
+  State<MainScaffold> createState() => _MainScaffoldState();
+}
+
+class _MainScaffoldState extends State<MainScaffold> {
+  ReceivePort _port = ReceivePort();
+
+  @override
+  void initState() {
+    super.initState();
+
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      if (data[1] == DownloadTaskStatus.complete) {
+        const snackBar = SnackBar(
+          content: Text('Download complete.'),
+          duration: Duration(milliseconds: 500),
+        );
+        print("Complete !");
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+      // String id = data[0];
+      // DownloadTaskStatus status = data[1];
+      // int progress = data[2];
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
     final _locale = AppLocalizations.of(context)!;
     return Scaffold(
         extendBody: true,
         appBar: AppBar(
-            title: Text(
-              title,
-              style: _theme.textTheme.titleLarge,
-            ),
-            elevation: 0,
-            iconTheme: _theme.iconTheme,
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.person,
-                ),
-                onPressed: () => Navigator.pushNamed(context, '/login'),
-              )
-            ]),
-        body: body,
+          title: Text(
+            widget.title,
+            style: _theme.textTheme.titleLarge,
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.person,
+              ),
+              onPressed: () => Navigator.pushNamed(context, '/login'),
+            )
+          ],
+        ),
+        body: widget.body,
         bottomNavigationBar: Builder(
           builder: (context) {
             final _bottomnavState = context.watch<BottomnavCubit>().state;

@@ -157,7 +157,10 @@ class GalleryPopupView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(content),
+              child: Text(
+                content,
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),

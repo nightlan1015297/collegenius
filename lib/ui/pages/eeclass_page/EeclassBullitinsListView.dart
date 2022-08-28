@@ -37,18 +37,15 @@ class _EeclassBullitinListViewState extends State<EeclassBullitinListView> {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-
+    final _locale = AppLocalizations.of(context)!;
     return BlocProvider(
       create: (context) => eeclassBullitinListCubit,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "Course bullitins",
+            _locale.bullitins,
             style: _theme.textTheme.titleLarge,
           ),
-          elevation: 0,
-          iconTheme: _theme.iconTheme,
-          backgroundColor: _theme.scaffoldBackgroundColor,
         ),
         body: BlocBuilder<EeclassBullitinListCubit, EeclassBullitinListState>(
           builder: (context, state) {
