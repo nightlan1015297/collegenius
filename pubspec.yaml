@@ -57,7 +57,6 @@ dependencies:
     path: packages/school_events_api
   test: ">=1.0.0 <2.0.0"
   url_launcher: ^6.1.5
-  webview_flutter: ^3.0.4
 dev_dependencies:
   build_runner: ^2.1.7
   flutter_test:
