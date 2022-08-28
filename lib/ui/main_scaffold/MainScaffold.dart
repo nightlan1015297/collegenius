@@ -25,7 +25,7 @@ class MainScaffold extends StatelessWidget {
               title,
               style: _theme.textTheme.titleLarge,
             ),
-            elevation: 0,
+            elevation: 5,
             iconTheme: _theme.iconTheme,
             actions: <Widget>[
               IconButton(
