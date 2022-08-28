@@ -289,6 +289,10 @@ class DownloadPdfTag extends StatelessWidget {
             width: 120,
             child: ElevatedButton(
               onPressed: () async {
+                const snackBar = SnackBar(
+                  content: Text('Download started!'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 final eeclassRepo = context.read<EeclassRepository>();
                 final cookiesString =
                     await eeclassRepo.getCookiesStringForDownload();
