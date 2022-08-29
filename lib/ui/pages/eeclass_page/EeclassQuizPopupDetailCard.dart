@@ -317,44 +317,48 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
     );
     _widgetList.add(Divider());
     _widgetList.add(
-      Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextInformationProvider(
-              label: _locale.fullMarks,
-              information: quizInfo.fullMarks?.round().toString() ?? "-",
-              informationTextOverFlow: TextOverflow.visible,
+      SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextInformationProvider(
+                label: _locale.fullMarks,
+                information: quizInfo.fullMarks?.round().toString() ?? "-",
+                informationTextOverFlow: TextOverflow.visible,
+              ),
             ),
-          ),
-          VerticalSeperater(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextInformationProvider(
-              label: _locale.passingMarks,
-              information: quizInfo.passingMarks?.round().toString() ?? "-",
-              informationTextOverFlow: TextOverflow.visible,
+            VerticalSeperater(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextInformationProvider(
+                label: _locale.passingMarks,
+                information: quizInfo.passingMarks?.round().toString() ?? "-",
+                informationTextOverFlow: TextOverflow.visible,
+              ),
             ),
-          ),
-          VerticalSeperater(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextInformationProvider(
-              label: _locale.score,
-              information: quizInfo.score?.round().toString() ?? "-",
-              informationTextOverFlow: TextOverflow.visible,
+            VerticalSeperater(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextInformationProvider(
+                label: _locale.score,
+                information: quizInfo.score?.round().toString() ?? "-",
+                informationTextOverFlow: TextOverflow.visible,
+              ),
             ),
-          ),
-          VerticalSeperater(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextInformationProvider(
-              label: _locale.weights,
-              information: quizInfo.percentage,
-              informationTextOverFlow: TextOverflow.visible,
+            VerticalSeperater(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextInformationProvider(
+                label: _locale.weights,
+                information: quizInfo.percentage,
+                informationTextOverFlow: TextOverflow.visible,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
     _widgetList.add(Divider());
