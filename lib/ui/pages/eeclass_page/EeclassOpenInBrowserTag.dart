@@ -72,7 +72,7 @@ class EeclassOpenInBrowserTag extends StatelessWidget {
                                 savedDir: path,
                                 showNotification: true,
                                 openFileFromNotification: true,
-                                saveInPublicStorage: true);
+                                saveInPublicStorage: false);
                           },
                         ),
                       );
