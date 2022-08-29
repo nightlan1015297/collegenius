@@ -40,7 +40,7 @@ class _EeclassCoursePageState extends State<EeclassCoursePage> {
   @override
   Widget build(BuildContext context) {
     final _theme = Theme.of(context);
-
+    final _locale = AppLocalizations.of(context)!;
     return BlocProvider(
       create: (context) => eeclassCoursePageBloc,
       child: BlocBuilder<EeclassCoursePageBloc, EeclassCoursePageState>(
@@ -48,7 +48,7 @@ class _EeclassCoursePageState extends State<EeclassCoursePage> {
           return Scaffold(
             appBar: AppBar(
               title: Text(
-                "Course dashboard",
+                _locale.courseDashboard,
                 style: _theme.textTheme.titleLarge,
               ),
             ),
