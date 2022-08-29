@@ -281,7 +281,7 @@ class _PopupWebViewCardState extends State<PopupWebViewCard> {
                           savedDir: path,
                           showNotification: true,
                           openFileFromNotification: true,
-                          saveInPublicStorage: true);
+                          saveInPublicStorage: false);
                     },
                   ),
                 ),

@@ -306,7 +306,7 @@ class DownloadPdfTag extends StatelessWidget {
                     savedDir: path,
                     showNotification: true,
                     openFileFromNotification: true,
-                    saveInPublicStorage: true);
+                    saveInPublicStorage: false);
               },
               child: Text(
                 _locale.download,
