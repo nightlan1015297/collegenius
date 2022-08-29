@@ -1,12 +1,8 @@
-import 'dart:io';
+import 'dart:math';
 
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:collegenius/ui/pages/eeclass_page/DownloadAttachmentTags.dart';
-import 'package:collegenius/ui/scaffolds/HeroDialogScaffold.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:collegenius/constants/Constants.dart';
@@ -14,6 +10,8 @@ import 'package:collegenius/logic/cubit/eeclass_quiz_detail_cubit.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
+import 'package:collegenius/ui/pages/eeclass_page/DownloadAttachmentTags.dart';
+import 'package:collegenius/ui/scaffolds/HeroDialogScaffold.dart';
 
 class EeclassQuizPopupDetailCard extends StatefulWidget {
   const EeclassQuizPopupDetailCard({
@@ -89,69 +87,129 @@ class ScoreDistributionBarData {
   ScoreDistributionBarData(this.interval, this.score);
 }
 
-class ScoreDistributionChart extends StatelessWidget {
-  ScoreDistributionChart({
+class _BarChart extends StatelessWidget {
+  const _BarChart({
     Key? key,
-    required this.distributionList,
-    required this.fullMarks,
-    required this.animate,
+    required this.distribution,
+    required this.fullmarks,
   }) : super(key: key);
-
-  final List<int> distributionList;
-  final int fullMarks;
-  late List<charts.Series<dynamic, String>> seriesList;
-  final bool animate;
-
+  final List<int> distribution;
+  final int fullmarks;
   @override
   Widget build(BuildContext context) {
-    seriesList = generateData(distributionList, fullMarks);
-    return SizedBox(
-      height: 200,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: charts.BarChart(
-          seriesList,
-          vertical: false,
-          animate: animate,
-          domainAxis: charts.OrdinalAxisSpec(
-            renderSpec: charts.SmallTickRendererSpec(
-              labelStyle: charts.TextStyleSpec(
-                fontSize: 10,
-                color: charts.MaterialPalette.white,
-              ),
-            ),
-          ),
-          defaultRenderer: charts.BarRendererConfig(
-              // By default, bar renderer will draw rounded bars with a constant
-              // radius of 100.
-              // To not have any rounded corners, use [NoCornerStrategy]
-              // To change the radius of the bars, use [ConstCornerStrategy]
-              cornerStrategy: const charts.ConstCornerStrategy(30)),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: BarChart(
+        BarChartData(
+          barTouchData: barTouchData,
+          titlesData: titlesData,
+          borderData: borderData,
+          barGroups: barGroups,
+          gridData: FlGridData(show: false),
+          alignment: BarChartAlignment.spaceAround,
+          maxY: (distribution.reduce(max) + 2).toDouble(),
         ),
       ),
     );
   }
 
-  static List<charts.Series<ScoreDistributionBarData, String>> generateData(
-      List<int> scoreDis, int fullmarks) {
-    List<ScoreDistributionBarData> data = [];
-    for (var i = 0; i < scoreDis.length; i++) {
-      if (i == scoreDis.length - 1) {
-        data.add(ScoreDistributionBarData('${i * 10}-$fullmarks', scoreDis[i]));
-        break;
+  BarTouchData get barTouchData => BarTouchData(
+        enabled: false,
+        touchTooltipData: BarTouchTooltipData(
+          tooltipBgColor: Colors.transparent,
+          tooltipPadding: const EdgeInsets.all(0),
+          tooltipMargin: 8,
+          fitInsideHorizontally: true,
+          rotateAngle: 270,
+          getTooltipItem: (
+            BarChartGroupData group,
+            int groupIndex,
+            BarChartRodData rod,
+            int rodIndex,
+          ) {
+            return BarTooltipItem(
+              rod.toY.round().toString(),
+              const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          },
+        ),
+      );
+
+  Widget getTitles(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Color.fromARGB(255, 165, 194, 231),
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    );
+    String text;
+    if (value == distribution.length - 1) {
+      if (value * 10 == fullmarks) {
+        text = '$fullmarks';
+      } else {
+        text = '${value.toInt() * 10}-$fullmarks';
       }
-      data.add(ScoreDistributionBarData(
-          '${i * 10}-${(i + 1) * 10 - 1}', scoreDis[i]));
+    } else {
+      text = '${value.toInt() * 10}-${(value.toInt() + 1) * 10 - 1}';
     }
-    return [
-      charts.Series<ScoreDistributionBarData, String>(
-        id: 'ScoreDistribution',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (ScoreDistributionBarData data, _) => data.interval,
-        measureFn: (ScoreDistributionBarData data, _) => data.score,
-        data: data,
-      )
-    ];
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 28,
+      child: Text(text, style: style),
+      angle: -0.5 * pi,
+    );
+  }
+
+  FlTitlesData get titlesData => FlTitlesData(
+        show: true,
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 80,
+            getTitlesWidget: getTitles,
+          ),
+        ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        rightTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+      );
+
+  FlBorderData get borderData => FlBorderData(
+        show: false,
+      );
+
+  final _barsGradient = const LinearGradient(
+    colors: [
+      Colors.lightBlueAccent,
+      Colors.greenAccent,
+    ],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
+
+  List<BarChartGroupData> get barGroups {
+    final List<BarChartGroupData> result = [];
+    for (int i = 0; i < distribution.length; i++) {
+      result.add(BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+            toY: distribution[i].toDouble(),
+            gradient: _barsGradient,
+          )
+        ],
+        showingTooltipIndicators: [0],
+      ));
+    }
+    return result;
   }
 }
 
@@ -161,11 +219,23 @@ class EeclassPopUpQuizDetailSuccessCard extends StatelessWidget {
       : super(key: key);
   final EeclassQuiz quizInformation;
   Widget _distributionChartBuilder(List<int> distribution, int fullMarks) {
-    return ScoreDistributionChart(
-      distributionList: distribution,
-      fullMarks: fullMarks,
-      animate: true,
-    );
+    return AspectRatio(
+        aspectRatio: 1.5,
+        child: RotatedBox(
+          quarterTurns: 1,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+                elevation: 5,
+                color: Colors.grey.shade700,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4)),
+                child: _BarChart(
+                  fullmarks: fullMarks,
+                  distribution: distribution,
+                )),
+          ),
+        ));
   }
 
   Widget _attachmentWidgetBuilder(
