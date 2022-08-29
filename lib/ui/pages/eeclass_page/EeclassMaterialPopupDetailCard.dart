@@ -205,58 +205,64 @@ class EeclassMaterialDetailedSuccessCard extends StatelessWidget {
 
     return HeroDialogScaffold(
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Card(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    height: 50,
-                    child: Stack(
-                      children: [
-                        Align(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(_locale.materialInformation,
-                                style: _theme.textTheme.titleLarge,
-                                textAlign: TextAlign.start),
+        child: GestureDetector(
+          onTap: () {
+            /// Do nothing to cancel Navigator pop in HeroDialogScaffold
+            /// prevent un neccesary pop when touch the pop up content
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Card(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 50,
+                      child: Stack(
+                        children: [
+                          Align(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(_locale.materialInformation,
+                                  style: _theme.textTheme.titleLarge,
+                                  textAlign: TextAlign.start),
+                            ),
+                            alignment: Alignment.center,
                           ),
-                          alignment: Alignment.center,
-                        ),
-                        Align(
-                          child: IconButton(
-                            icon: Icon(Icons.close, size: 30),
-                            onPressed: () => Navigator.of(context).pop(),
+                          Align(
+                            child: IconButton(
+                              icon: Icon(Icons.close, size: 30),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                            alignment: Alignment.centerRight,
                           ),
-                          alignment: Alignment.centerRight,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
-                          child: Column(
-                            children: [
-                              _materialBriefBuilder(
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SingleChildScrollView(
+                            physics: BouncingScrollPhysics(),
+                            child: Column(
+                              children: [
+                                _materialBriefBuilder(
+                                    materialBrief: materialBrief,
+                                    context: context),
+                                Divider(),
+                                _materialBuilder(
+                                  context: context,
                                   materialBrief: materialBrief,
-                                  context: context),
-                              Divider(),
-                              _materialBuilder(
-                                context: context,
-                                materialBrief: materialBrief,
-                                materialDetail: materialDetail,
-                              ),
-                            ],
-                          )),
-                    ),
-                  )
-                ],
+                                  materialDetail: materialDetail,
+                                ),
+                              ],
+                            )),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

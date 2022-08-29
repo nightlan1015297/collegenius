@@ -169,63 +169,69 @@ class EeclassBullitinDetailedSuccessCard extends StatelessWidget {
     final _locale = AppLocalizations.of(context)!;
     return HeroDialogScaffold(
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Card(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    height: 50,
-                    child: Stack(
-                      children: [
-                        Align(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(_locale.bullitinInformation,
-                                style: _theme.textTheme.titleLarge,
-                                textAlign: TextAlign.start),
+        child: GestureDetector(
+          onTap: () {
+            /// Do nothing to cancel Navigator pop in HeroDialogScaffold
+            /// prevent un neccesary pop when touch the pop up content
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Card(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 450, maxHeight: 600),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 50,
+                      child: Stack(
+                        children: [
+                          Align(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(_locale.bullitinInformation,
+                                  style: _theme.textTheme.titleLarge,
+                                  textAlign: TextAlign.start),
+                            ),
+                            alignment: Alignment.center,
                           ),
-                          alignment: Alignment.center,
-                        ),
-                        Align(
-                          child: IconButton(
-                            icon: Icon(Icons.close, size: 30),
-                            onPressed: () => Navigator.of(context).pop(),
+                          Align(
+                            child: IconButton(
+                              icon: Icon(Icons.close, size: 30),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                            alignment: Alignment.centerRight,
                           ),
-                          alignment: Alignment.centerRight,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            _bullitinBriefBuilder(
-                              bullitinBrief: bullitinBrief,
-                              context: context,
-                            ),
-                            Divider(),
-                            _bullitinBuilder(
-                              context: context,
-                              bullitinDetail: bullitinDetail,
-                            ),
-                            Divider(),
-                            EeclassAttachmentTile(
-                              fileList: bullitinDetail.fileList,
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
                     ),
-                  )
-                ],
+                    Expanded(
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              _bullitinBriefBuilder(
+                                bullitinBrief: bullitinBrief,
+                                context: context,
+                              ),
+                              Divider(),
+                              _bullitinBuilder(
+                                context: context,
+                                bullitinDetail: bullitinDetail,
+                              ),
+                              Divider(),
+                              EeclassAttachmentTile(
+                                fileList: bullitinDetail.fileList,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

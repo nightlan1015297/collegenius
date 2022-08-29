@@ -45,12 +45,13 @@ class _HeroDialogScaffoldState extends State<HeroDialogScaffold> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          Navigator.of(context).pop();
-        },
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: widget.child,
-        ));
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: widget.child,
+      ),
+    );
   }
 }
