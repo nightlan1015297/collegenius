@@ -20,7 +20,7 @@ class EeclassMaterialListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Material overview",
+          _locale.materialOverview,
           style: _theme.textTheme.titleLarge,
         ),
       ),

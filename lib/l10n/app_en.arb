@@ -63,7 +63,8 @@
   "noBullitins":"No bulletins",
   "endOfBullitin":"End of bulletin",
   "publisher":"Publisher",
-
+  
+  "courseDashboard":"Course dashboard",
   "materialOverview":"Material overview",
   "uploadDate":"Upload date",
   "updateDate":"Update date",
