@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:collegenius/models/course_schedual_model/CourseSchedual.dart';
 import 'package:collegenius/models/semester_model/semester_model.dart';
 import 'package:collegenius/utilties/PathGenerator.dart';
 import 'package:course_select_api/course_select_api.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 
 /// ***************************************************************************
 ///         COURSESCHEDUALREPOSITORY HANDELS ALL COURSE SCHEDUAL DATA.        *

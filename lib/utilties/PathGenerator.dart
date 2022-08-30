@@ -31,6 +31,8 @@ class PathGenerator {
         }
         return savedDir.path;
       }
+
+      /// ignore: unused_catch_stack
     } catch (err, stacktrace) {
       throw UnableToGetDirectory();
     }

@@ -1,5 +1,4 @@
 import 'package:collegenius/models/error_model/ErrorModel.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
 

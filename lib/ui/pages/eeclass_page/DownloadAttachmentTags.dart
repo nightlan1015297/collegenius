@@ -49,7 +49,7 @@ class DownloadAttachmentTags extends StatelessWidget {
               final cookiesString =
                   await eeclassRepo.getCookiesStringForDownload();
               final path = await PathGenerator().getDownloadPath();
-              print(path);
+              // ignore: unused_local_variable
               final taskId = await FlutterDownloader.enqueue(
                   headers: {
                     HttpHeaders.connectionHeader: 'keep-alive',

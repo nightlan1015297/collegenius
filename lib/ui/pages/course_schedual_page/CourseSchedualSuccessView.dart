@@ -13,7 +13,6 @@ class CourseSchedualSuccessView extends StatelessWidget {
   const CourseSchedualSuccessView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _locale = AppLocalizations.of(context)!;
     return Column(
       children: [
         Row(

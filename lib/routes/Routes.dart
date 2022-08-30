@@ -205,7 +205,6 @@ class AppRouter {
         return MaterialPageRoute(
             settings: RouteSettings(name: routsettings.name),
             builder: (contex) {
-              final _theme = Theme.of(contex);
               final _locale = AppLocalizations.of(contex)!;
               return Scaffold(
                 appBar: AppBar(
@@ -223,7 +222,6 @@ class AppRouter {
         return MaterialPageRoute(
             settings: RouteSettings(name: routsettings.name),
             builder: (contex) {
-              final _theme = Theme.of(contex);
               final _locale = AppLocalizations.of(contex)!;
               return Scaffold(
                 appBar: AppBar(

@@ -18,6 +18,13 @@ class LoginPageView extends StatelessWidget {
         return LoginResultView();
       case FormzStatus.submissionFailure:
         return Center(child: Text("Failed"));
+      case FormzStatus.valid:
+      case FormzStatus.invalid:
+      case FormzStatus.submissionInProgress:
+      case FormzStatus.submissionCanceled:
+
+        /// Unused clauses
+        break;
     }
     return LoginView();
   }

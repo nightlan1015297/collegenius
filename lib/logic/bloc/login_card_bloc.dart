@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:collegenius/models/user_model/user_model.dart';
 import 'package:equatable/equatable.dart';

@@ -54,7 +54,7 @@ Future<void> main() async {
   await FlutterDownloader.initialize(
 
       /// optional: set to false to disable printing logs to console (default: true)
-      debug: true,
+      debug: false,
       // option: set to false to disable working with http links (default: false)
       ignoreSsl: true);
 
