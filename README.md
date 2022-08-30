@@ -7,28 +7,19 @@ We are planning to add Portal system, bus information to the application, stay t
 |<img width="1604" alt="Home Screen" src="https://i.imgur.com/9cPsYtC.png">**Home Screen**| <img width="1604" alt="Course Schedual Screen" src="https://i.imgur.com/UV5j5bb.png">**Course schedual**|<img width="1604" alt="Eeclass Screen" src="https://i.imgur.com/5jpPMTu.png">**Eeclass**|
 |:-------------------------:|:-------------------------:|:-------------------------:|
 
-## Project Structure
-```js
-lib
-├──constants        
-│  ├──Constants     /// Barrel file for constant, import this if you need access to any constant
-│  ├──enums         /// All enum const storages at here
-│  ├──extensions    /// All extension storages at here
-│  ├──lists         /// All list const storages at here
-│  ├──maps          /// All map const storages at here
-│  └──others        /// If the type of constant can't classify to above category put it here
-├──l10n
-│  ├──app_en.arb        /// Translate template
-│  ├──app_zh_TW.arb     /// Translate data for zh_TW
-│  └──app_zh.arb        /// Translate date for zh
-├──logic
-│  ├──bloc
-│  │  ├──       
-│  └──cubic
-├──models
-├──repositories
-├──routes
-├──ui
-├──utilties
-│
-```
+## How to start
+1. Create a Firebase Project and run 'flutterfire configure', to configure firebase.
+
+2. Go to main and find :
+'''dart
+await Firebase.initializeApp(
+    /// If IOS please comment following:
+    /// name: "dev project",
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+''' 
+For android: please makesure `name: "dev project",` is uncomment.
+For IOS: please comment this to avoid unneccesary error
+
+3. (For IOS developer) please configure flutter_downloader package :
+See following: https://pub.dev/packages/flutter_downloader
