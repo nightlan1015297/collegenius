@@ -26,3 +26,4 @@ For IOS: please comment this to avoid unneccesary error
 
 3. (For IOS developer) please configure flutter_downloader package :
 See following: https://pub.dev/packages/flutter_downloader
+
