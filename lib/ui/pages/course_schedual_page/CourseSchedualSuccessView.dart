@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-/// This Map[sectionToTime] map the section to it start hour.
-
+/// [CourseSchedualSuccessView] class renders when the
 class CourseSchedualSuccessView extends StatelessWidget {
   const CourseSchedualSuccessView({Key? key}) : super(key: key);
   @override
