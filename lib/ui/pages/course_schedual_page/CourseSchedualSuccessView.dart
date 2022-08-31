@@ -34,13 +34,13 @@ class CourseSchedualSuccessView extends StatelessWidget {
               final selectedDaysKey = mapIndexToWeekday[state.selectedDays];
               return NormalCourseSchedual(
                   renderFrom: state.firstClassSection,
-                  renderLength: state.lastClassSection,
+                  renderTo: state.lastClassSection,
                   coursePerDay: state.schedual!.toJson()[selectedDaysKey]);
             case CourseSchedualPageRenderStatus.animated:
               final selectedDaysKey = mapIndexToWeekday[state.selectedDays];
               return AnimatedCourseSchedual(
                 renderFrom: state.firstClassSection,
-                renderLength: state.lastClassSection,
+                renderTo: state.lastClassSection,
                 coursePerDay: state.schedual!.toJson()[selectedDaysKey],
                 currentSection: state.currentSection,
               );
@@ -218,12 +218,12 @@ class SemesterPicker extends StatelessWidget {
 
 class NormalCourseSchedual extends StatelessWidget {
   final Map<String, dynamic> coursePerDay;
-  final int renderLength;
+  final int renderTo;
   final int renderFrom;
   const NormalCourseSchedual({
     Key? key,
     required this.coursePerDay,
-    required this.renderLength,
+    required this.renderTo,
     required this.renderFrom,
   }) : super(key: key);
   @override
@@ -234,7 +234,7 @@ class NormalCourseSchedual extends StatelessWidget {
         child: ListView.builder(
             physics: BouncingScrollPhysics(),
             shrinkWrap: true,
-            itemCount: renderLength + 1,
+            itemCount: renderTo + 1,
             itemBuilder: (context, index) {
               final _section = mapIndexToSection[index];
               final _time = mapCourseSectionToTime[_section];
@@ -287,13 +287,13 @@ class AnimatedCourseSchedual extends StatelessWidget {
   final Map<String, dynamic> coursePerDay;
   final int currentSection;
   final int renderFrom;
-  final int renderLength;
+  final int renderTo;
   const AnimatedCourseSchedual({
     Key? key,
     required this.coursePerDay,
     required this.currentSection,
     required this.renderFrom,
-    required this.renderLength,
+    required this.renderTo,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -303,7 +303,7 @@ class AnimatedCourseSchedual extends StatelessWidget {
         child: ListView.builder(
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
-            itemCount: renderLength + 2,
+            itemCount: renderTo + 2,
             itemBuilder: (context, index) {
               final _section = mapIndexToSection[index];
               final _time = mapCourseSectionToTime[_section];
