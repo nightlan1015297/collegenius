@@ -11,14 +11,17 @@ We are planning to add Portal system, bus information to the application, stay t
 1. Create a Firebase Project and run 'flutterfire configure', to configure firebase.
 
 2. Go to main and find :
-'''dart
+
+```dart
 await Firebase.initializeApp(
     /// If IOS please comment following:
     /// name: "dev project",
     options: DefaultFirebaseOptions.currentPlatform,
   );
-''' 
+```
+
 For android: please makesure `name: "dev project",` is uncomment.
+
 For IOS: please comment this to avoid unneccesary error
 
 3. (For IOS developer) please configure flutter_downloader package :
