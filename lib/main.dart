@@ -54,10 +54,9 @@ Future<void> main() async {
   await FlutterDownloader.initialize(
 
       /// optional: set to false to disable printing logs to console (default: true)
-      debug: true,
-      ignoreSsl:
-          true // option: set to false to disable working with http links (default: false)
-      );
+      debug: false,
+      // option: set to false to disable working with http links (default: false)
+      ignoreSsl: true);
 
   /// Using Hive to storage user data
   final hiveDir = await _pathGen.getHiveDatabaseDirectory();
@@ -70,7 +69,8 @@ Future<void> main() async {
   Hive.registerAdapter(CourseSchedualAdapter());
 
   await Firebase.initializeApp(
-    name: "dev project",
+    /// If IOS please comment following:
+    /// name: "dev project",
     options: DefaultFirebaseOptions.currentPlatform,
   );
 

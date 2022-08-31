@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:collegenius/constants/enums.dart';
 import 'package:collegenius/models/eeclass_model/EeclassQuiz.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
-import 'package:collegenius/utilties/ColorfulPrintFunction.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';

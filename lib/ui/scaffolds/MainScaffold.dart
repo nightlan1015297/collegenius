@@ -37,7 +37,6 @@ class _MainScaffoldState extends State<MainScaffold> {
           content: Text('Download complete.'),
           duration: Duration(milliseconds: 500),
         );
-        print("Complete !");
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
       // String id = data[0];

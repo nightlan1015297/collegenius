@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/repositories/eeclass_repository.dart';
-import 'package:collegenius/utilties/ColorfulPrintFunction.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:collegenius/models/eeclass_model/EeclassModel.dart';
