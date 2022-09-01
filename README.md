@@ -11,9 +11,11 @@ We are planning to add Portal system, bus information to the application, stay t
 
 ### Eeclass related feature
 
-|<img height="500" alt="Assignment overview" src="https://i.imgur.com/sDLqCrO.png">|<img height="500" alt="Eeclass Screen" src="https://i.imgur.com/prcJHSo.png">| <img height="500" alt="Eeclass course bullitin" src="https://i.imgur.com/utg0mLq.png">|<img height="500" alt="Assignment overview" src="https://i.imgur.com/PLBFfD2.png">|
+|<img height="500" alt="Assignment overview" src="https://i.imgur.com/sDLqCrO.png">|<img height="500" alt="Course Information" src="https://i.imgur.com/prcJHSo.png">| <img height="500" alt="Eeclass course bullitin" src="https://i.imgur.com/utg0mLq.png">|<img height="500" alt="Assignment overview" src="https://i.imgur.com/PLBFfD2.png">|
 |:----------:|:----------:|:----------:|:----------:|
-|Eeclass dashboard|Course Information|Course bullitins|Assignment overview|
+|Eeclass dashboard|Course Information|Course bullitins|Course assignments overview|
+|<img height="500" alt="Assignment overview" src="https://i.imgur.com/jCkuwdo.png">||||
+|Course materials203+ overview||||
 
 ## How to start
 1. Create a Firebase Project and run 'flutterfire configure', to configure firebase.
