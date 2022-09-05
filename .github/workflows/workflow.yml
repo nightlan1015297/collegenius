@@ -36,10 +36,9 @@ jobs:
           DEV_CONFIGS_PASSPHRASE: ${{ secrets.DEV_CONFIGS_PASSPHRASE }}
       - name: Upgrades flutter
         run: flutter upgrade
-      - name: Get packages
-        run: flutter pub get
+      - run: flutter pub get
       - name: Build Android app bundle
-        run: flutter build appbundle --release
+        run: flutter build appbundle --bundle-sksl-path flutter_02.sksl.json
 
   build_ios:
     name: Build iOS App
