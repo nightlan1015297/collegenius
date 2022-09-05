@@ -30,20 +30,21 @@ jobs:
           distribution: temurin
       # Decrypt firebase related config
       - name: Decrypt dev configs
+        uses: actions/checkout@v3
         run: sh ./scripts/decrypt_dev_configs.sh
         env:
           DEV_CONFIGS_PASSPHRASE: ${{ secrets.DEV_CONFIGS_PASSPHRASE }}
       # Set up Flutter.
-      - name: Clone Flutter repository with master channel
-        uses: subosito/flutter-action@6c2e035f2692eeac890d854df95630c72673f130
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
-          channel: master
-      - run: flutter config --enable-macos-desktop
+          flutter-version: "3.0.x"
+          channel: "stable"
       - run: flutter doctor -v
 
       # Checkout Collegenius code and get packages.
       - name: Checkout Collegenius code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+        uses: actions/checkout@v3
       - run: flutter pub get -v
 
       - run: flutter build ${{ matrix.target }}
