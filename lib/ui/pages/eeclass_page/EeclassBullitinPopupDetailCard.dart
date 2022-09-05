@@ -1,6 +1,6 @@
 import 'package:collegenius/ui/pages/eeclass_page/EeclassAttachmentTile.dart';
 import 'package:collegenius/ui/scaffolds/HeroDialogScaffold.dart';
-import 'package:flutter/Material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collegenius/constants/Constants.dart';
 
