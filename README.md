@@ -15,25 +15,9 @@ We are planning to add Portal system, bus information to the application, stay t
 |:----------:|:----------:|:----------:|
 |Eeclass dashboard|Course Information|Course bullitins|
 |<img height="400" alt="Assignment overview" src="https://i.imgur.com/PLBFfD2.png">|<img height="400" alt="Assignment overview" src="https://i.imgur.com/jCkuwdo.png">|||
-|Course assignments overview|Course materials203+ overview||
+|Course assignments overview|Course materials overview||
 
 ## How to start
 1. Create a Firebase Project and run 'flutterfire configure', to configure firebase.
 
-2. Go to main and find :
-
-```dart
-await Firebase.initializeApp(
-    /// If IOS please comment following:
-    /// name: "dev project",
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-```
-
-For android: please makesure `name: "dev project",` is uncomment.
-
-For IOS: please comment this to avoid unneccesary error
-
-3. (For IOS developer) please configure flutter_downloader package :
-See following: https://pub.dev/packages/flutter_downloader
-
+2. run the project.
