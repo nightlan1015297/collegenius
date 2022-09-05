@@ -29,7 +29,6 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:collegenius/ui/scaffolds/MainScaffold.dart';
 import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualPage.dart';
 import 'package:collegenius/ui/theme/AppTheme.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 import 'constants/Constants.dart';
