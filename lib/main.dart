@@ -49,8 +49,7 @@ Future<void> main() async {
   if (Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
-  await Permission.storage.request();
-  await Permission.notification.request();
+
   await FlutterDownloader.initialize(
 
       /// optional: set to false to disable printing logs to console (default: true)
@@ -69,8 +68,6 @@ Future<void> main() async {
   Hive.registerAdapter(CourseSchedualAdapter());
 
   await Firebase.initializeApp(
-    /// If IOS please comment following:
-    /// name: "dev project",
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
