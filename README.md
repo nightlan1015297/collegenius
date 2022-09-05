@@ -4,8 +4,18 @@ Application combined Course Planning System, Eeclass system. Provide an easy way
 We are planning to add Portal system, bus information to the application, stay tuned! and hope you can join us to help us develop brilliant app.
 
 ## Quick View
-|<img width="1604" alt="Home Screen" src="https://i.imgur.com/9cPsYtC.png">**Home Screen**| <img width="1604" alt="Course Schedual Screen" src="https://i.imgur.com/UV5j5bb.png">**Course schedual**|<img width="1604" alt="Eeclass Screen" src="https://i.imgur.com/5jpPMTu.png">**Eeclass**|
+
+|<img height="500" alt="Home Screen" src="https://i.imgur.com/9cPsYtC.png"> | <img height="500" alt="Course Schedual Screen" src="https://i.imgur.com/UV5j5bb.png">|<img height="500" alt="Eeclass Screen" src="https://i.imgur.com/5jpPMTu.png">|
 |:-------------------------:|:-------------------------:|:-------------------------:|
+|**Home Screen**|**Course Schedual Screen**|**Eeclass Screen**|
+
+### Eeclass related feature
+
+|<img height="500" alt="Assignment overview" src="https://i.imgur.com/sDLqCrO.png">|<img height="500" alt="Course Information" src="https://i.imgur.com/prcJHSo.png">| <img height="500" alt="Eeclass course bullitin" src="https://i.imgur.com/utg0mLq.png">|<img height="500" alt="Assignment overview" src="https://i.imgur.com/PLBFfD2.png">|
+|:----------:|:----------:|:----------:|:----------:|
+|Eeclass dashboard|Course Information|Course bullitins|Course assignments overview|
+|<img height="500" alt="Assignment overview" src="https://i.imgur.com/jCkuwdo.png">||||
+|Course materials203+ overview||||
 
 ## How to start
 1. Create a Firebase Project and run 'flutterfire configure', to configure firebase.
