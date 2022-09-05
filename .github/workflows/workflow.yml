@@ -21,7 +21,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
-          java-version: "11.0"
+          java-version: "12.x"
       # - name: Decrypt Android keys
       #   run: sh ./.github/scripts/decrypt_android_keys.sh
       #   env:
@@ -36,7 +36,8 @@ jobs:
           DEV_CONFIGS_PASSPHRASE: ${{ secrets.DEV_CONFIGS_PASSPHRASE }}
       - name: Upgrades flutter
         run: flutter upgrade
-      - run: flutter pub get
+      - name: Get packages
+        run: flutter pub get
       - name: Build Android app bundle
         run: flutter build appbundle --release
 
