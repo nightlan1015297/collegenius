@@ -49,13 +49,14 @@ Future<void> main() async {
   if (Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
-  await Permission.storage.request();
-  await Permission.notification.request();
+  // await Permission.storage.request();
+  // await Permission.notification.request();
   await FlutterDownloader.initialize(
 
       /// optional: set to false to disable printing logs to console (default: true)
-      debug: false,
-      // option: set to false to disable working with http links (default: false)
+      debug: true,
+
+      /// option: set to false to disable working with http links (default: false)
       ignoreSsl: true);
 
   /// Using Hive to storage user data

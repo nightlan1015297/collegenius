@@ -10,12 +10,7 @@ class PathGenerator {
     try {
       if (Platform.isIOS) {
         directory = await getApplicationDocumentsDirectory();
-        final savePath = directory.path + '/Download';
-        final savedDir = Directory(savePath);
-        bool hasExisted = await savedDir.exists();
-        if (!hasExisted) {
-          savedDir.create();
-        }
+        final savedDir = directory;
         return savedDir.path;
       } else {
         directory = Directory('/storage/emulated/0/Download');
