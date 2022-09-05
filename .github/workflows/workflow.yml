@@ -30,9 +30,8 @@ jobs:
           distribution: temurin
       # Decrypt firebase related config
       - name: Decrypt dev configs
-        uses: actions/checkout@v3
-        run: sh ./scripts/decrypt_dev_configs.sh
-        env:
+      - run: sh ./scripts/decrypt_dev_configs.sh
+      - env:
           DEV_CONFIGS_PASSPHRASE: ${{ secrets.DEV_CONFIGS_PASSPHRASE }}
       # Set up Flutter.
       - name: Set up Flutter
