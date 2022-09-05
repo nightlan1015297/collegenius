@@ -2,11 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Picker extends StatelessWidget {
+  /// [currentItem] storages the index of the item that [Picker] is selected
+  /// [Picker] will show the selected item in item list, makes user know what
+  /// is the current state of picker.
   final int currentItem;
 
+  /// Item list storage avalible item that user can select.
+  /// When user want to change the selected item, A [ModalBottomSheet]
+  /// which contains a [CupertinoPicker] will shows up. This variable, [itemlist]
+  /// will be the options in [CupertinoPicker].
   final List<String> itemlist;
+
+  /// [title] indicates the title of the picker, this provide user information that
+  /// what they are going to pick.
   final String title;
-  final Function onSelectedItemChanged;
+
+  /// [onSelectedItemChanged] is the callback function that user has chaned the
+  /// selected function, [Picker] will pass the new index of selected item to
+  /// this function.
+  final Function(int index) onSelectedItemChanged;
+
   const Picker({
     Key? key,
     required this.currentItem,
@@ -43,7 +58,7 @@ class Picker extends StatelessWidget {
                       children: [
                         SizedBox(width: 15),
                         Spacer(),
-                        Text(itemlist[currentItem].toString(),
+                        Text(itemlist[currentItem],
                             style: _theme.textTheme.titleLarge),
                         Spacer(),
                         Container(
@@ -70,7 +85,6 @@ class Picker extends StatelessWidget {
                           FixedExtentScrollController scrollController =
                               FixedExtentScrollController(
                                   initialItem: currentItem);
-
                           return SizedBox(
                               height: 320,
                               child: Padding(
