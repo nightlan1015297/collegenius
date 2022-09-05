@@ -14,12 +14,15 @@ class CourseSchedualSuccessView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            SizedBox(width: 10),
-            SizedBox(width: 220, child: WeekDayPicker()),
-            SizedBox(width: 130, child: SemesterPicker()),
-          ],
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: BouncingScrollPhysics(),
+          child: Row(
+            children: [
+              SizedBox(width: 220, child: WeekDayPicker()),
+              SizedBox(width: 130, child: SemesterPicker()),
+            ],
+          ),
         ),
         BlocBuilder<CourseSchedualPageBloc, CourseSchedualPageState>(
             builder: (context, state) {
@@ -459,7 +462,10 @@ class CourseCard extends StatelessWidget {
                   Spacer(),
                   Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Row(children: informations ?? []),
+                    child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        child: Row(children: informations ?? [])),
                   )
                 ],
               ),
@@ -519,7 +525,6 @@ class ProgressingCourseCard extends StatelessWidget {
                       information: location,
                       informationTexttheme: _theme.textTheme.headline6,
                     ),
-                    Spacer(),
                     TextInformationProvider(
                         label: _locale.time,
                         information: startTime + ' - ' + endTime,
@@ -676,22 +681,16 @@ class NormalCourseCard extends StatelessWidget {
                 child: CourseCard(
                   courseTitle: coursename,
                   informations: [
-                    SizedBox(
-                      width: 120,
-                      child: TextInformationProvider(
-                        label: _locale.classroom,
-                        information: location,
-                        informationTexttheme: _theme.textTheme.titleLarge,
-                      ),
+                    TextInformationProvider(
+                      label: _locale.classroom,
+                      information: location,
+                      informationTexttheme: _theme.textTheme.titleLarge,
                     ),
-                    Spacer(),
-                    SizedBox(
-                      width: 140,
-                      child: TextInformationProvider(
-                        label: _locale.time,
-                        information: startTime + ' - ' + endTime,
-                        informationTexttheme: _theme.textTheme.titleLarge,
-                      ),
+                    VerticalSeperater(),
+                    TextInformationProvider(
+                      label: _locale.time,
+                      information: startTime + ' - ' + endTime,
+                      informationTexttheme: _theme.textTheme.titleLarge,
                     )
                   ],
                 ),

@@ -85,24 +85,34 @@ class Picker extends StatelessWidget {
                           FixedExtentScrollController scrollController =
                               FixedExtentScrollController(
                                   initialItem: currentItem);
-                          return SizedBox(
-                              height: 320,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: CupertinoPicker(
-                                    scrollController: scrollController,
-                                    looping: false,
-                                    children: itemlist
-                                        .map((item) => Center(
-                                                child: Text(
-                                              item,
-                                              style: _theme.textTheme.headline5,
-                                            )))
-                                        .toList(),
-                                    itemExtent: 50,
-                                    onSelectedItemChanged: (index) =>
-                                        selectedItem = index),
-                              ));
+                          return LayoutBuilder(builder: (context, constraints) {
+                            final double height;
+                            if (constraints.maxHeight < 250) {
+                              height = constraints.maxHeight - 150;
+                            } else {
+                              height = 250;
+                            }
+
+                            return SizedBox(
+                                height: height,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: CupertinoPicker(
+                                      scrollController: scrollController,
+                                      looping: false,
+                                      children: itemlist
+                                          .map((item) => Center(
+                                                  child: Text(
+                                                item,
+                                                style:
+                                                    _theme.textTheme.headline5,
+                                              )))
+                                          .toList(),
+                                      itemExtent: 50,
+                                      onSelectedItemChanged: (index) =>
+                                          selectedItem = index),
+                                ));
+                          });
                         }).whenComplete(() {
                       setState(() => FixedExtentScrollController(
                           initialItem: selectedItem ?? currentItem));
