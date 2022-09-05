@@ -65,6 +65,8 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
+  remove_alpha_ios: true
+  image_path: images/collegenius_ios.png
   adaptive_icon_background: "images/collegenius_back.png"
   adaptive_icon_foreground: "images/collegenius_fore.png"
 # For events on the generic Dart part of this file, see the
