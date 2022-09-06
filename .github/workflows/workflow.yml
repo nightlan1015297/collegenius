@@ -33,12 +33,17 @@ jobs:
       # Checkout Collegenius code and get packages.
       - name: Checkout Collegenius code
         uses: actions/checkout@v3
-
+      # Decrypt firebase config
       - name: Decrypt dev configs
         run: sh ./scripts/decrypt_dev_configs.sh
         env:
           DEV_CONFIGS_PASSPHRASE: ${{ secrets.DEV_CONFIGS_PASSPHRASE }}
-
+      # Decrypt Android keys 
+      - name: Decrypt Android keys
+        run: sh ./.github/scripts/decrypt_android_keys.sh
+        env:
+          KEYS_SECRET_PASSPHRASE: ${{ secrets.KEYS_SECRET_PASSPHRASE }}
+      
       - name: Run pub get
         run: flutter pub get -v
 
