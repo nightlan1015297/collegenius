@@ -1,5 +1,5 @@
 import 'package:collegenius/ui/pages/eeclass_page/DownloadAttachmentTags.dart';
-import 'package:flutter/Material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EeclassAttachmentTile extends StatelessWidget {
