@@ -8,7 +8,7 @@ If you choose to use our Service, then you agree to the collection and use of in
 The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is accessible in our website, unless otherwise  defined in this Privacy Policy.
 
 ### Information Collection and Use  
-For a better experience while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to users identities, preference data. The information that we request will be retained by us and used as described in this privacy policy.  
+For a better experience while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to user identities, preference data. The information that we request will be retained by us and used as described in this privacy policy.  
 
 ### User identities
 Collegenius provides some of the inquiring feature for student in National Centeral University (Taoyuan, Taiwan)(hereinafter referred to as NCU) that needs you to provide your identities to login the system. Your student identities will 'NOT' passthrough any thrid-party's server and will directly transmitted to server that NCU manage. The inquiring result will 'NOT' passthrough any thrid-party's server and will directly transmitted to the Collegenius client. Collegenius will not collect any student identities data and inquiring result on our server or provide them to any third-party company. 
