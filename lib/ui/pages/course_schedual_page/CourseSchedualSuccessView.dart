@@ -13,16 +13,14 @@ class CourseSchedualSuccessView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          physics: BouncingScrollPhysics(),
-          child: Row(
-            children: [
-              SizedBox(width: 220, child: WeekDayPicker()),
-              SizedBox(width: 130, child: SemesterPicker()),
-            ],
-          ),
+        Wrap(
+          alignment: WrapAlignment.start,
+          children: [
+            SizedBox(width: 220, child: WeekDayPicker()),
+            SizedBox(width: 130, child: SemesterPicker()),
+          ],
         ),
         BlocBuilder<CourseSchedualPageBloc, CourseSchedualPageState>(
             builder: (context, state) {
@@ -60,25 +58,28 @@ class NoDataCard extends StatelessWidget {
     return Expanded(
       child: Center(
         child: SizedBox(
-            height: 200,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
-                  child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Spacer(),
-                          Icon(Icons.warning, size: 50, color: Colors.orange),
-                          Spacer(),
-                          Text(
-                            _locale.noData,
-                            style: _theme.textTheme.headline6,
-                          ),
-                          Spacer(),
-                        ],
-                      ))),
-            )),
+          height: 200,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    Icon(Icons.warning, size: 50, color: Colors.orange),
+                    Spacer(),
+                    Text(
+                      _locale.noData,
+                      style: _theme.textTheme.headline6,
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
