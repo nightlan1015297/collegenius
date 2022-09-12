@@ -71,7 +71,7 @@ class CourseSchedualPageBloc
     for (var i = 8; i < 21; i++) {
       if (_time.isAfter(DateTime(_time.year, _time.month, _time.day, i)) &&
           _time.isBefore(DateTime(_time.year, _time.month, _time.day, i, 50))) {
-        emit(state.copyWith(currentSection: i - 7));
+        emit(state.copyWith(currentSection: i - 8));
         break;
       }
     }
