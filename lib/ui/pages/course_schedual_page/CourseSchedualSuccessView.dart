@@ -441,7 +441,7 @@ class CourseCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: SizedBox(
-              height: 110,
+              height: 100,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

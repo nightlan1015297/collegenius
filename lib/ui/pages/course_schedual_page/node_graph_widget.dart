@@ -42,7 +42,7 @@ class TimeLineLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 16,
-      height: 124,
+      height: 114,
       child: CustomPaint(
         foregroundPainter: TimeLineLinePainter(),
       ),
