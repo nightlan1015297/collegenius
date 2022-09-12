@@ -463,10 +463,7 @@ class CourseCard extends StatelessWidget {
                   Spacer(),
                   Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        child: Row(children: informations ?? [])),
+                    child: Row(children: informations ?? []),
                   )
                 ],
               ),
@@ -526,6 +523,7 @@ class ProgressingCourseCard extends StatelessWidget {
                       information: location,
                       informationTexttheme: _theme.textTheme.headline6,
                     ),
+                    Spacer(),
                     TextInformationProvider(
                         label: _locale.time,
                         information: startTime + ' - ' + endTime,
@@ -656,54 +654,61 @@ class NormalCourseCard extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constrains) {
-      final _theme = Theme.of(context);
-      final _locale = AppLocalizations.of(context)!;
-      return Row(
-        children: [
-          RegulerNode(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: SizedBox(
-              width: constrains.maxWidth - 70,
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    HeroDialogRoute(
-                      fullscreenDialog: true,
-                      builder: (BuildContext context) {
-                        return Center(
-                          child: PopupInformationCard(
-                            coursename: coursename,
-                            teacher: teacher,
-                            location: location,
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-                child: CourseCard(
-                  courseTitle: coursename,
-                  informations: [
-                    TextInformationProvider(
-                      label: _locale.classroom,
-                      information: location,
-                      informationTexttheme: _theme.textTheme.titleLarge,
-                    ),
-                    VerticalSeperater(),
-                    TextInformationProvider(
-                      label: _locale.time,
-                      information: startTime + ' - ' + endTime,
-                      informationTexttheme: _theme.textTheme.titleLarge,
-                    )
-                  ],
+    return LayoutBuilder(
+      builder: (context, constrains) {
+        final _theme = Theme.of(context);
+        final _locale = AppLocalizations.of(context)!;
+        return Row(
+          children: [
+            RegulerNode(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SizedBox(
+                width: constrains.maxWidth - 70,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      HeroDialogRoute(
+                        fullscreenDialog: true,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: PopupInformationCard(
+                              coursename: coursename,
+                              teacher: teacher,
+                              location: location,
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: CourseCard(
+                    courseTitle: coursename,
+                    informations: [
+                      SizedBox(
+                        width: 140,
+                        child: TextInformationProvider(
+                          label: _locale.classroom,
+                          information: location,
+                          informationTextOverFlow: TextOverflow.ellipsis,
+                          informationTexttheme: _theme.textTheme.titleLarge,
+                        ),
+                      ),
+                      Spacer(),
+                      TextInformationProvider(
+                        label: _locale.time,
+                        information: startTime + ' - ' + endTime,
+                        informationTextOverFlow: TextOverflow.ellipsis,
+                        informationTexttheme: _theme.textTheme.titleLarge,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      );
-    });
+          ],
+        );
+      },
+    );
   }
 }
