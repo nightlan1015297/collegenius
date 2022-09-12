@@ -184,9 +184,14 @@ class _CollegeniusState extends State<Collegenius> {
                     analytics: _analytics,
                     nameExtractor: (route) => route.name),
               ],
-              home: IconTheme(
-                data: _theme.iconTheme,
-                child: Builder(builder: (context) {
+              builder: (context, child) {
+                return MediaQuery(
+                  child: child!,
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                );
+              },
+              home: Builder(
+                builder: (context) {
                   final _locale = AppLocalizations.of(context)!;
                   switch (_bottomNavState.index) {
                     case 0:
@@ -228,7 +233,7 @@ class _CollegeniusState extends State<Collegenius> {
                             'Route Error : No route defined for bottomNav index ${_bottomNavState.index}'),
                       );
                   }
-                }),
+                },
               ),
             );
           },
