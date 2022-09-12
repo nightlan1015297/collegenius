@@ -668,16 +668,20 @@ class NormalCourseCard extends StatelessWidget {
               width: constrains.maxWidth - 70,
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(HeroDialogRoute(
+                  Navigator.of(context).push(
+                    HeroDialogRoute(
                       fullscreenDialog: true,
                       builder: (BuildContext context) {
                         return Center(
-                            child: PopupInformationCard(
-                          coursename: coursename,
-                          teacher: teacher,
-                          location: location,
-                        ));
-                      }));
+                          child: PopupInformationCard(
+                            coursename: coursename,
+                            teacher: teacher,
+                            location: location,
+                          ),
+                        );
+                      },
+                    ),
+                  );
                 },
                 child: CourseCard(
                   courseTitle: coursename,
