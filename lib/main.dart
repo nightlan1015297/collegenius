@@ -114,7 +114,6 @@ class _CollegeniusState extends State<Collegenius> {
 
   @override
   Widget build(BuildContext context) {
-    final _theme = Theme.of(context);
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
