@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:collegenius/logic/bloc/authentication_bloc.dart' as authBloc;
 import 'package:collegenius/repositories/course_schedual_repository.dart';
-import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualSuccessView.dart';
+import 'package:collegenius/ui/pages/course_schedual_page/DailySchedualSuccessView.dart';
 import 'package:collegenius/utilties/ticker.dart';
 
 import 'CourseSchedualNotLoginView.dart';

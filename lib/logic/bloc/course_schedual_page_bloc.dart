@@ -186,7 +186,7 @@ class CourseSchedualPageBloc
     Emitter<CourseSchedualPageState> emit,
   ) {
     if (state.schedual == null || state.semesterList.isEmpty) {
-      emit(state.copyWith(renderStatus: CourseSchedualPageRenderStatus.noData));
+      emit(state.copyWith(renderStatus: DailySchedualPageRenderStatus.noData));
       return;
     } else {
       add(UpdateTimeRequest());
@@ -206,20 +206,20 @@ class CourseSchedualPageBloc
       }
       if (firstClass == lastClass && firstClass == 0) {
         emit(state.copyWith(
-            renderStatus: CourseSchedualPageRenderStatus.noCourse));
+            renderStatus: DailySchedualPageRenderStatus.noCourse));
         return;
       }
       if (state.selectedDays == state.currentDays &&
           state.selectedSemester == state.currentSemester) {
         emit(state.copyWith(
-          renderStatus: CourseSchedualPageRenderStatus.animated,
+          renderStatus: DailySchedualPageRenderStatus.animated,
           firstClassSection: firstClass,
           lastClassSection: lastClass,
         ));
         return;
       } else {
         emit(state.copyWith(
-          renderStatus: CourseSchedualPageRenderStatus.normal,
+          renderStatus: DailySchedualPageRenderStatus.normal,
           firstClassSection: firstClass,
           lastClassSection: lastClass,
         ));
