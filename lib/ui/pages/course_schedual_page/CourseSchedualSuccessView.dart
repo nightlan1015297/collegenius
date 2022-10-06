@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-/// [CourseSchedualSuccessView] class renders when the
-class CourseSchedualSuccessView extends StatelessWidget {
-  const CourseSchedualSuccessView({Key? key}) : super(key: key);
+/// [DailySchedualSuccessView] class renders when the
+class DailySchedualSuccessView extends StatelessWidget {
+  const DailySchedualSuccessView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,19 +25,19 @@ class CourseSchedualSuccessView extends StatelessWidget {
         BlocBuilder<CourseSchedualPageBloc, CourseSchedualPageState>(
             builder: (context, state) {
           switch (state.renderStatus) {
-            case CourseSchedualPageRenderStatus.noData:
+            case DailySchedualPageRenderStatus.noData:
               return NoDataCard();
-            case CourseSchedualPageRenderStatus.noCourse:
+            case DailySchedualPageRenderStatus.noCourse:
               return NoCoursesCard();
-            case CourseSchedualPageRenderStatus.normal:
+            case DailySchedualPageRenderStatus.normal:
               final selectedDaysKey = mapIndexToWeekday[state.selectedDays];
-              return NormalCourseSchedual(
+              return NormalDailySchedual(
                   renderFrom: state.firstClassSection,
                   renderTo: state.lastClassSection,
                   coursePerDay: state.schedual!.toJson()[selectedDaysKey]);
-            case CourseSchedualPageRenderStatus.animated:
+            case DailySchedualPageRenderStatus.animated:
               final selectedDaysKey = mapIndexToWeekday[state.selectedDays];
-              return AnimatedCourseSchedual(
+              return AnimatedDailySchedual(
                 renderFrom: state.firstClassSection,
                 renderTo: state.lastClassSection,
                 coursePerDay: state.schedual!.toJson()[selectedDaysKey],
@@ -218,11 +218,11 @@ class SemesterPicker extends StatelessWidget {
   }
 }
 
-class NormalCourseSchedual extends StatelessWidget {
+class NormalDailySchedual extends StatelessWidget {
   final Map<String, dynamic> coursePerDay;
   final int renderTo;
   final int renderFrom;
-  const NormalCourseSchedual({
+  const NormalDailySchedual({
     Key? key,
     required this.coursePerDay,
     required this.renderTo,
@@ -285,12 +285,12 @@ class NormalCourseSchedual extends StatelessWidget {
 }
 
 /* Animated Schedual will render animate which let user know the schedual in current day */
-class AnimatedCourseSchedual extends StatelessWidget {
+class AnimatedDailySchedual extends StatelessWidget {
   final Map<String, dynamic> coursePerDay;
   final int currentSection;
   final int renderFrom;
   final int renderTo;
-  const AnimatedCourseSchedual({
+  const AnimatedDailySchedual({
     Key? key,
     required this.coursePerDay,
     required this.currentSection,

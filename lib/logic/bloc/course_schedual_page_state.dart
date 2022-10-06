@@ -17,7 +17,7 @@ extension CoursepageStatusX on CourseSchedualPageStatus {
       this == CourseSchedualPageStatus.unauthenticated;
 }
 
-enum CourseSchedualPageRenderStatus {
+enum DailySchedualPageRenderStatus {
   noData,
   noCourse,
   normal,
@@ -37,7 +37,7 @@ class CourseSchedualPageState extends Equatable {
     CourseSchedual? schedual,
     int? firstClassSection,
     int? lastClassSection,
-    this.renderStatus = CourseSchedualPageRenderStatus.noData,
+    this.renderStatus = DailySchedualPageRenderStatus.noData,
   })  : schedual = schedual,
         firstClassSection = firstClassSection ?? 0,
         lastClassSection = lastClassSection ?? 0,
@@ -51,7 +51,7 @@ class CourseSchedualPageState extends Equatable {
 
   final bool fetchFromLocal;
   final CourseSchedualPageStatus status;
-  final CourseSchedualPageRenderStatus renderStatus;
+  final DailySchedualPageRenderStatus renderStatus;
   final CourseSchedual? schedual;
   final int firstClassSection;
   final int lastClassSection;
@@ -72,7 +72,7 @@ class CourseSchedualPageState extends Equatable {
     String? selectedSemester,
     List<Semester>? semesterList,
     CourseSchedualPageStatus? status,
-    CourseSchedualPageRenderStatus? renderStatus,
+    DailySchedualPageRenderStatus? renderStatus,
     CourseSchedual? schedual,
     int? firstClassSection,
     int? lastClassSection,
@@ -101,7 +101,7 @@ class CourseSchedualPageState extends Equatable {
     String? selectedSemester,
     List<Semester>? semesterList,
     CourseSchedualPageStatus? status,
-    CourseSchedualPageRenderStatus? renderStatus,
+    DailySchedualPageRenderStatus? renderStatus,
     int? firstClassSection,
     int? lastClassSection,
     required CourseSchedual? schedual,
