@@ -26,6 +26,7 @@ enum DailySchedualPageRenderStatus {
 
 class CourseSchedualPageState extends Equatable {
   CourseSchedualPageState({
+    bool? renderDaily,
     bool? fetchFromLocal,
     int? currentSection,
     int? currentDays,
@@ -38,7 +39,8 @@ class CourseSchedualPageState extends Equatable {
     int? firstClassSection,
     int? lastClassSection,
     this.renderStatus = DailySchedualPageRenderStatus.noData,
-  })  : schedual = schedual,
+  })  : renderDaily = renderDaily ?? false,
+        schedual = schedual,
         firstClassSection = firstClassSection ?? 0,
         lastClassSection = lastClassSection ?? 0,
         fetchFromLocal = fetchFromLocal ?? false,
@@ -49,6 +51,7 @@ class CourseSchedualPageState extends Equatable {
         selectedDays = selectedDays ?? DateTime.now().weekday - 1,
         selectedSemester = selectedSemester ?? '1112';
 
+  final bool renderDaily;
   final bool fetchFromLocal;
   final CourseSchedualPageStatus status;
   final DailySchedualPageRenderStatus renderStatus;
@@ -64,6 +67,7 @@ class CourseSchedualPageState extends Equatable {
   final String selectedSemester;
 
   CourseSchedualPageState copyWith({
+    bool? renderDaily,
     bool? fetchFromLocal,
     int? currentSection,
     int? currentDays,
@@ -78,6 +82,7 @@ class CourseSchedualPageState extends Equatable {
     int? lastClassSection,
   }) {
     return CourseSchedualPageState(
+        renderDaily: renderDaily ?? this.renderDaily,
         status: status ?? this.status,
         fetchFromLocal: fetchFromLocal ?? this.fetchFromLocal,
         currentSection: currentSection ?? this.currentSection,
@@ -93,6 +98,7 @@ class CourseSchedualPageState extends Equatable {
   }
 
   CourseSchedualPageState copyWithNullableSchedual({
+    bool? renderDaily,
     bool? fetchFromLocal,
     int? currentSection,
     int? currentDays,
@@ -107,6 +113,7 @@ class CourseSchedualPageState extends Equatable {
     required CourseSchedual? schedual,
   }) {
     return CourseSchedualPageState(
+        renderDaily: renderDaily ?? this.renderDaily,
         status: status ?? this.status,
         fetchFromLocal: fetchFromLocal ?? this.fetchFromLocal,
         currentSection: currentSection ?? this.currentSection,
@@ -125,6 +132,7 @@ class CourseSchedualPageState extends Equatable {
   List<Object?> get props => [
         status,
         renderStatus,
+        renderDaily,
         fetchFromLocal,
         currentSection,
         currentDays,
