@@ -1,5 +1,6 @@
 import 'package:collegenius/logic/bloc/course_schedual_page_bloc.dart';
 import 'package:collegenius/ui/common_widgets/CommonWidget.dart';
+import 'package:collegenius/ui/pages/course_schedual_page/WeeklySchedualSuccessView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,28 +47,29 @@ class _CourseSchedualViewState extends State<CourseSchedualView>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (context) => courseSchedualPageBloc,
       child: BlocBuilder<CourseSchedualPageBloc, CourseSchedualPageState>(
-          buildWhen: (previous, current) => previous != current,
-          builder: (context, state) {
-            super.build(context);
-            switch (state.status) {
-              case CourseSchedualPageStatus.initial:
-              case CourseSchedualPageStatus.loading:
-                return Center(child: Loading());
-              case CourseSchedualPageStatus.success:
-                if (state.renderDaily) {
-                  return DailySchedualSuccessView();
-                } else {
-                  return WeeklySchedualSuccessView();
-                }
-              case CourseSchedualPageStatus.failure:
-                return const Center(child: Text("Failed"));
-              case CourseSchedualPageStatus.unauthenticated:
-                return const CourseSchedualNotLoginView();
-            }
-          }),
+        buildWhen: (previous, current) => previous != current,
+        builder: (context, state) {
+          switch (state.status) {
+            case CourseSchedualPageStatus.initial:
+            case CourseSchedualPageStatus.loading:
+              return Center(child: Loading());
+            case CourseSchedualPageStatus.success:
+              if (state.renderDaily) {
+                return DailySchedualSuccessView();
+              } else {
+                return WeeklySchedualSuccessView();
+              }
+            case CourseSchedualPageStatus.failure:
+              return const Center(child: Text("Failed"));
+            case CourseSchedualPageStatus.unauthenticated:
+              return const CourseSchedualNotLoginView();
+          }
+        },
+      ),
     );
   }
 }
