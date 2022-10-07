@@ -59,7 +59,7 @@ class _CourseSchedualViewState extends State<CourseSchedualView>
               case CourseSchedualPageStatus.success:
                 return DailySchedualSuccessView();
               case CourseSchedualPageStatus.failure:
-                return Center(child: Text("Failed"));
+                return const Center(child: Text("Failed"));
               case CourseSchedualPageStatus.unauthenticated:
                 return const CourseSchedualNotLoginView();
             }
