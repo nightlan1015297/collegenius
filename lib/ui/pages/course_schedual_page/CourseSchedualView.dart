@@ -57,7 +57,11 @@ class _CourseSchedualViewState extends State<CourseSchedualView>
               case CourseSchedualPageStatus.loading:
                 return Center(child: Loading());
               case CourseSchedualPageStatus.success:
-                return DailySchedualSuccessView();
+                if (state.renderDaily) {
+                  return DailySchedualSuccessView();
+                } else {
+                  return WeeklySchedualSuccessView();
+                }
               case CourseSchedualPageStatus.failure:
                 return const Center(child: Text("Failed"));
               case CourseSchedualPageStatus.unauthenticated:
