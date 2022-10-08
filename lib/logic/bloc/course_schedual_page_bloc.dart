@@ -84,7 +84,8 @@ class CourseSchedualPageBloc
   ) async {
     switch (event.state.courseSelectAuthStatus.isAuthed) {
       case true:
-        if (state.status == CourseSchedualPageStatus.unauthenticated) {
+        if (state.status == CourseSchedualPageStatus.unauthenticated ||
+            state.status == CourseSchedualPageStatus.initial) {
           add(FetchDataRequest());
         }
         break;
