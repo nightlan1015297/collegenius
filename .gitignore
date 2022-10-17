@@ -50,3 +50,6 @@ app.*.map.json
 
 dev_configs.zip
 lib/firebase_options.dart
+
+# Flutter version manager related files
+.fvm/flutter_sdk
