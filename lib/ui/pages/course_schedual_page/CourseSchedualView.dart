@@ -47,29 +47,35 @@ class _CourseSchedualViewState extends State<CourseSchedualView>
 
   @override
   Widget build(BuildContext context) {
+    final maxHeight = MediaQuery.of(context).size.height;
     super.build(context);
-    return BlocProvider(
-      create: (context) => courseSchedualPageBloc,
-      child: BlocBuilder<CourseSchedualPageBloc, CourseSchedualPageState>(
-        buildWhen: (previous, current) => previous != current,
-        builder: (context, state) {
-          switch (state.status) {
-            case CourseSchedualPageStatus.initial:
-            case CourseSchedualPageStatus.loading:
-              return Center(child: Loading());
-            case CourseSchedualPageStatus.success:
-              if (state.renderDaily) {
-                return DailySchedualSuccessView();
-              } else {
-                return WeeklySchedualSuccessView();
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxHeight - 130),
+      child: Builder(builder: (context) {
+        return BlocProvider(
+          create: (context) => courseSchedualPageBloc,
+          child: BlocBuilder<CourseSchedualPageBloc, CourseSchedualPageState>(
+            buildWhen: (previous, current) => previous != current,
+            builder: (context, state) {
+              switch (state.status) {
+                case CourseSchedualPageStatus.initial:
+                case CourseSchedualPageStatus.loading:
+                  return Center(child: Loading());
+                case CourseSchedualPageStatus.success:
+                  if (state.renderDaily) {
+                    return DailySchedualSuccessView();
+                  } else {
+                    return WeeklySchedualSuccessView();
+                  }
+                case CourseSchedualPageStatus.failure:
+                  return const Center(child: Text("Failed"));
+                case CourseSchedualPageStatus.unauthenticated:
+                  return const CourseSchedualNotLoginView();
               }
-            case CourseSchedualPageStatus.failure:
-              return const Center(child: Text("Failed"));
-            case CourseSchedualPageStatus.unauthenticated:
-              return const CourseSchedualNotLoginView();
-          }
-        },
-      ),
+            },
+          ),
+        );
+      }),
     );
   }
 }
