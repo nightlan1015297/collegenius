@@ -18,7 +18,6 @@ import 'package:collegenius/repositories/portal_repository.dart';
 import 'package:collegenius/ui/pages/course_schedual_page/CourseSchedualView.dart';
 import 'package:collegenius/ui/pages/eeclass_page/EeclassCoursesListView.dart';
 import 'package:collegenius/ui/pages/school_event_page/SchoolEventPage.dart';
-import 'package:collegenius/utilties/AppBlocObserver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -80,14 +79,12 @@ Future<void> main() async {
 
   /// Using HydratedBloc to storage application state
   /// Hydrated bloc storage application configuration and auth data.
-  final storage = await HydratedStorage.build(
+
+  HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await PathGenerator().getHydratedBlocDirectory(),
   );
-  HydratedBlocOverrides.runZoned(
-    () => runApp(Collegenius()),
-    storage: storage,
-    blocObserver: AppBlocObserver(),
-  );
+  runApp(Collegenius());
+  
 }
 
 class Collegenius extends StatefulWidget {
@@ -100,7 +97,7 @@ class _CollegeniusState extends State<Collegenius> {
   final AppRouter _appRouter = AppRouter();
 
   static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
+      String id, int status, int progress) {
     final SendPort send =
         IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
