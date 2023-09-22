@@ -33,3 +33,9 @@ extension ThemeModeX on ThemeMode {
   bool get isDark => this == ThemeMode.dark;
   bool get isSystem => this == ThemeMode.system;
 }
+
+extension VerifyStatusX on VerifyStatus {
+  bool get isValid => this == VerifyStatus.valid;
+  bool get isInvalid => this == VerifyStatus.invalid;
+  bool get isEmpty => this == VerifyStatus.empty;
+}
