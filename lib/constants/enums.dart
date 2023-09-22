@@ -79,3 +79,15 @@ enum PortalAuthStatus {
   authed,
   unauth,
 }
+
+enum VerifyStatus {
+  empty,
+  valid,
+  invalid,
+}
+
+enum SubmissionProgress {
+  initial,
+  success,
+  failed,
+}
