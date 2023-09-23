@@ -1,9 +1,9 @@
+import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/logic/bloc/authentication_bloc.dart';
 import 'package:collegenius/logic/bloc/login_card_bloc.dart';
 import 'package:collegenius/models/user_model/user_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:formz/formz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -88,9 +88,7 @@ abstract class ManualLoginCard extends StatelessWidget {
                               decoration: InputDecoration(
                                 labelText: _locale.idTextflieldText,
                                 labelStyle: _theme.textTheme.bodyMedium,
-                                errorText: state.studentId.invalid
-                                    ? _locale.idTextErrorText
-                                    : null,
+                                errorText: _locale.idTextErrorText
                               ),
                             ),
                           ),
@@ -106,15 +104,13 @@ abstract class ManualLoginCard extends StatelessWidget {
                               decoration: InputDecoration(
                                 labelText: _locale.passwordTextflieldText,
                                 labelStyle: _theme.textTheme.bodyMedium,
-                                errorText: state.password.invalid
-                                    ? _locale.passwordTextErrorText
-                                    : null,
+                                errorText: _locale.passwordTextErrorText
                               ),
                             ),
                           ),
                           ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor: state.status.isValidated
+                              backgroundColor: state.status.isValid
                                   ? MaterialStateProperty.all(Colors.blue)
                                   : MaterialStateProperty.all(
                                       _theme.primaryColor),
@@ -124,7 +120,7 @@ abstract class ManualLoginCard extends StatelessWidget {
                               _locale.login,
                               style: _theme.textTheme.bodyMedium,
                             ),
-                            onPressed: state.status.isValidated
+                            onPressed: state.status.isValid
                                 ? () {
                                     login(
                                       context,

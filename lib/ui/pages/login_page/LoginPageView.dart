@@ -1,3 +1,4 @@
+import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/logic/bloc/login_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,21 +12,13 @@ class LoginPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _loginPageBloc = context.watch<LoginPageBloc>();
-    switch (_loginPageBloc.state.status) {
-      case FormzStatus.pure:
+    switch (_loginPageBloc.state.progress) {
+      case SubmissionProgress.initial:
         return LoginView();
-      case FormzStatus.submissionSuccess:
+      case SubmissionProgress.success:
         return LoginResultView();
-      case FormzStatus.submissionFailure:
+      case SubmissionProgress.failed:
         return Center(child: Text("Failed"));
-      case FormzStatus.valid:
-      case FormzStatus.invalid:
-      case FormzStatus.submissionInProgress:
-      case FormzStatus.submissionCanceled:
-
-        /// Unused clauses
-        break;
     }
-    return LoginView();
   }
 }

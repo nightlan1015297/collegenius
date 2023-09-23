@@ -8,21 +8,27 @@ part of 'login_page_bloc.dart';
 
 LoginPageState _$LoginPageStateFromJson(Map<String, dynamic> json) =>
     LoginPageState(
-      status: $enumDecodeNullable(_$FormzStatusEnumMap, json['status']) ??
-          FormzStatus.pure,
+      progress:
+          $enumDecodeNullable(_$SubmissionProgressEnumMap, json['progress']) ??
+              SubmissionProgress.initial,
+      status: $enumDecodeNullable(_$VerifyStatusEnumMap, json['status']) ??
+          VerifyStatus.empty,
     );
 
 Map<String, dynamic> _$LoginPageStateToJson(LoginPageState instance) =>
     <String, dynamic>{
-      'status': _$FormzStatusEnumMap[instance.status]!,
+      'status': _$VerifyStatusEnumMap[instance.status]!,
+      'progress': _$SubmissionProgressEnumMap[instance.progress]!,
     };
 
-const _$FormzStatusEnumMap = {
-  FormzStatus.pure: 'pure',
-  FormzStatus.valid: 'valid',
-  FormzStatus.invalid: 'invalid',
-  FormzStatus.submissionInProgress: 'submissionInProgress',
-  FormzStatus.submissionSuccess: 'submissionSuccess',
-  FormzStatus.submissionFailure: 'submissionFailure',
-  FormzStatus.submissionCanceled: 'submissionCanceled',
+const _$SubmissionProgressEnumMap = {
+  SubmissionProgress.initial: 'initial',
+  SubmissionProgress.success: 'success',
+  SubmissionProgress.failed: 'failed',
+};
+
+const _$VerifyStatusEnumMap = {
+  VerifyStatus.empty: 'empty',
+  VerifyStatus.valid: 'valid',
+  VerifyStatus.invalid: 'invalid',
 };

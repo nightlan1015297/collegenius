@@ -2,17 +2,17 @@ part of 'login_card_bloc.dart';
 
 class LoginCardState extends Equatable {
   const LoginCardState({
-    this.status = FormzStatus.pure,
+    this.status = VerifyStatus.empty,
     this.studentId = const StudentId.pure(),
     this.password = const Password.pure(),
   });
 
-  final FormzStatus status;
+  final VerifyStatus status;
   final StudentId studentId;
   final Password password;
 
   LoginCardState copyWith({
-    FormzStatus? status,
+    VerifyStatus? status,
     StudentId? studentId,
     Password? password,
   }) {

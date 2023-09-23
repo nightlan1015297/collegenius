@@ -104,11 +104,14 @@ class CourseSchedualPageBloc
       case ConnectivityResult.wifi:
       case ConnectivityResult.ethernet:
       case ConnectivityResult.mobile:
+      case ConnectivityResult.vpn:
+      case ConnectivityResult.other:
         emit(state.copyWith(fetchFromLocal: false));
         break;
       case ConnectivityResult.none:
         emit(state.copyWith(fetchFromLocal: true));
         break;
+
     }
   }
 

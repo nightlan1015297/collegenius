@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collegenius/constants/Constants.dart';
 import 'package:collegenius/logic/bloc/authentication_bloc.dart';
 import 'package:collegenius/models/user_model/user_model.dart';
 import 'package:equatable/equatable.dart';
@@ -28,10 +29,15 @@ class LoginPageBloc extends HydratedBloc<LoginPageEvent, LoginPageState> {
     Emitter<LoginPageState> emit,
   ) {
     final studentId = StudentId.dirty(event.studentId);
-    emit(state.copyWith(
+    if (Formz.validate([state.password, studentId])){
+      emit(state.copyWith(
       studentId: studentId,
-      status: Formz.validate([state.password, studentId]),
+      status: VerifyStatus.valid,
     ));
+    }else{emit(state.copyWith(
+      studentId: studentId,
+      status: VerifyStatus.invalid,
+    ));}
   }
 
   void _onPasswordChanged(
@@ -39,24 +45,31 @@ class LoginPageBloc extends HydratedBloc<LoginPageEvent, LoginPageState> {
     Emitter<LoginPageState> emit,
   ) {
     final password = Password.dirty(event.password);
-    emit(state.copyWith(
+    if (Formz.validate([password, state.studentId])){
+      emit(state.copyWith(
       password: password,
-      status: Formz.validate([password, state.studentId]),
+      status: VerifyStatus.valid,
     ));
+    }else{emit(state.copyWith(
+      password: password,
+      status: VerifyStatus.invalid,
+    ));}
   }
 
   void _onSubmitted(
     LoginSubmitted event,
     Emitter<LoginPageState> emit,
   ) async {
-    if (state.status.isValidated) {
-      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+    if (state.status.isValid) {
+      emit(state.copyWith(progress: SubmissionProgress.success));
+      print(state.studentId.value);
+      print(state.password.value);
       authenticationBloc.add(CourseSelectAuthenticateRequest(
           user:
               User(id: state.studentId.value, password: state.password.value)));
       authenticationBloc.add(EeclassAuthenticateRequest(
           user:
-              User(id: state.studentId.value, password: state.password.value)));
+              User(id: state.studentId.value, password: state.studentId.value)));
       //! Portal related Service
       // authenticationBloc.add(PortalAuthenticateRequest(
       //     user:
