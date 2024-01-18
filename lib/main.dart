@@ -84,7 +84,6 @@ Future<void> main() async {
     storageDirectory: await PathGenerator().getHydratedBlocDirectory(),
   );
   runApp(Collegenius());
-  
 }
 
 class Collegenius extends StatefulWidget {
@@ -96,8 +95,7 @@ class _CollegeniusState extends State<Collegenius> {
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
   final AppRouter _appRouter = AppRouter();
 
-  static void downloadCallback(
-      String id, int status, int progress) {
+  static void downloadCallback(String id, int status, int progress) {
     final SendPort send =
         IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
@@ -183,7 +181,8 @@ class _CollegeniusState extends State<Collegenius> {
               builder: (context, child) {
                 return MediaQuery(
                   child: child!,
-                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                  data: MediaQuery.of(context)
+                      .copyWith(textScaler: TextScaler.linear(1.0)),
                 );
               },
               home: Builder(

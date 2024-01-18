@@ -316,7 +316,7 @@ class DownloadPdfTag extends StatelessWidget {
               },
               child: Text(
                 _locale.download,
-                style: _theme.textTheme.headline6,
+                style: _theme.textTheme.titleLarge,
               ),
             ),
           ),
@@ -371,7 +371,7 @@ class LaunchYoutubeTag extends StatelessWidget {
               },
               child: Text(
                 _locale.openVideo,
-                style: _theme.textTheme.headline6,
+                style: _theme.textTheme.titleLarge,
               ),
             ),
           ),

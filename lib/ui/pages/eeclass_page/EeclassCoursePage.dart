@@ -94,7 +94,7 @@ class EeclassCoursePageFailedView extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     _locale.loadError,
-                    style: _theme.textTheme.headline6,
+                    style: _theme.textTheme.titleLarge,
                   )),
               Expanded(
                 child: SingleChildScrollView(
@@ -107,7 +107,7 @@ class EeclassCoursePageFailedView extends StatelessWidget {
                         child: TextInformationProvider(
                           label: '${_locale.exceptionDescription} :',
                           information: err.exception,
-                          labelTexttheme: _theme.textTheme.headline6,
+                          labelTexttheme: _theme.textTheme.titleLarge,
                           informationTextOverFlow: TextOverflow.visible,
                           informationTexttheme: _theme.textTheme.bodyLarge,
                           informationPadding: EdgeInsets.all(8.0),
@@ -120,7 +120,7 @@ class EeclassCoursePageFailedView extends StatelessWidget {
                           label: '${_locale.errorStacktrace} :',
                           information: err.stackTrace,
                           informationTextOverFlow: TextOverflow.visible,
-                          labelTexttheme: _theme.textTheme.headline6,
+                          labelTexttheme: _theme.textTheme.titleLarge,
                           informationTexttheme: _theme.textTheme.bodyLarge,
                           informationPadding: EdgeInsets.all(8.0),
                         ),
@@ -525,7 +525,7 @@ class CourseBullitinBoard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                       child: Text(_locale.latestBullitin,
-                          style: _theme.textTheme.headline6),
+                          style: _theme.textTheme.titleLarge),
                     ),
                     Spacer(),
                     Padding(

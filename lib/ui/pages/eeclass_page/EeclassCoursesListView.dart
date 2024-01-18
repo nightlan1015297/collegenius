@@ -83,7 +83,7 @@ class EeclassCourseListFailedView extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     _locale.loadError,
-                    style: _theme.textTheme.headline6,
+                    style: _theme.textTheme.titleLarge,
                   )),
               Expanded(
                 child: SingleChildScrollView(
@@ -96,7 +96,7 @@ class EeclassCourseListFailedView extends StatelessWidget {
                         child: TextInformationProvider(
                           label: '${_locale.exceptionDescription} :',
                           information: err.exception,
-                          labelTexttheme: _theme.textTheme.headline6,
+                          labelTexttheme: _theme.textTheme.titleLarge,
                           informationTextOverFlow: TextOverflow.visible,
                           informationTexttheme: _theme.textTheme.bodyLarge,
                           informationPadding: EdgeInsets.all(8.0),
@@ -109,7 +109,7 @@ class EeclassCourseListFailedView extends StatelessWidget {
                           label: '${_locale.errorStacktrace} :',
                           information: err.stackTrace,
                           informationTextOverFlow: TextOverflow.visible,
-                          labelTexttheme: _theme.textTheme.headline6,
+                          labelTexttheme: _theme.textTheme.titleLarge,
                           informationTexttheme: _theme.textTheme.bodyLarge,
                           informationPadding: EdgeInsets.all(8.0),
                         ),
@@ -225,7 +225,7 @@ class EeclassCourseCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           courseTitle,
-                          style: _theme.textTheme.headline6,
+                          style: _theme.textTheme.bodyMedium,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -238,25 +238,24 @@ class EeclassCourseCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Row(children: [
-                      SizedBox(
-                        width: 110,
-                        child: TextInformationProvider(
-                            label: _locale.courseCode, information: courseCode),
-                      ),
+                      TextInformationProvider(
+                          labelTexttheme: _theme.textTheme.bodyMedium,
+                          informationTexttheme: _theme.textTheme.bodyMedium,
+                          label: _locale.courseCode,
+                          information: courseCode),
                       VerticalSeperater(),
-                      SizedBox(
-                        width: 50,
-                        child: TextInformationProvider(
-                            label: _locale.credit, information: credit),
-                      ),
+                      TextInformationProvider(
+                          labelTexttheme: _theme.textTheme.bodyMedium,
+                          informationTexttheme: _theme.textTheme.bodyMedium,
+                          label: _locale.credit,
+                          information: credit),
                       Spacer(),
-                      SizedBox(
-                        width: 80,
-                        child: TextInformationProvider(
-                            informationTextOverFlow: TextOverflow.ellipsis,
-                            label: _locale.professor,
-                            information: professor),
-                      ),
+                      TextInformationProvider(
+                          labelTexttheme: _theme.textTheme.bodyMedium,
+                          informationTexttheme: _theme.textTheme.bodyMedium,
+                          informationTextOverFlow: TextOverflow.ellipsis,
+                          label: _locale.professor,
+                          information: professor),
                     ]),
                   )
                 ],

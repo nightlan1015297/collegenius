@@ -1,10 +1,8 @@
 import 'dart:io';
-import 'package:dio/adapter.dart';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as htmlparser;
 import 'package:path_provider/path_provider.dart';
 
@@ -103,7 +101,7 @@ class PortalApiClient {
   }
 
   Future<void> fetchCookie() async {
-    final response = await dio.get('/login',
+    await dio.get('/login',
         options: Options(
             followRedirects: false,
             validateStatus: (status) {

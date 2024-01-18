@@ -105,7 +105,7 @@ class Picker extends StatelessWidget {
                                                   child: Text(
                                                 item,
                                                 style:
-                                                    _theme.textTheme.headline5,
+                                                    _theme.textTheme.titleLarge,
                                               )))
                                           .toList(),
                                       itemExtent: 50,

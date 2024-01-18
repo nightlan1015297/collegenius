@@ -18,7 +18,7 @@ class Tag extends StatelessWidget {
       ),
       child: Text(tagText,
           overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.subtitle2),
+          style: Theme.of(context).textTheme.labelSmall),
     );
   }
 }

@@ -169,7 +169,7 @@ class EeclassBullitinCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           bullitinBrief.title,
-                          style: _theme.textTheme.headline6,
+                          style: _theme.textTheme.titleLarge,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

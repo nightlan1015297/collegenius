@@ -108,7 +108,7 @@ class EeclassMaterialCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           materialInfoBrief.title,
-                          style: _theme.textTheme.headline6,
+                          style: _theme.textTheme.titleLarge,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),

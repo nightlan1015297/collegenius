@@ -45,7 +45,7 @@ class TextInformationProvider extends StatelessWidget {
                 child: SelectableText(information,
                     style: informationTexttheme?.copyWith(
                             overflow: informationTextOverFlow) ??
-                        _theme.textTheme.headline6!
+                        _theme.textTheme.titleLarge!
                             .copyWith(overflow: informationTextOverFlow)),
               )
             : Padding(
@@ -53,7 +53,7 @@ class TextInformationProvider extends StatelessWidget {
                 child: Text(information,
                     maxLines: informationMaxLines,
                     overflow: informationTextOverFlow,
-                    style: informationTexttheme ?? _theme.textTheme.headline6),
+                    style: informationTexttheme ?? _theme.textTheme.titleLarge),
               ),
       ],
     );

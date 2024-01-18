@@ -57,7 +57,7 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(_locale.traditionalChinese,
-                                  style: _theme.textTheme.headline6),
+                                  style: _theme.textTheme.titleLarge),
                               Spacer(),
                               state.appLanguage.isZh
                                   ? Icon(Icons.check, color: Colors.green)
@@ -80,7 +80,7 @@ class AppLanguagePopupSettingCard extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(_locale.english,
-                                style: _theme.textTheme.headline6),
+                                style: _theme.textTheme.titleLarge),
                             Spacer(),
                             state.appLanguage.isEn
                                 ? Icon(Icons.check, color: Colors.green)

@@ -78,7 +78,7 @@ class LoginResultView extends StatelessWidget {
                   SizedBox(
                       width: 150,
                       child: Text(_locale.coursePlanning,
-                          style: _theme.textTheme.headline6)),
+                          style: _theme.textTheme.titleLarge)),
                 ],
               ),
               Row(
@@ -270,7 +270,7 @@ abstract class LoginFailedMessage extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       _locale.loginError,
-                      style: _theme.textTheme.headline6,
+                      style: _theme.textTheme.titleLarge,
                     )),
                 Expanded(
                   child: SingleChildScrollView(
@@ -284,7 +284,7 @@ abstract class LoginFailedMessage extends StatelessWidget {
                           child: TextInformationProvider(
                             label: '${_locale.exceptionDescription} :',
                             information: err.exception,
-                            labelTexttheme: _theme.textTheme.headline6,
+                            labelTexttheme: _theme.textTheme.titleLarge,
                             informationTextOverFlow: TextOverflow.visible,
                             informationTexttheme: _theme.textTheme.bodyLarge,
                             informationPadding: EdgeInsets.all(8.0),
@@ -297,7 +297,7 @@ abstract class LoginFailedMessage extends StatelessWidget {
                             label: '${_locale.errorStacktrace} :',
                             information: err.stackTrace,
                             informationTextOverFlow: TextOverflow.visible,
-                            labelTexttheme: _theme.textTheme.headline6,
+                            labelTexttheme: _theme.textTheme.titleLarge,
                             informationTexttheme: _theme.textTheme.bodyLarge,
                             informationPadding: EdgeInsets.all(8.0),
                           ),

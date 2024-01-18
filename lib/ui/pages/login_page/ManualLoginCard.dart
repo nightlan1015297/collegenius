@@ -46,8 +46,8 @@ abstract class ManualLoginCard extends StatelessWidget {
         child: BlocBuilder<LoginCardBloc, LoginCardState>(
           builder: (context, state) {
             return Card(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 450, maxHeight: 300),
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 450, maxHeight: 350),
                 child: Column(
                   children: [
                     SizedBox(
@@ -86,10 +86,9 @@ abstract class ManualLoginCard extends StatelessWidget {
                                   .read<LoginCardBloc>()
                                   .add(LoginStudentIdChanged(id)),
                               decoration: InputDecoration(
-                                labelText: _locale.idTextflieldText,
-                                labelStyle: _theme.textTheme.bodyMedium,
-                                errorText: _locale.idTextErrorText
-                              ),
+                                  labelText: _locale.idTextflieldText,
+                                  labelStyle: _theme.textTheme.bodyMedium,
+                                  errorText: _locale.idTextErrorText),
                             ),
                           ),
                           Padding(
@@ -102,10 +101,9 @@ abstract class ManualLoginCard extends StatelessWidget {
                                   .add(LoginPasswordChanged(password)),
                               obscureText: true,
                               decoration: InputDecoration(
-                                labelText: _locale.passwordTextflieldText,
-                                labelStyle: _theme.textTheme.bodyMedium,
-                                errorText: _locale.passwordTextErrorText
-                              ),
+                                  labelText: _locale.passwordTextflieldText,
+                                  labelStyle: _theme.textTheme.bodyMedium,
+                                  errorText: _locale.passwordTextErrorText),
                             ),
                           ),
                           ElevatedButton(

@@ -25,14 +25,14 @@ class SchoolTourPage extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.info,
-                            size: 50,
+                            size: 40,
                             color: _theme.iconTheme.color,
                           ),
                         ),
                         Spacer(),
                         Text(
                           '校園導覽地圖',
-                          style: _theme.textTheme.headline6,
+                          style: _theme.textTheme.titleMedium,
                         ),
                         Spacer(),
                       ],
@@ -58,14 +58,14 @@ class SchoolTourPage extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.map,
-                            size: 50,
+                            size: 40,
                             color: _theme.iconTheme.color,
                           ),
                         ),
                         Spacer(),
                         Text(
                           _locale.schoolBuildingsMap,
-                          style: _theme.textTheme.headline6,
+                          style: _theme.textTheme.titleMedium,
                         ),
                         Spacer(),
                       ],

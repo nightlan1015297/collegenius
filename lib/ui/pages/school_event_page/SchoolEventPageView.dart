@@ -161,7 +161,7 @@ class EventCard extends StatelessWidget {
                         textAlign: TextAlign.left,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: _theme.textTheme.headline6),
+                        style: _theme.textTheme.bodyMedium),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(4.0),
@@ -190,7 +190,8 @@ class EventCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           information: time ?? _locale.parseError,
                           label: _locale.publicationDate,
-                          informationTexttheme: _theme.textTheme.subtitle2,
+                          labelTexttheme: _theme.textTheme.bodySmall,
+                          informationTexttheme: _theme.textTheme.bodySmall,
                         )
                       ],
                     ),

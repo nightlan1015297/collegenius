@@ -71,7 +71,7 @@ class NoDataCard extends StatelessWidget {
                     Spacer(),
                     Text(
                       _locale.noData,
-                      style: _theme.textTheme.headline6,
+                      style: _theme.textTheme.titleLarge,
                     ),
                     Spacer(),
                   ],
@@ -107,7 +107,7 @@ class NoCoursesCard extends StatelessWidget {
                           Spacer(),
                           Text(
                             _locale.courseSchedualNoCourse,
-                            style: _theme.textTheme.headline6,
+                            style: _theme.textTheme.titleLarge,
                           ),
                           Spacer(),
                         ],
@@ -450,7 +450,7 @@ class CourseCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           courseTitle,
-                          style: _theme.textTheme.headline5,
+                          style: _theme.textTheme.headlineSmall,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -521,13 +521,13 @@ class ProgressingCourseCard extends StatelessWidget {
                     TextInformationProvider(
                       label: _locale.classroom,
                       information: location,
-                      informationTexttheme: _theme.textTheme.headline6,
+                      informationTexttheme: _theme.textTheme.titleLarge,
                     ),
                     Spacer(),
                     TextInformationProvider(
                         label: _locale.time,
                         information: startTime + ' - ' + endTime,
-                        informationTexttheme: _theme.textTheme.headline6),
+                        informationTexttheme: _theme.textTheme.titleLarge),
                   ],
                 ),
               ),

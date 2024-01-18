@@ -55,7 +55,7 @@ class ThemePopupSettingCard extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(_locale.dark,
-                                style: _theme.textTheme.headline6),
+                                style: _theme.textTheme.titleLarge),
                             Spacer(),
                             state.themeMode.isDark
                                 ? Icon(Icons.check, color: Colors.green)
@@ -76,7 +76,7 @@ class ThemePopupSettingCard extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(_locale.light,
-                                style: _theme.textTheme.headline6),
+                                style: _theme.textTheme.titleLarge),
                             Spacer(),
                             state.themeMode.isLight
                                 ? Icon(Icons.check, color: Colors.green)
