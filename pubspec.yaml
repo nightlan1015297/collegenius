@@ -28,7 +28,7 @@ dependencies:
     path: packages/eeclass_api
   equatable: ^2.0.3
   firebase_analytics: ^10.4.5
-  firebase_core: ^2.15.1
+  firebase_core: ^2.24.2
   firebase_crashlytics: ^3.3.5
   fl_chart: ^0.63.0
   flutter:
