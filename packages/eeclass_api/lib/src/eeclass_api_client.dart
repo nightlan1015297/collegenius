@@ -99,7 +99,8 @@ class EeclassApiClient {
     for (int i = 0; i < a.length; i++) {
       List children = a[i].children;
       for (int j = 0; j < children.length; j++) {
-        if (children[j].attributes['name'] == 'csrf-t') {
+        if (children[j].attributes['name'] == 'anticsrf') {
+          print(children[j].attributes['value']);
           return children[j].attributes['value'];
         }
       }
@@ -173,7 +174,7 @@ class EeclassApiClient {
           'account': id,
           'password': password,
           'rememberMe': '',
-          'csrf-t': csrfToken,
+          'anticsrf': csrfToken,
         }));
     if (response.statusCode != 200) {
       id = null;

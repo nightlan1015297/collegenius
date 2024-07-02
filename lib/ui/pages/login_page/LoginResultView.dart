@@ -258,6 +258,7 @@ abstract class LoginFailedMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final _locale = AppLocalizations.of(context)!;
     final _theme = Theme.of(context);
+    
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),

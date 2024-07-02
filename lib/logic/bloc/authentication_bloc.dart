@@ -166,6 +166,7 @@ class AuthenticationBloc
       emit(state.copyWith(
           eeclassAuthStatus: AuthStatus.authed, eeclassUserData: event.user));
     } catch (e, stacktrace) {
+      print(e);
       emit(
         state.copyWith(
           eeclassAuthStatus: AuthStatus.unauth,
