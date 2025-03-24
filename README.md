@@ -3,6 +3,13 @@ Collegenius is an application that develop to help student in NCU (National Cent
 Application combined Course Planning System, Eeclass system. Provide an easy way to access course schedual and learning material for students.
 We are planning to add Portal system, bus information to the application, stay tuned! and hope you can join us to help us develop brilliant app.
 
+## Team
+
+Collegenius is inspired by ap_common, with the same purpose of giving students a easier path to access school system.  
+The app is currently maintained by the development team, and host by [OCF (Open Culture Foundation)](https://ocf.tw) on App Store.
+
+OCF was founded by several Taiwan’s open source community. Main goal is to support local communities advocate the use of open technologies in broader sectors.
+
 ## Quick View
 
 |<img height="400" alt="Home Screen" src="https://i.imgur.com/9cPsYtC.png"> | <img height="400" alt="Course Schedual Screen" src="https://i.imgur.com/UV5j5bb.png">|<img height="400" alt="Eeclass Screen" src="https://i.imgur.com/5jpPMTu.png">|
